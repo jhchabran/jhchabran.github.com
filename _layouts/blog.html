@@ -9,20 +9,7 @@
 
     <!-- Le styles -->
     <link href="/css/bootstrap.css" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 20px;
-        padding-bottom: 40px;
-      }
-      /* Custom container */
-      .container-narrow {
-        margin: 0 auto;
-        width: 940px;
-      }
-      .container-narrow > hr {
-        margin: 30px 0;
-      }
-    </style>
+    <link href="/css/custom.css" rel="stylesheet">
     <link href="css/bootstrap-responsive.css" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -57,6 +44,13 @@
       {{ content }}
     </div>
     <div class="span3">
+      <h3>Follow me</h3>
+      <ul>
+        <li>Feed</li>
+        <li>Twitter</li>
+        <li>Github</li>
+      </ul>
+      <h3>Categories</h3>
       {% for post in site.posts limit:10%}
       <p><a href="{{ post.url }}">{{ post.title }}</a></p>
       {% endfor %}
