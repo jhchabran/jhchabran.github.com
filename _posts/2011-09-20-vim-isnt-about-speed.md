@@ -1,6 +1,10 @@
 ---
 layout: post
 title: Vim isn't about speed
+category: Vim
+tags:
+  - Vim
+  - Productivity
 ---
 
 {{ page.title }}

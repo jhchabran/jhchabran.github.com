@@ -44,9 +44,11 @@ description: my homepage
       <img src="/img/icons/linkedin-32x32.png"/>
     </a>
     <h3>Categories</h3>
-    {% for post in site.posts limit:10%}
-    <p><a href="{{ post.url }}">{{ post.title }}</a></p>
-    {% endfor %}
+    {% category_list %}
+    <h3>Tags</h3>
+    {% tag_cloud %}
+    <h3>Archives</h3>
+    {% monthly_archives %}
   </div>
 </div>
 
