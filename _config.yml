@@ -1,0 +1,13 @@
+permalink: /blog/:year/:month/:day/:title
+pygments: true
+exclude: ['Rakefile', 'README.md']
+markdown: rdiscount
+
+domain: jhchabran.com
+title: JHChabran
+author: jhchabran
+email: jh@chabran.fr
+
+google_analytics: UA-24617566-1
+disqus:
+  id: jhchabran
