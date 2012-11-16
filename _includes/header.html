@@ -5,7 +5,10 @@
     <li><a href="#">About</a></li>
     <li><a href="#">Contact</a></li>
   </ul>
-  <h3 class="muted">{{ site.title }}</h3>
+  <h1 class="muted">{{ site.title }}</h1>
+  {% if page.subtitle %}
+    <h4>{{ page.subtitle }}</h4>
+  {% endif %}
 </div>
 
 <hr>
