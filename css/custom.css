@@ -26,6 +26,10 @@ body {
   padding: 14px 24px;
 }
 
+.jumbotron .social-icons {
+  margin: 20px;
+}
+
 /* Supporting marketing content */
 .marketing {
   margin: 60px 0;
@@ -33,3 +37,9 @@ body {
 .marketing p + h4 {
   margin-top: 28px;
 }
+
+.contact {
+  text-align:center;
+}
+
+
