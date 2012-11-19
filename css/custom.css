@@ -42,4 +42,33 @@ body {
   text-align:center;
 }
 
+.marketing .icon {
+  float:left;
+  margin-right:6px;
+}
+
+.marketing .gear {
+  margin-top:15px;
+}
+
+.marketing .ekg {
+  margin-top:5px;
+}
+
+.marketing .pencil {
+  margin-top:9px;
+}
+
+.marketing .beaker {
+  margin-top:17px;
+}
+
+.marketing .zap {
+  margin-top:9px;
+
+}
+
+.marketing .heart {
+  margin-top:9px;
+}
 
