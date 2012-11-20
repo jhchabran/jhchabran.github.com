@@ -58,36 +58,10 @@ body {
   text-align:center;
 }
 
-.marketing .icon {
-  float:left;
-  margin-right:6px;
-}
-
-.marketing .gear {
-  margin-top:15px;
-}
-
-.marketing .ekg {
-  margin-top:5px;
-}
-
-.marketing .pencil {
-  margin-top:9px;
-}
-
-.marketing .wrench {
-  margin-top:17px;
-}
-
-.marketing .zap {
-  margin-top:9px;
-
-}
-
-.marketing .heart {
-  margin-top:9px;
-}
-
 .footer p {
   font-size:10px;
+}
+
+.blog-icons {
+  font-size:32px;
 }
