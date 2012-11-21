@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    
+    <title>JHChabran | Writing readable specs</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/font-awesome.css">
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="shortcut icon" href="../assets/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body>
+
+    <div class="container-narrow">
+      <div class="masthead">
+  <ul class="nav nav-pills pull-right app-menu">
+    <li><a href="/">Home</a></li>
+    <li><a href="/blog/">Blog</a></li>
+    <li><a href="/about/">About</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <a href="/"><h1 class="">JHChabran</h1></a>
+  
+    <h4 class="muted">Thoughts on Ruby, CoffeeScript and Vim from a passionate developer.</h4>
+  
+</div>
+
+<hr>
+
+    
+      <div class="row">
+  <div class="span9">
+    <h2><a href="/blog/2010/03/03/writing-readable-specs">Writing readable specs</a></h2>
+    <h4>
+      Posted on March 03, 2010
+      
+      
+      in <a href="/categories/ruby">Ruby</a>
+      
+      
+    </h4>
+    <hr/>
+
+    <p>Writing Rails specs with <a href="https://www.relishapp.com/rspec">RSpec</a> and
+<a href="https://github.com/thoughtbot/factory_girl">FactoryGirl</a> is easy to do
+when you
+got a basic understanding of testing principles but you may have noticed
+how these specs tends to get cluttered over time. Even to the point you
+don't get what's going on at all and call your co-worker who wrote them
+and ask him to handle your task!</p>
+
+<p>The following points are basic principles to keep in mind while writing
+specs to avoid being stuck with an unreadable spec.</p>
+
+<p>We deal with four models : User, Cart, Order and Item.
+Their relationships are obviously as simplified as possible to keep
+ourselves focused on their tests.</p>
+
+<pre><code>class User
+  has_one :cart 
+  has_many :orders
+end
+
+class Cart
+  belongs_to :user
+  has_many :items
+end
+
+class Order
+  has_many :items
+  belongs_to :user
+end
+
+class Item 
+  belongs_to :cart
+  belongs_to :order
+  belongs_to :product
+end
+</code></pre>
+
+<h2>Don't Repeat Yourself</h2>
+
+<p>As usual, the DRY principle. Consider the following code (user_spec.rb)
+:</p>
+
+<pre><code>describe User do
+  before :each do
+    @user = Factory.create :user
+  end
+
+  it "should order the cart with one item" do
+    @cart = Factory.create :cart, :user =&gt; @user
+    @item = Factory.create :item, :cart =&gt; @cart
+
+    @user.order! @cart
+    @cart.should be_ordered
+  end
+
+  it "should discard the cart" do
+    @cart = Factory.create :cart, :user =&gt; @user
+    @item = Factory.create :item, :cart =&gt; @cart
+
+    @user.discard_cart
+    @cart.items.should be_empty
+  end
+end
+</code></pre>
+
+<p>Quite clean by itself, we create a user for each test, as expected for a
+spec about the user model. Yet you can easily notice we're building
+other models
+in our two tests.</p>
+
+<p>We can factorize these factories instanciation to stay DRY :</p>
+
+<pre><code>describe User do
+  before :each do
+    @user    = Factory.create :user
+    @cart    = Factory.create :cart, :user =&gt; @user
+    @item    = Factory.create :item, :cart =&gt; @cart
+  end
+
+  it "should order the cart with one item" do
+    @user.order! @cart
+    @cart.should be_ordered
+  end
+
+  it "should discard the cart" do
+    @user.discard_cart
+    @cart.items.should be_empty
+  end
+end
+</code></pre>
+
+<p>Now we got two tests and this example rise the following principle :</p>
+
+<p><strong>Test code should be almost a direct translation of its name</strong></p>
+
+<p>Any context initialization, should be done in a before block to avoid
+polluting the test code itself.</p>
+
+<h2>Enhance readability</h2>
+
+<p>As we avoid to pollute code to enhance readability, we can also
+emphasize on what's important. It allows the reader to grasp with ease
+what's going on.</p>
+
+<pre><code>describe User do
+  before :each do
+    @user    = Factory.create :user
+    @cart    = Factory.create :cart, :user =&gt; @user
+    @item    = Factory.create :item
+
+    @cart.items &lt;&lt; @item # focus on adding an item
+  end
+
+  # ...
+end
+</code></pre>
+
+<p>The main point of this before block is to craft a cart with an item
+within. As factories are cool, it doesn't mean we have to use their
+features all the time.</p>
+
+<p>Using the &lt;&lt; operator on line 7, on the items association
+emphasize on adding our item to the cart instead of diluting it
+through the factories. This line of is the most important
+considering we're testing how a user interacts with items.</p>
+
+<p>So while writing your test code, be sure to <strong>avoid embedding your
+intentions in the basic plumbing</strong>.</p>
+
+<h2>One expectation per test please</h2>
+
+<p>To pursue in our readability quest, you may have noticed that the
+example used in the previous points was really simple. But what makes
+theses so simple ? Those two tests got only one expectation at a time.</p>
+
+<p>Consider the following code :</p>
+
+<pre><code>describe User do
+  before :each do
+    @user = Factory.create :user
+    @cart = Factory.create :cart, :user =&gt; @user
+    @item = Factory.create :item, :cart =&gt; @cart
+
+    @order = @user.order! @cart
+  end
+
+  it "should finalize the order" do
+    @order.finalize!
+    @user.should have(1).finalized_orders
+    @order.should be_finalized
+  end
+end
+</code></pre>
+
+<p>We've got two <em>should</em> call there. Even if it's just slightly more
+complicated than before, you can separate concerns. We wrote <em>describe
+User</em> meaning we talk about user here. We do not want to mix
+expectations about orders and users.</p>
+
+<p>Accordingly expectation on line 12 , even if being really similar to
+line 11 has
+nothing to do here. So we can rewrite this test in two separated tests
+(order_spec.rb) :</p>
+
+<pre><code>describe Order do
+  before :each do
+    @cart  = Factory.create :cart
+    @user  = @cart.user
+    @cart.items &lt;&lt; Factory.create_list :item, 3
+
+    @order = @user.order! @cart 
+  end
+
+  it "should finalize the order" do
+    @order.finalize
+    @order.should be_finalized
+  end
+end
+
+
+
+describe User do
+  before :each do
+    @user = Factory.create :user
+    @cart = Factory.create :cart, :user =&gt; @user
+    @item = Factory.create :item, :cart =&gt; @cart
+
+    @order = @user.order! @cart
+  end
+
+  it "should finalize the order" do
+    @order.finalize!
+    @user.should have(1).finalized_orders
+  end
+end
+</code></pre>
+
+<p>Plain simple, just <strong>formulate expectations about your current subject
+while writing test
+and ignore the rest</strong>. Why ? Because if you don't you're leaving the
+coast
+of unit tests to head around integration testing land.</p>
+
+<h2>Slice your specs with different contexts</h2>
+
+<p>When it comes to models, there's a lot to handle. Business logic,
+mass-assignements, validation sanity.( Remember <a href="http://weblog.jamisbuck.org/2006/10/18/skinny-controller-fat-model"><em>fat models for skinny
+controllers</em></a>
+eh ? It's for a reason ! )</p>
+
+<p>While you can argue if you should test validations and assignments or
+not, which is out
+of the topic here, we still have to test for a wide range of business
+logic cases.</p>
+
+<p>All of these case can easily be sliced by concerns, for example a user
+can be edited and can order items through a cart. An easy way to
+name contexts is to use the ing form of the verb describing the action :</p>
+
+<pre><code>describe User do
+  context "editing informations" do
+    # ...
+  end
+
+  context "ordering items" do
+    # ...
+  end
+
+  context "canceling cart" do
+    # ...
+  end
+end
+</code></pre>
+
+<p>Writing "while editing ..." or "when editing ..." is a matter of taste,
+while I personally tend to prefer a concise description.</p>
+
+<p>And if we add validations and assignments ? (helpers are provided by
+<a href="https://github.com/thoughtbot/shoulda-matchers">should-matchers</a>)</p>
+
+<pre><code>describe User do
+  describe "validations" do
+    it { should validate_presence_of(:email) }
+    it { should validate_presence_of(:name) }
+  end
+
+  describe "assignments" do
+    it { should allow_mass_assignment_of(:email) }
+    it { should allow_mass_assignment_of(:name) }
+
+    it { should_not allow_mass_assignment_of(:administrator) }
+  end
+
+  context "editing informations" do
+    # ...
+  end
+
+  context "ordering items" do
+    # ...
+  end
+
+  context "canceling cart" do
+    # ...
+  end
+end
+</code></pre>
+
+<p>That makes a readable skeleton for our tests.</p>
+
+<p>The point of writing specs is to keep them enjoyable and litteraly act
+as documentation for everyone. Those four advices are just basics but at
+least ensure you're heading in the right direction with your specs.</p>
+
+
+  </div>
+  <div class="span3">
+    <div class="blog-icons">
+<a href="http://fee">
+  <i class="icon-rss"></i>
+</a>
+<a href="http://twitter.com/jchabran">
+  <i class="icon-twitter"></i>
+</a>
+<a href="http://github.com/jchabran">
+  <i class="icon-github"></i>
+</a>
+<a href="http://github.com/jchabran">
+  <i class="icon-linkedin"></i>
+</a>
+</div>
+<h3>Categories</h3>
+<a href="/categories/coffeescript"><strong>CoffeeScript</strong></a> (1)<br /><a href="/categories/ruby"><strong>Ruby</strong></a> (1)<br /><a href="/categories/vim"><strong>Vim</strong></a> (1)<br />
+<h3>Tags</h3>
+
+            <span style="font-size: 75%">
+              <a href="/tags/chrome/" title="1 post">Chrome</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/coffescript/" title="1 post">CoffeScript</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/javascript/" title="1 post">Javascript</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/productivity/" title="1 post">Productivity</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/rspec/" title="1 post">RSpec</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/ruby/" title="1 post">Ruby</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/tdd/" title="1 post">TDD</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/vim/" title="1 post">Vim</a>
+            </span>
+          
+<h3>Archives</h3>
+<a href="/2012/03"><strong>March 2012</strong></a> (1)<br /><a href="/2011/09"><strong>September 2011</strong></a> (1)<br /><a href="/2010/03"><strong>March 2010</strong></a> (1)<br />
+
+  </div>
+</div>
+
+
+
+
+      <hr>
+
+<div class="footer">
+  <p>&copy; JHCHABRAN 2012</p>
+</div>
+
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/js/jquery.js"></script>
+<script src="/js/application.js"></script>
+
+  </body>
+</html>
