@@ -5,6 +5,8 @@ markdown: rdiscount
 
 domain: jhchabran.com
 title: JHChabran
+subtitle: Thoughts on Ruby, CoffeeScript and Vim from a passionate developer.
+
 author: jhchabran
 email: jh@chabran.fr
 

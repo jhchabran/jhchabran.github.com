@@ -1,16 +1,14 @@
 body {
   padding-top: 20px;
   padding-bottom: 40px;
-  background-image: url(/img/gplaypattern-light.png);
-  background-repeat:repeat;
 }
 
 /* Custom container */
 .container-narrow {
   margin: 0 auto;
   max-width: 940px;
-  background-color:rgba(255,255,255,0.5);
 }
+
 .container-narrow > hr {
   margin: 30px 0;
 }
@@ -21,10 +19,14 @@ body {
   text-align: center;
 }
 .jumbotron h1 {
-  font-size: 72px;
+  font-size: 92px;
   line-height: 1;
 }
 
+.jumbotron p.lead {
+  margin-top:20px;
+  font-size: 32px;
+}
 .jumbotron p {
   color:#777;
 }
@@ -46,6 +48,17 @@ body {
   color:#005580;
 }
 
+.blog-icons {
+  font-size:32px;
+}
+
+.blog-icons a {
+  color:#333;
+}
+.blog-icons a:hover {
+  text-decoration:none;
+  color:#005580;
+}
 /* Supporting marketing content */
 .marketing {
   margin: 60px 0;
@@ -62,6 +75,3 @@ body {
   font-size:10px;
 }
 
-.blog-icons {
-  font-size:32px;
-}
