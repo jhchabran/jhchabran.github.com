@@ -6,10 +6,6 @@ tags:
   - Vim
   - Productivity
 ---
-
-{{ page.title }}
-================
-
 Vim users, myself included, often advocate about gaining speed, carving
 text like a
 ninja and banning that awful device named a mouse.
