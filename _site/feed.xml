@@ -1,0 +1,1076 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>JHChabran</title>
+		<description>Thoughts on Ruby, CoffeeScript and Vim from a passionate developer.</description>
+    <link>/blog</link>
+		<atom:link href="/feed.xml" rel="self" type="application/rss+xml" />
+		
+			<item>
+				<title>Vim isn't about speed</title>
+				<description>&lt;p&gt;Vim users, myself included, often advocate about gaining speed, carving
+text like a
+ninja and banning that awful device named a mouse.&lt;/p&gt;
+
+&lt;p&gt;The follow-up to this is people saying, &quot;Vim seems to be awesome but I
+don't need to
+be that fast anyway.&quot;&lt;/p&gt;
+
+&lt;p&gt;Each time I heard that, I tried to advocate about the fact that as a
+coder
+you're staying around seven hours per day typing, so why not try
+something really efficient ?&lt;/p&gt;
+
+&lt;p&gt;It hardly convinced anyone with that.&lt;/p&gt;
+
+&lt;p&gt;Sublime Text 2, Textmate, are common answers, gladly followed by a &quot;It
+does the job&quot;.&lt;/p&gt;
+
+&lt;p&gt;This made realize how wrong I was to introduce vim that way. Sure,
+Vim-fu is always amazing to watch, but nobody really cares about speed.&lt;/p&gt;
+
+&lt;p&gt;You don't get to code that fast with vim. You spend time thinking then
+you enter your idea. Or you think while typing, going back and forth
+through potentials solutions. Getting faster don't mean producing
+significantly more code, the bottleneck is your brain anyway.&lt;/p&gt;
+
+&lt;h2&gt;It's about comfort.&lt;/h2&gt;
+
+&lt;p&gt;Ever played to a FPS or a RTS ? Think about how you interact with the
+game.
+You basically remember that each key is associated to a function. Want
+to reload ? Press R. Want to build a bunker in Starcraft 2 ? Select your
+worker
+, press B then U. After a while, it becomes completely natural and you
+start memorizing patterns, or simply words made of your keypresses.&lt;/p&gt;
+
+&lt;p&gt;Now imagine having to press control R to reload, hold control while
+pressing B and U. It would be annoying right ? Having to strech fingers
+to
+catch that modifier all the time...&lt;/p&gt;
+
+&lt;p&gt;Well that's basically the most common way to send commands to your text
+editor besides clicking in a menu.&lt;/p&gt;
+
+&lt;h2&gt;Modality saves the day&lt;/h2&gt;
+
+&lt;p&gt;Vim solves that by providing two modes : insert mode and normal mode.
+You already know insert mode, it's the behavior you always knew to enter
+text. Press hello, it writes &quot;hello&quot;.&lt;/p&gt;
+
+&lt;p&gt;Press ESC or Ctrl-C to get back to normal mode, which is the standard
+mode and the reason behind the i you have to type before entering text.&lt;/p&gt;
+
+&lt;p&gt;Normal mode is similar to Starcraft 2. How can we change the text
+insides the quotes in the following example ?&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;9 : def greet
+10:   &quot;Hello you!&quot;
+11: end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;10G to go to line 10, ci&quot; to delete text inside the pair of quotes and
+it puts you in insert mode. That's the kind of moves you make all day
+long in vim. And exaclty like in Starcraft 2, it makes words : c stands
+for change, i for inner and finally &quot; to point out quotes as a
+delimiter.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;9 : def greet
+10:   &quot;&quot;      # The cursor will end between the quotes.
+11: end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Sounds complicated ? Yes at first. But like Starcraft, you'll get used
+to these kinds of moves.&lt;/p&gt;
+
+&lt;p&gt;Obviously, there are some vim actions bound to control something, like
+redo
+which is ctrl-r or ctrl-d to scroll down.
+But that still makes significantly less modifiers usage than any other
+editor.&lt;/p&gt;
+
+&lt;h2&gt;How could I live without it ?&lt;/h2&gt;
+
+&lt;p&gt;After a while, it becomes natural, you don't even think about it.
+Your brain just know that going to next
+tab is gt, change text inside a pair of parenthesis is ci) and so on. It
+feels natural, exactly like typing.&lt;/p&gt;
+
+&lt;p&gt;You type to enter text, you type to shape your code, you type to move
+around (forget the arrows keys, do yourself a favor, disable them and
+use hjkl instead and learn other moving keys!).&lt;/p&gt;
+
+&lt;p&gt;And most of the time, your hands are on or close of the home row, which
+is
+the key to have comfortable text entering position (This is especially
+important if you have small hands like I do !).&lt;/p&gt;
+
+&lt;p&gt;Welcome to Vim, an efficient tool to edit text. It's different from
+other
+editors, it is tough to learn, but you'll end with what I consider after
+trying every editor out there the most comfortable tool to handle text
+and code.&lt;/p&gt;
+
+&lt;p&gt;This comfort is a plague, you'll want it everywhere : mails,
+browser, shell. And this is why people stick to Vim once they got
+hooked, comfort.&lt;/p&gt;
+
+&lt;h2&gt;Common pitfalls&lt;/h2&gt;
+
+&lt;p&gt;If you're not from UK or USA, you have a localized keyboard. Throw it
+away, it will just stand between you in and vim. For example Azerty is
+pretty horrible, : and w are on the bottom row on the keyboard's edge.
+Just use a qwerty mapping for coding and you will notice that in fact,
+everything was made for qwerty. Weird key positions will now make sense.
+Typing 45G to go to line 45 is way easier too since you now got numbers
+without shift. Same goes for d3w, delete three words. You got the idea.&lt;/p&gt;
+
+&lt;p&gt;Don't try to rebind everything. Choices had been made by people that
+spent years in Vi, it's not like you're going to find something better
+for every function in your two days vim life span.&lt;/p&gt;
+
+&lt;p&gt;If you try switching, stick to it. Try it for a week, not five minutes
+until you switch back because you that it wrecks your productivity.
+You can't cheat on this step.&lt;/p&gt;
+
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;I just love vim for the ease it gives me with text editing, but to get
+started you have to keep in mind that getting out of your comfort zone
+is required to gain more of it.&lt;/p&gt;
+
+&lt;p&gt;In the end, I find that being fast while editing code in Vim is simply a
+consequence of this comfort.&lt;/p&gt;
+
+&lt;p&gt;Dig into &lt;a href=&quot;http://www.learnivore.com/search/vim&quot;&gt;Learnivore&lt;/a&gt; to find many
+resources to get started !&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Edit :&lt;/strong&gt; correct a few typos&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Edit2:&lt;/strong&gt; Thanks to
+&lt;a href=&quot;http://www.reddit.com/user/Qoc_au_vin&quot;&gt;Qoc_au_vin&lt;/a&gt; for pointing me
+that w to advance to the next word isn't required before ci&quot; !&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<pubDate>Thu, 27 Sep 2012 00:00:00 -0700</pubDate>
+				<link>/blog/2012/09/27/vim-isnt-about-speed</link>
+				<guid isPermaLink="true">/blog/2012/09/27/vim-isnt-about-speed</guid>
+			</item>
+		
+			<item>
+				<title>10 Rails Quality Examples</title>
+				<description>&lt;p&gt;Learning Rails by example is a great way to progress. This &lt;a href=&quot;http://jetpackweb.com/blog/2009/10/14/high-quality-ruby-on-rails-example-applications/&quot;&gt;blog post&lt;/a&gt;
+list ten awesome &lt;strong&gt;real world&lt;/strong&gt; projects on which you should
+definitively read if you want to improve.&lt;/p&gt;
+</description>
+				<pubDate>Tue, 12 Jun 2012 00:00:00 -0700</pubDate>
+				<link>/blog/2012/06/12/10-high-quality-rails-examples</link>
+				<guid isPermaLink="true">/blog/2012/06/12/10-high-quality-rails-examples</guid>
+			</item>
+		
+			<item>
+				<title>Rails Girls Paris on 15-16th June</title>
+				<description>&lt;p&gt;I will be there as a coach !&lt;/p&gt;
+</description>
+				<pubDate>Sun, 27 May 2012 00:00:00 -0700</pubDate>
+				<link>/blog/2012/05/27/rails-girls-paris</link>
+				<guid isPermaLink="true">/blog/2012/05/27/rails-girls-paris</guid>
+			</item>
+		
+			<item>
+				<title>Build a chrome extension with Coffee Script</title>
+				<description>&lt;p&gt;Ever had an idea for a great Chrome Extension ? Did you know that a
+chrome extension is just javascript ? And where there's Javascript, we
+can write some CoffeeScript !&lt;/p&gt;
+
+&lt;p&gt;This post aims to give you an overview of building a chrome extension
+wrote in CoffeeScript. While being familiar with the latest is mandatory
+to understand
+what's going on there, no previous experience with Google Chrome is
+needed.&lt;/p&gt;
+
+&lt;p&gt;Our chrome extension will be a fully fonctional tab switcher that mimics
+Command-T feature of Textmate (also known as fuzzy finding).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://media.tumblr.com/tumblr_m4jvww3J2t1qf7p5m.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2&gt;Why doing it in CoffeeScript ?&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://jashkenas.github.com/coffee-script/&quot;&gt;Coffee Script&lt;/a&gt; is a thin
+and elegant syntaxic layer on top of Javascript, allowing
+you to write cleaner and concise code and still outputting almost
+readable javascript. Why should we avoid a such nice tool to write a
+chrome extension ! Plus it's fun to write, it will remind you Ruby and
+Python, while still letting you do Javascript wizardry.&lt;/p&gt;
+
+&lt;p&gt;For french readers, I gave a talk at a recent
+&lt;a href=&quot;http://www.meetup.com/parisrb/&quot;&gt;Paris.rb&lt;/a&gt; event, you can
+read my
+&lt;a href=&quot;http://www.slideshare.net/jhchabran/introduction-coffeescript-pour-parisrb&quot;&gt;slides&lt;/a&gt;
+until we get the video online.&lt;/p&gt;
+
+&lt;h2&gt;Our goal&lt;/h2&gt;
+
+&lt;p&gt;Command-T is a battle-tested quick-file-access method that proved to be
+efficient. It should be useful to have it available in Chrome,
+especially if you
+often have more than 20 tabs opened, where they all look like pinned
+ones.
+Typing a few letter of the URL is clearly faster than hammering like a
+monkey the next tab hotkey !&lt;/p&gt;
+
+&lt;p&gt;Couldn't we port that great feature in Chrome ?&lt;/p&gt;
+
+&lt;h2&gt;Dissecting an extension&lt;/h2&gt;
+
+&lt;p&gt;Chrome being a popular browser, it is as expected from a modern browser,
+pretty easy to extend.
+&lt;a href=&quot;http://code.google.com/chrome/extensions/getstarted.html&quot;&gt;Google's starter
+guide&lt;/a&gt; is a
+good resource and gives you a quick intro.&lt;/p&gt;
+
+&lt;p&gt;Skipping implementation details, it's basically the following :&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;A &lt;em&gt;content script&lt;/em&gt; is executed in the context of the current page,
+having access to the DOM&lt;/li&gt;
+&lt;li&gt;An &lt;em&gt;extension script&lt;/em&gt; is executed in what you could call chrome
+context, meaning it can manipulate chrome objects like tabs, windows&lt;/li&gt;
+&lt;li&gt;The &lt;em&gt;background page&lt;/em&gt; include the &lt;em&gt;extension script&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;These two contexts are &lt;em&gt;sandboxed&lt;/em&gt;, meaning you can't collide with
+the scripts running on the page&lt;/li&gt;
+&lt;li&gt;Communication between them are made through &lt;em&gt;message passing&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;Get confortable&lt;/h2&gt;
+
+&lt;p&gt;The absolute minimum is the following structure :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;tabswitcher               # Repository root 
+      /background.html    # Extension's 'main view'
+      /manifest.json      # Extension settings 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Coffee Script need to be compiled in the first place, automating it
+brings two benefits : it's comfortable to develop with, a contributor
+can just check out your sources and run your command to build the whole
+thing. This lower the entry barrier for contributing to our extension
+=).&lt;/p&gt;
+
+&lt;p&gt;The simplest way to handle compilation easily is to build a &lt;em&gt;Cakefile&lt;/em&gt;
+(a &lt;em&gt;Rakefile&lt;/em&gt; or &lt;em&gt;Makefile&lt;/em&gt; in CoffeeScript).&lt;/p&gt;
+
+&lt;p&gt;We'll write it to take *.coffee input from &lt;em&gt;/src&lt;/em&gt; and output javascript
+in  &lt;em&gt;/build&lt;/em&gt; using this command. Our goal is to do the following to
+build our extension :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ cake build
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But while in development, it's easier to have our files monitored to
+reflect changes as we save them. So To watch the &lt;em&gt;src/&lt;/em&gt; folder and
+reflect any
+changes made there, there's the &lt;em&gt;watch&lt;/em&gt; command :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ cake build
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;coffee -h&lt;/em&gt; tells us these commands are directly available :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ coffee --output build/ --compile src/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Good. It's time to bake this into a &lt;em&gt;Cakefile&lt;/em&gt;. Below are the
+interesting parts
+of it :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;task 'build', 'Build extension code into build/', -&amp;gt;
+  if_coffee -&amp;gt; 
+    ps = spawn(&quot;coffee&quot;, [&quot;--output&quot;, JAVASCRIPTS_PATH,&quot;--
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;compile&quot;,COFFEESCRIPTS_PATH])&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    ps.stdout.on('data', log)
+    ps.stderr.on('data', log)
+    ps.on 'exit', (code)-&amp;gt;
+      if code != 0
+        console.log 'failed'
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you've alreay wrote any Rakefile, it's quite similar. If not, we
+basically declare the command &lt;em&gt;build&lt;/em&gt; to be invokable through &lt;em&gt;cake
+build&lt;/em&gt;. We handle if the coffee binary is available or not in the $PATH
+and finally execute our coffee command as expected.&lt;/p&gt;
+
+&lt;h2&gt;A small overview&lt;/h2&gt;
+
+&lt;p&gt;Manipulating the DOM through the standard API bores me to death, so
+let's grab &lt;a href=&quot;http://zeptojs.com/&quot;&gt;Zepto&lt;/a&gt; to do the big work for us. We
+could have used JQuery
+but we don't need all the browser compatibility stuff, so Zepto with its
+minimal features set is a perfect match. Let's store it in &lt;em&gt;/libs&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Our final structure is the following :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;tabswitcher               # Repository root 
+      /build              # Generated Javascripts end there
+      /libs               # Dependencies
+      /src                # Our code
+      /background.html    # Extension's 'main view'
+      /manifest.json      # Extension settings 
+      /Cakefile           # Starts build task
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Ok, we're now ready to spill some coffee into Chrome :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ cake watch
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;The extension itself&lt;/h2&gt;
+
+&lt;p&gt;Our extension is quite simple in its behavior :&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;listen for keyboard events if  &lt;em&gt;ctrl-\&lt;/em&gt; was pressed&lt;/li&gt;
+&lt;li&gt;if pressed, insert some html in the page containing our UI&lt;/li&gt;
+&lt;li&gt;display opened tabs&lt;/li&gt;
+&lt;li&gt;wait for user input&lt;/li&gt;
+&lt;li&gt;on enter in the input, go to that tab&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;So in these steps, those two are calls to &lt;em&gt;chrome api&lt;/em&gt; :&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;list all opened tabs, we'll name it  &lt;em&gt;getTabs&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;go to a tag, as &lt;em&gt;switchTab&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;Our &lt;em&gt;content script&lt;/em&gt; that run in the current page, it will send these
+two messages to
+the &lt;em&gt;background script&lt;/em&gt;, which is the only one that can make these
+calls.&lt;/p&gt;
+
+&lt;p&gt;We end with the following process :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://media.tumblr.com/tumblr_m4jvypXYCB1qf7p5m.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The red arrows are message passed from the content script to the
+background page ( &lt;a href=&quot;http://code.google.com/chrome/extensions/messaging.html&quot;&gt;message
+passing&lt;/a&gt; ).
+It's similar to firing custom events with JQuery and listening for them,
+but with a particular API.&lt;/p&gt;
+
+&lt;h2&gt;Implementation&lt;/h2&gt;
+
+&lt;p&gt;The &lt;em&gt;content script&lt;/em&gt; is &lt;em&gt;src/content.coffee&lt;/em&gt; and &lt;em&gt;background script&lt;/em&gt;
+lives in &lt;em&gt;src/background.coffee&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;First things first : a tab. It's simpler than what you may have expected&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  tab = 
+    id : 43
+    windowId : 4
+    url: &quot;http://google.com&quot;
+    title: &quot;Google&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We don't need to handle them directly as the Chrome API will do the job
+for us, but it's a starting point.&lt;/p&gt;
+
+&lt;p&gt;Let's examine the &lt;em&gt;content script&lt;/em&gt;, which is where all the work happens.&lt;/p&gt;
+
+&lt;p&gt;An &lt;em&gt;Application&lt;/em&gt; class encapsulates the main logic. It setups the UI,
+binds the
+callbacks and pass messages to the &lt;em&gt;background page&lt;/em&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Application
+  constructor: -&amp;gt;
+    # Inject our html into the view
+    @injectView()
+
+    # Install a listener for our input 
+    @element().find('input').keyup (event)=&amp;gt;
+      @onInput(event)
+
+    # Spawn a view that handle results display
+    @tabListView = new TabListView @element().find('ul')
+
+  element: -&amp;gt;
+    # Return our base div
+    @element_ ||= $('#tabswitcher-overlay')
+
+  onInput: (event)-&amp;gt;
+    # When something is entered is the input, filter tabs !
+    candidates = fuzzy(@tabs(), event.target.value)
+
+    # Update tabs that match
+    @tabListView.update candidates 
+
+    # If enter
+    if event.keyCode == 13
+      # Go to that tab
+      @switchTab candidates[0].tab iftes?
+
+  hide: -&amp;gt;
+    # ...
+  show: -&amp;gt;
+    # ...
+
+  switchTab: (tab)-&amp;gt;  
+    # We're switching tab, hide the UI before leaving
+    @hide()
+
+    # Send message to the background script
+    chrome.extension.sendRequest(message:&quot;switchTab&quot;, target:tab)
+
+  hotKeyListener: (event)-&amp;gt;
+    # Listen for ctrl-\
+    if event.keyCode
+      if event.ctrlKey &amp;amp;&amp;amp; event.keyCode == 220 # Ctrl + \
+        # Send message to background script, ask for list of tabs
+        chrome.extension.sendRequest {message: &quot;getTabs&quot;}, 
+          (response)=&amp;gt;
+            @tabs_ = response.tabs
+            @show()
+
+      else if event.keyCode == 27 # ESC
+        @hide()
+
+  injectView: -&amp;gt;
+    # Inject our UI in the DOM
+    $('body').append ...
+
+app = new Application()
+
+# Attach our handler
+window.addEventListener(&quot;keyup&quot;, (e)-&amp;gt;
+  app.hotKeyListener(e), false)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;After defining Application we just instanciate it and bind our
+listener, to grab keyboard events. For the sake of readability, I've
+skipped the &lt;a href=&quot;https://github.com/jhchabran/tabswitcher/blob/master/src/hook.coffee#L4&quot;&gt;fuzzy filter
+implementation&lt;/a&gt;,
+which is kind of naive but do
+the job as expected. Bold stuff as you can see in the screenshot in the
+beginning of the post is handled in another class named &lt;em&gt;TabView&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let's now see the script running on the &lt;em&gt;background page&lt;/em&gt; that respond
+to calls made from the &lt;em&gt;content script&lt;/em&gt; :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# Install the message listener
+chrome.extension.onRequest.addListener (request, sender,
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;sendResponse)-&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  # Select the right response given the message
+  switch request.message
+    # Grab all tabs
+    when &quot;getTabs&quot;
+      chrome.windows.getCurrent (window)-&amp;gt;
+        chrome.tabs.getAllInWindow window.id, (tabs)-&amp;gt;
+          # We've collected all tabs, let's send them back
+          sendResponse(tabs:tabs)
+      break
+    when &quot;switchTab&quot;
+      chrome.tabs.update(request.target.id, selected:true)
+      sendResponse({})
+      break
+    else
+      sendResponse({})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Pretty straight-forward, we just take incoming message and handle them.
+Only the message 'getTabs' sends back a response : an array of tabs
+returned by
+Chrome.&lt;/p&gt;
+
+&lt;h2&gt;What now ?&lt;/h2&gt;
+
+&lt;p&gt;Well, beside some crappy HTML to render tabs, there's nothing left. The
+complete code of this extension is available on
+&lt;a href=&quot;http://github.com/jhchabran/tabswitcher&quot;&gt;GitHub&lt;/a&gt; where you can explore
+it, fork it as you want !&lt;/p&gt;
+
+&lt;p&gt;Remember that you need to enable developer's mode in chrome extensions
+to install it directly from the sources.&lt;/p&gt;
+
+&lt;p&gt;You can also install the &lt;a href=&quot;https://chrome.google.com/webstore/detail/gkdkligmcadfbagoeggeohelmgalchcn&quot;&gt;released
+version&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Coffee Script is available everywhere you can use javascript, with some
+tooling to kick in compilation ! Set up two tasks,
+adjust .gitignore and there it works.&lt;/p&gt;
+
+&lt;p&gt;Chrome extensions are way simpler to write than I thought ! Next,
+understanding how Chrome
+handles security and isolation through sandboxing and still sharing DOM
+access is
+pretty impressive.&lt;/p&gt;
+
+&lt;p&gt;Once you grasped the big picture, it's finally just like building any
+web app interactive UI !&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://chrome.google.com/webstore/detail/gkdkligmcadfbagoeggeohelmgalchcn&quot;&gt;Install it directly on your
+Chrome&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://github.com/jhchabran/tabswitcher&quot;&gt;Source code&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<pubDate>Sat, 17 Dec 2011 00:00:00 -0800</pubDate>
+				<link>/blog/2011/12/17/build-a-chrome-extension-with-coffeescript</link>
+				<guid isPermaLink="true">/blog/2011/12/17/build-a-chrome-extension-with-coffeescript</guid>
+			</item>
+		
+			<item>
+				<title>Writing readable specs</title>
+				<description>&lt;p&gt;Writing Rails specs with &lt;a href=&quot;https://www.relishapp.com/rspec&quot;&gt;RSpec&lt;/a&gt; and
+&lt;a href=&quot;https://github.com/thoughtbot/factory_girl&quot;&gt;FactoryGirl&lt;/a&gt; is easy to do
+when you
+got a basic understanding of testing principles but you may have noticed
+how these specs tends to get cluttered over time. Even to the point you
+don't get what's going on at all and call your co-worker who wrote them
+and ask him to handle your task!&lt;/p&gt;
+
+&lt;p&gt;The following points are basic principles to keep in mind while writing
+specs to avoid being stuck with an unreadable spec.&lt;/p&gt;
+
+&lt;p&gt;We deal with four models : User, Cart, Order and Item.
+Their relationships are obviously as simplified as possible to keep
+ourselves focused on their tests.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class User
+  has_one :cart 
+  has_many :orders
+end
+
+class Cart
+  belongs_to :user
+  has_many :items
+end
+
+class Order
+  has_many :items
+  belongs_to :user
+end
+
+class Item 
+  belongs_to :cart
+  belongs_to :order
+  belongs_to :product
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;Don't Repeat Yourself&lt;/h2&gt;
+
+&lt;p&gt;As usual, the DRY principle. Consider the following code (user_spec.rb)
+:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;describe User do
+  before :each do
+    @user = Factory.create :user
+  end
+
+  it &quot;should order the cart with one item&quot; do
+    @cart = Factory.create :cart, :user =&amp;gt; @user
+    @item = Factory.create :item, :cart =&amp;gt; @cart
+
+    @user.order! @cart
+    @cart.should be_ordered
+  end
+
+  it &quot;should discard the cart&quot; do
+    @cart = Factory.create :cart, :user =&amp;gt; @user
+    @item = Factory.create :item, :cart =&amp;gt; @cart
+
+    @user.discard_cart
+    @cart.items.should be_empty
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Quite clean by itself, we create a user for each test, as expected for a
+spec about the user model. Yet you can easily notice we're building
+other models
+in our two tests.&lt;/p&gt;
+
+&lt;p&gt;We can factorize these factories instanciation to stay DRY :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;describe User do
+  before :each do
+    @user    = Factory.create :user
+    @cart    = Factory.create :cart, :user =&amp;gt; @user
+    @item    = Factory.create :item, :cart =&amp;gt; @cart
+  end
+
+  it &quot;should order the cart with one item&quot; do
+    @user.order! @cart
+    @cart.should be_ordered
+  end
+
+  it &quot;should discard the cart&quot; do
+    @user.discard_cart
+    @cart.items.should be_empty
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now we got two tests and this example rise the following principle :&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Test code should be almost a direct translation of its name&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Any context initialization, should be done in a before block to avoid
+polluting the test code itself.&lt;/p&gt;
+
+&lt;h2&gt;Enhance readability&lt;/h2&gt;
+
+&lt;p&gt;As we avoid to pollute code to enhance readability, we can also
+emphasize on what's important. It allows the reader to grasp with ease
+what's going on.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;describe User do
+  before :each do
+    @user    = Factory.create :user
+    @cart    = Factory.create :cart, :user =&amp;gt; @user
+    @item    = Factory.create :item
+
+    @cart.items &amp;lt;&amp;lt; @item # focus on adding an item
+  end
+
+  # ...
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The main point of this before block is to craft a cart with an item
+within. As factories are cool, it doesn't mean we have to use their
+features all the time.&lt;/p&gt;
+
+&lt;p&gt;Using the &amp;lt;&amp;lt; operator on line 7, on the items association
+emphasize on adding our item to the cart instead of diluting it
+through the factories. This line of is the most important
+considering we're testing how a user interacts with items.&lt;/p&gt;
+
+&lt;p&gt;So while writing your test code, be sure to &lt;strong&gt;avoid embedding your
+intentions in the basic plumbing&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h2&gt;One expectation per test please&lt;/h2&gt;
+
+&lt;p&gt;To pursue in our readability quest, you may have noticed that the
+example used in the previous points was really simple. But what makes
+theses so simple ? Those two tests got only one expectation at a time.&lt;/p&gt;
+
+&lt;p&gt;Consider the following code :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;describe User do
+  before :each do
+    @user = Factory.create :user
+    @cart = Factory.create :cart, :user =&amp;gt; @user
+    @item = Factory.create :item, :cart =&amp;gt; @cart
+
+    @order = @user.order! @cart
+  end
+
+  it &quot;should finalize the order&quot; do
+    @order.finalize!
+    @user.should have(1).finalized_orders
+    @order.should be_finalized
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We've got two &lt;em&gt;should&lt;/em&gt; call there. Even if it's just slightly more
+complicated than before, you can separate concerns. We wrote &lt;em&gt;describe
+User&lt;/em&gt; meaning we talk about user here. We do not want to mix
+expectations about orders and users.&lt;/p&gt;
+
+&lt;p&gt;Accordingly expectation on line 12 , even if being really similar to
+line 11 has
+nothing to do here. So we can rewrite this test in two separated tests
+(order_spec.rb) :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;describe Order do
+  before :each do
+    @cart  = Factory.create :cart
+    @user  = @cart.user
+    @cart.items &amp;lt;&amp;lt; Factory.create_list :item, 3
+
+    @order = @user.order! @cart 
+  end
+
+  it &quot;should finalize the order&quot; do
+    @order.finalize
+    @order.should be_finalized
+  end
+end
+
+
+
+describe User do
+  before :each do
+    @user = Factory.create :user
+    @cart = Factory.create :cart, :user =&amp;gt; @user
+    @item = Factory.create :item, :cart =&amp;gt; @cart
+
+    @order = @user.order! @cart
+  end
+
+  it &quot;should finalize the order&quot; do
+    @order.finalize!
+    @user.should have(1).finalized_orders
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Plain simple, just &lt;strong&gt;formulate expectations about your current subject
+while writing test
+and ignore the rest&lt;/strong&gt;. Why ? Because if you don't you're leaving the
+coast
+of unit tests to head around integration testing land.&lt;/p&gt;
+
+&lt;h2&gt;Slice your specs with different contexts&lt;/h2&gt;
+
+&lt;p&gt;When it comes to models, there's a lot to handle. Business logic,
+mass-assignements, validation sanity.( Remember &lt;a href=&quot;http://weblog.jamisbuck.org/2006/10/18/skinny-controller-fat-model&quot;&gt;&lt;em&gt;fat models for skinny
+controllers&lt;/em&gt;&lt;/a&gt;
+eh ? It's for a reason ! )&lt;/p&gt;
+
+&lt;p&gt;While you can argue if you should test validations and assignments or
+not, which is out
+of the topic here, we still have to test for a wide range of business
+logic cases.&lt;/p&gt;
+
+&lt;p&gt;All of these case can easily be sliced by concerns, for example a user
+can be edited and can order items through a cart. An easy way to
+name contexts is to use the ing form of the verb describing the action :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;describe User do
+  context &quot;editing informations&quot; do
+    # ...
+  end
+
+  context &quot;ordering items&quot; do
+    # ...
+  end
+
+  context &quot;canceling cart&quot; do
+    # ...
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Writing &quot;while editing ...&quot; or &quot;when editing ...&quot; is a matter of taste,
+while I personally tend to prefer a concise description.&lt;/p&gt;
+
+&lt;p&gt;And if we add validations and assignments ? (helpers are provided by
+&lt;a href=&quot;https://github.com/thoughtbot/shoulda-matchers&quot;&gt;should-matchers&lt;/a&gt;)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;describe User do
+  describe &quot;validations&quot; do
+    it { should validate_presence_of(:email) }
+    it { should validate_presence_of(:name) }
+  end
+
+  describe &quot;assignments&quot; do
+    it { should allow_mass_assignment_of(:email) }
+    it { should allow_mass_assignment_of(:name) }
+
+    it { should_not allow_mass_assignment_of(:administrator) }
+  end
+
+  context &quot;editing informations&quot; do
+    # ...
+  end
+
+  context &quot;ordering items&quot; do
+    # ...
+  end
+
+  context &quot;canceling cart&quot; do
+    # ...
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That makes a readable skeleton for our tests.&lt;/p&gt;
+
+&lt;p&gt;The point of writing specs is to keep them enjoyable and litteraly act
+as documentation for everyone. Those four advices are just basics but at
+least ensure you're heading in the right direction with your specs.&lt;/p&gt;
+</description>
+				<pubDate>Sun, 11 Sep 2011 00:00:00 -0700</pubDate>
+				<link>/blog/2011/09/11/writing-readable-specs</link>
+				<guid isPermaLink="true">/blog/2011/09/11/writing-readable-specs</guid>
+			</item>
+		
+			<item>
+				<title>Notes on migrating to OSX Lion</title>
+				<description>&lt;p&gt;I bought Lion yesterday ! People have already tested it against tools I
+use
+for work : Homebrew, RVM, MacVim so installing it on a friday night
+shouldn't
+be too painful. Plus I got backups everywhere (local server + dropbox +
+github + tarsnap).&lt;/p&gt;
+
+&lt;h2&gt;What went well&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Downloading it, I got a stable and fast ADSL connection ( thanks
+Free.fr )&lt;/li&gt;
+&lt;li&gt;Installing it right after the download&lt;/li&gt;
+&lt;li&gt;Installing Xcode and &lt;a href=&quot;http://mxcl.github.com/homebrew/&quot;&gt;Homebrew&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;FAIL : Uninstalling MacFuse&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Uninstalling &lt;a href=&quot;http://code.google.com/p/macfuse/&quot;&gt;MacFuse&lt;/a&gt; after the
+install. I forgot to remove it before
+intalling Lion, since it's quite unmaintained, you can guess it's
+going be boring to remove it correctly.&lt;/li&gt;
+&lt;li&gt;The uninstall script will fail with various errors.
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.mail-archive.com/macfuse@googlegroups.com/msg01094.html&quot;&gt;Mailing list thread that sum up what's going
+on&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Removing it manually, &lt;em&gt;but wait that's my fault !&lt;/em&gt; I inspected the
+uninstall shell script
+and decided to do some quick shell script surgery.
+
+&lt;ul&gt;
+&lt;li&gt;Looks like I messed up there. Even if I manually unplugged the Kext
+before starting it, I got a weird freeze where no more application
+could be launched, they were bouncing endlessly.&lt;/li&gt;
+&lt;li&gt;Forced reboot.&lt;/li&gt;
+&lt;li&gt;Lion detects a broken os and decided to re-install itself.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;FAIL : Admin privileges&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Second install, Lion did not set any admin rights to my main user.
+This
+means :
+
+&lt;ul&gt;
+&lt;li&gt;I can't touch anything in system preferences.&lt;/li&gt;
+&lt;li&gt;I can't sudo.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Fixed it by booting in single user mode and adding myself manually to
+admin group :
+
+&lt;ul&gt;
+&lt;li&gt;Reboot and hold cmd+s&lt;/li&gt;
+&lt;li&gt;Remount your partition to have it writable
+
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;/sbin/fsck -fy&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;/sbin/mount -uw /&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Add myself to admin group
+
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;dseeditgroup -o edit -a myusername -t user admin&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Reboot&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;FAIL : SSH encoding issues&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;SSH'ing into any box messed up completely my encoding settings.&lt;/li&gt;
+&lt;li&gt;Comment &lt;em&gt;SendEnv LANG LC_&lt;/em&gt; * in &lt;em&gt;/etc/ssh_config&lt;/em&gt; to get back to the
+pre-Lion behavior.&lt;/li&gt;
+&lt;li&gt;Lion does not set its locale to &lt;em&gt;en_us.utf8&lt;/em&gt; by default,
+appending it to your &lt;em&gt;~/.profile&lt;/em&gt; with &lt;em&gt;export LC_ALL=en_US.UTF-8&lt;/em&gt;
+corrects this issue if you want to adapt to the new
+default.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;FAIL : Rvm and Ruby Entreprise edition ( Ree )&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Segfault !&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;code&gt;
+ld: warning: directory not found for option '-L/opt/local/lib'
+./ext/purelib.rb:2: [BUG] Segmentation fault
+ruby 1.8.7 (2011-02-18 patchlevel 334) [i686-darwin11.0.0],
+MBARI 0x6770, Ruby Enterprise Edition 2011.03
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;  &lt;a href=&quot;https://gist.github.com/1115457&quot;&gt;fulls logs&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Fixed by using gcc instead of llvm&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;code&gt;
+rvm remove ree
+export CC=/usr/bin/gcc-4.2
+rvm install --force ree
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;  &lt;a href=&quot;http://stackoverflow.com/questions/6804195/cant-install-ruby-enterprise-edition-with-rvm-on-osx-lion&quot;&gt;StackOverflow
+thread&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2&gt;FAIL : Rvm and Postgresql with Homebrew&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Fail to exec the &lt;em&gt;Postgresql&lt;/em&gt; recipe :&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;code&gt;
+Error: undefined method `strip' for #&amp;lt;KegOnlyReason:0x10ac404b8&amp;gt;
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I updated and relaunched &lt;em&gt;brew install postgresql&lt;/em&gt; which ran smoothly
+thanks to &lt;a href=&quot;https://github.com/mxcl/homebrew/commit/20d2edf18deefb6d6439d415625f506c662dcba2&quot;&gt;this
+fix&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;FAIL : Fullscreen :&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Can't use cmd+` to alternate windows while in fullscreen, this isn't
+vital but it's quite annoying.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;Finally&lt;/h2&gt;
+
+&lt;p&gt;As I wasn't expecting everything to work for the first time, those small
+issues did not upset me and weren't hard to fix. I laughed hard at
+myself for the macfuse failed surgery where I
+can only blame myself.&lt;/p&gt;
+</description>
+				<pubDate>Sat, 30 Jul 2011 00:00:00 -0700</pubDate>
+				<link>/blog/2011/07/30/notes-on-migration-to-osx-lion</link>
+				<guid isPermaLink="true">/blog/2011/07/30/notes-on-migration-to-osx-lion</guid>
+			</item>
+		
+			<item>
+				<title>Textmate or How to Lock Yourself</title>
+				<description>&lt;p&gt;I tried every code editor out there, every IDE I could find. Six or
+seven years ago, I came to the conclusion that I do prefer simple
+editors to them, mostly because I prefer a sharp tool than a clumsy
+thing that tries to solve every problem. Oh sure, stuff like NetBeans or
+Eclipse perform really well on Java, but I don't code with this
+language, so let's skip directly to code editors.&lt;/p&gt;
+
+&lt;p&gt;I spent something like two years with Emacs, it was great since I really
+enjoy Lisp but I never really liked the way the you input the shortcuts,
+making you holding Ctrl every couple of seconds to do something.
+Moreover, the way you have to setup it, installing loads of libraries,
+byte-compiling everything to have something still going fast was fun,
+but those shitloads of stuff to install can drive you crazy when
+something goes wrong with your install.&lt;/p&gt;
+
+&lt;p&gt;Vim had been my favorite code-editor for most of the time, maybe like
+five years. It's clearly an awesome piece of software and was convinced
+it would be my daily companion until something better come-out. Great
+plugins, blazing fast editing, tons of colorschemes (yeah I like
+changing those two or three times per week, mostly to visually break
+routine).&lt;/p&gt;
+
+&lt;p&gt;And two years ago I got a MacBook, switched from daily C++ development
+to Rails. Textmate always tickled me, and I finally gave it a try. I
+loved it. The feeling of having something modern, clean and simple,
+focusing on just what you need, providing new features like snippets,
+that cmd -T shortcut to jump to any file, it was just so cool.&lt;/p&gt;
+
+&lt;p&gt;But recently, things felt wrong. I'm using it daily for two years now
+and some details made me realize it's going nowhere, which is the point
+in this blog post.&lt;/p&gt;
+
+&lt;p&gt;No window splitting at all Scripting it with your favorite language
+basically means writing a script which will be called by your TM script
+You can crash it just by opening any log file Colorschemes are so damn
+cool nobody tries to create new ones ! But those are minor problems,
+except for the splitting issue which I really miss. The main problem is
+:&lt;/p&gt;
+
+&lt;p&gt;Textmate 1 is abandoned. We're all waiting for Textmate 2 to came out.
+But it's taking ages, and sincerely like its author said, it just
+another Duke Nukem Forever incarnation. I even doubt it will be
+released, maybe because if it's not perfect, its author will be flamed
+to oblivion by everyone, encouraging him to continue until its perfect.
+Well, it may not be the case, but currently we have no clue of a
+potential release date.&lt;/p&gt;
+
+&lt;p&gt;To me, Textmate is like a modern vim (ok, it's not open-source, it
+sucks, but I can accept that if the tool is really awesome, which is
+almost the case). No need to look at your keyboard and asking yourself
+why the fuck it's ctrl-] to jump on a help subject, it's just simple.
+Another cool one : moving around in Vim with jk keys is really nice, but
+as I still have to use arrows to browse in my cmd history, I can't get
+my fingers escaping from those arrows. For sure another shortcut must
+exist to do that, there are many reasons to excuse this behavior, but
+it's still not &quot;great&quot;, it's just cool.&lt;/p&gt;
+
+&lt;p&gt;You'll probably think by reading this that I'm an unsatisfied programmer
+who can't find its editor (which is true) but the point isnnt exactly
+that. I found my editor of choice. I'm raging against it because :&lt;/p&gt;
+
+&lt;p&gt;Even if they won tons of money while selling Textmate, there's only one
+developer. Come on, it's a code editor, it's serious business.
+Communication around Textmate 2 is a nice example of worst practices.
+Its author is trapped in that Babylon tower thingy, if he don't release
+it, he'll be smashed by everyone (which is already the case) Its author
+have to release something great or everyone will flame him, write awful
+frustrated blog posts, Scotty will beam him up to pluto ...&lt;/p&gt;
+
+&lt;p&gt;Learning an editor is an investment, we all know that, and feeling stuck because you
+can't help its author to make it great, you can't do anything at all
+'cause its closed-source. It feels like I bet and lost. I'm not blaming
+its author for its license choices, I'm okay with that, people have to
+eat, but that implies Macromates have duties too. A big one, update our
+fucking editor for god's sake. Writing good stuff then disappearing is
+the best fucking way to frustrate everyone. Moreover, I'm stucked. Emacs
+or Vim don't satisfy me anymore, 20 years old software rocks for
+stability, but there's some evolutions we had since I'd like to have in
+my editor.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Conclusion&lt;/strong&gt;: there must be a law against selling closed-source
+editors, I killed thousands of kittens with the troll potential of this
+blog post.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Addendum&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;I finally threw away my never ending thirst of perfection. I'm happily
+sticking to Vim
+as it is and it does the job really well. Feel free to browse and fork
+my &lt;a href=&quot;https://github.com/jhchabran/vimfiles&quot;&gt;vimrc&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+</description>
+				<pubDate>Thu, 11 Mar 2010 00:00:00 -0800</pubDate>
+				<link>/blog/2010/03/11/Textmate-or-how-to-lock-yourself</link>
+				<guid isPermaLink="true">/blog/2010/03/11/Textmate-or-how-to-lock-yourself</guid>
+			</item>
+		
+	</channel>
+</rss>
