@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     
-    <title>JHChabran | Rails Girls Paris on 15-16th June</title>
+    <title>JHChabran | TabSwitcher got updated</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -53,19 +53,94 @@ type="text/javascript">try{Typekit.load();}catch(e){}</script>
     
       <div class="row">
   <div class="span8">
-    <h1><a href="/blog/2012/05/27/rails-girls-paris">Rails Girls Paris on 15-16th June</a></h2>
+    <h1><a href="/blog/2012/11/25/Tabswitcher-got-updated">TabSwitcher got updated</a></h2>
     <h4>
-      Posted on May 27, 2012
+      Posted on November 25, 2012
       
       
-      in <a href="/categories/rails">Rails</a>
+      in <a href="/categories/chrome">Chrome</a>
       
       
     </h4>
     <hr/>
 
     <div class="post-content">
-      <p>I will be there as a coach !</p>
+      <p>TabSwitcher had been started one year ago, to showcase <a href="http://jhchabran.com/blog/2011/12/17/build-a-chrome-extension-with-coffeescript">(see previous
+post)</a>
+how a Chrome Extension using CoffeeScript can be built. I recently spend some
+time polishing it to bring it to the level of a decently featured
+extension.</p>
+
+<p>Before describing the changes, what problem does it aims to solve ?</p>
+
+<h2>Switching between tabs like ninja</h2>
+
+<p>I mostly work with more than thirty tabs opened in my browser. Between
+ Gmail, Basecamp, Github, various documentations,
+news and dumb cat pictures, it ends being pretty scary.</p>
+
+<p>With so many tabs, you can't even read the tabs titles, it's at best a row of
+favicons. So when I was toying around Chrome
+extensions with CoffeeScript, I attempted to solved that by porting a popular method used to
+switch between opened files in code editors: fuzzy finding (match "<em>google</em>"
+with "<em>ggle</em>")</p>
+
+<p>CtrlP.vim, Command-T in Textmate are well known examples of fuzzy
+finding.</p>
+
+<p><a href="https://chrome.google.com/webstore/detail/tabswitcher/gkdkligmcadfbagoeggeohelmgalchcn">Meet TabSwitcher</a>, basically the same thing for Chrome, using urls (over
+page titles, they tend to vary too much over time).</p>
+
+<h2>New algorithm</h2>
+
+<p>The previous algorithm was written during a flight between New York and
+Paris where I couldn't sleep. It was crappy and inefficient. It wasn't even capable of looking
+for every substrings in urls, meaning when you submitted "<strong>ruby</strong>", it would
+match against "http://<strong>r</strong>o<strong>ub</strong>a<strong>y</strong>.com/" over
+"http://reddit.com/r/<strong>ruby</strong>" because the occurrences appeared earlier
+in the first url, which is absolutely not the correct result.</p>
+
+<p>This yielded some very weird results and forbid any real usage of the
+extension.</p>
+
+<p>After reading interesting things in the fuzzy finding
+field, I wrote a decent yet simple algorithm that can handle real usage.</p>
+
+<p>First, I added tests, which you may want <a href="https://github.com/jhchabran/tabswitcher/blob/master/spec/fuzzy_spec.coffee">to have a look
+at</a>, they
+basically explains how the ranking algorithm scores urls depending on how input characters are distributed in each url.</p>
+
+<h2>Configurable</h2>
+
+<p>Another key point was that the old extension wasn't even configurable at all. This
+now can be done through the extension button. Yet I have to do something
+with the possible hotkeys because if you set by mistake a Chrome shortcut, let's say Ctrl-T, Chrome will ignore the extension and fire its default behavior instead.</p>
+
+<p>This become irritating when you know that chrome have dozens of shortcuts
+that can interfere.</p>
+
+<p>I have to thing about how I'll handle that. I hope the bindings are
+accessible from the APIs, because manually maintaining a list of every possible
+shortcuts for OSX, Window and Linux is going to be painful and easily
+broken.</p>
+
+<h2>Reworked design</h2>
+
+<p>Still far from being perfect, but it's more Chrome'ish now.
+Urls are now truncated and won't mess the layout.</p>
+
+<p><img src="https://lh4.googleusercontent.com/4BLX3uvEudzeJjhcCga9mSJEYwmfVnZKFhP055JyitaCNj4XldpFTKLnoh3G1pPKOCMC0BVqug=s640-h400-e365" alt="" /></p>
+
+<h2>Dramatic Chrome Store</h2>
+
+<p>So far I don't really have a clue on how people behave on the chrome store, I got like 4000 views on the past two days and got eight installs.</p>
+
+<p><img src="/img/dramatic_chrome_store.png" alt="" /></p>
+
+<p>Obviously, there's still a lot of time to be spent on how to market the extension itself, helping people to understand what it does and narrowing down the description to hit the right potential users before they hit the back button.</p>
+
+<p>This is going to be fun and entertaining to play with, I'd probably write
+about it!</p>
 
     </div>
     <div id="disqus_thread"></div>

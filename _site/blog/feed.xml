@@ -10,37 +10,38 @@
 				<title>TabSwitcher got updated</title>
 				<description>&lt;p&gt;TabSwitcher had been started one year ago, to showcase &lt;a href=&quot;http://jhchabran.com/blog/2011/12/17/build-a-chrome-extension-with-coffeescript&quot;&gt;(see previous
 post)&lt;/a&gt;
-how to build a Chrome Extension with CoffeeScript. I recently spend some
+how a Chrome Extension using CoffeeScript can be built. I recently spend some
 time polishing it to bring it to the level of a decently featured
 extension.&lt;/p&gt;
 
-&lt;p&gt;Before describing the changes, what kind of problem does it solve ?&lt;/p&gt;
+&lt;p&gt;Before describing the changes, what problem does it aims to solve ?&lt;/p&gt;
 
 &lt;h2&gt;Switching between tabs like ninja&lt;/h2&gt;
 
 &lt;p&gt;I mostly work with more than thirty tabs opened in my browser. Between
  Gmail, Basecamp, Github, various documentations,
-news and dumb cat pictures, it ends to be pretty scary.&lt;/p&gt;
+news and dumb cat pictures, it ends being pretty scary.&lt;/p&gt;
 
 &lt;p&gt;With so many tabs, you can't even read the tabs titles, it's at best a row of
 favicons. So when I was toying around Chrome
-extensions with CoffeeScript, I attempted to solved that by porting a popular method to
-switch between opened files in code editors, fuzzy finding (match &quot;&lt;em&gt;google&lt;/em&gt;&quot;
-with &quot;&lt;em&gt;ggle&lt;/em&gt;&quot;)
-CtrlP.vim, Command-T in Textmate are well known illustrations of this
-method.&lt;/p&gt;
+extensions with CoffeeScript, I attempted to solved that by porting a popular method used to
+switch between opened files in code editors: fuzzy finding (match &quot;&lt;em&gt;google&lt;/em&gt;&quot;
+with &quot;&lt;em&gt;ggle&lt;/em&gt;&quot;)&lt;/p&gt;
+
+&lt;p&gt;CtrlP.vim, Command-T in Textmate are well known examples of fuzzy
+finding.&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://chrome.google.com/webstore/detail/tabswitcher/gkdkligmcadfbagoeggeohelmgalchcn&quot;&gt;Meet TabSwitcher&lt;/a&gt;, basically the same thing for Chrome, using urls (over
-page titles, they changes too much).&lt;/p&gt;
+page titles, they tend to vary too much over time).&lt;/p&gt;
 
 &lt;h2&gt;New algorithm&lt;/h2&gt;
 
-&lt;p&gt;The previous algorithm was written on an airplane between New York and
-Paris, it was buggy and inefficient. It wasn't even capable of looking
-for every substrings in urls, meaning when entering &quot;&lt;strong&gt;ruby&lt;/strong&gt;&quot;, it would
+&lt;p&gt;The previous algorithm was written during a flight between New York and
+Paris where I couldn't sleep. It was crappy and inefficient. It wasn't even capable of looking
+for every substrings in urls, meaning when you submitted &quot;&lt;strong&gt;ruby&lt;/strong&gt;&quot;, it would
 match against &quot;http://&lt;strong&gt;r&lt;/strong&gt;o&lt;strong&gt;ub&lt;/strong&gt;a&lt;strong&gt;y&lt;/strong&gt;.com/&quot; over
-&quot;http://reddit.com/r/&lt;strong&gt;ruby&lt;/strong&gt;&quot; because the occurences appeared earlier
-in the first url.&lt;/p&gt;
+&quot;http://reddit.com/r/&lt;strong&gt;ruby&lt;/strong&gt;&quot; because the occurrences appeared earlier
+in the first url, which is absolutely not the correct result.&lt;/p&gt;
 
 &lt;p&gt;This yielded some very weird results and forbid any real usage of the
 extension.&lt;/p&gt;
@@ -48,23 +49,23 @@ extension.&lt;/p&gt;
 &lt;p&gt;After reading interesting things in the fuzzy finding
 field, I wrote a decent yet simple algorithm that can handle real usage.&lt;/p&gt;
 
-&lt;p&gt;For that I added tests which you may want &lt;a href=&quot;https://github.com/jhchabran/tabswitcher/blob/master/spec/fuzzy_spec.coffee&quot;&gt;to have a look
+&lt;p&gt;First, I added tests, which you may want &lt;a href=&quot;https://github.com/jhchabran/tabswitcher/blob/master/spec/fuzzy_spec.coffee&quot;&gt;to have a look
 at&lt;/a&gt;, they
-basically explains how the ranking algorithm score urls.&lt;/p&gt;
+basically explains how the ranking algorithm scores urls depending on how input characters are distributed in each url.&lt;/p&gt;
 
 &lt;h2&gt;Configurable&lt;/h2&gt;
 
-&lt;p&gt;Another key point was the old extension wasn't configurable at all. This
+&lt;p&gt;Another key point was that the old extension wasn't even configurable at all. This
 now can be done through the extension button. Yet I have to do something
-with the enterable hotkeys because if you set a Chrome shortcut, like
-Ctrl-T, Chrome will ignore the extension and fire it's default behavior.&lt;/p&gt;
+with the possible hotkeys because if you set by mistake a Chrome shortcut, let's say Ctrl-T, Chrome will ignore the extension and fire its default behavior instead.&lt;/p&gt;
 
-&lt;p&gt;This become tedious when you know that chrome have dozens of shortcuts
-that may collide.&lt;/p&gt;
+&lt;p&gt;This become irritating when you know that chrome have dozens of shortcuts
+that can interfere.&lt;/p&gt;
 
-&lt;p&gt;I have to look on how I'll handle that. I hope that it can be
+&lt;p&gt;I have to thing about how I'll handle that. I hope the bindings are
 accessible from the APIs, because manually maintaining a list of every possible
-shortcuts for OSX, Window and Linux is going to be painful.&lt;/p&gt;
+shortcuts for OSX, Window and Linux is going to be painful and easily
+broken.&lt;/p&gt;
 
 &lt;h2&gt;Reworked design&lt;/h2&gt;
 
@@ -79,9 +80,9 @@ Urls are now truncated and won't mess the layout.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/img/dramatic_chrome_store.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;Obviously, there's still a lot of time to be spent on how to market the extension itself, helping people to understand what it does, narrowing the description to hit the right potential users.&lt;/p&gt;
+&lt;p&gt;Obviously, there's still a lot of time to be spent on how to market the extension itself, helping people to understand what it does and narrowing down the description to hit the right potential users before they hit the back button.&lt;/p&gt;
 
-&lt;p&gt;This is going to be fun and entertaining to toy with, I'd probably write
+&lt;p&gt;This is going to be fun and entertaining to play with, I'd probably write
 about it!&lt;/p&gt;
 </description>
 				<pubDate>Sun, 25 Nov 2012 00:00:00 -0800</pubDate>
