@@ -42,6 +42,7 @@ body {
   color: #005580;
 }
 .blog-icons {
+  margin-top: 20px;
   font-size: 32px;
 }
 .blog-icons a {
@@ -62,5 +63,5 @@ body {
   font-size: 10px;
 }
 .post-content h2 {
-  margin-top: 10px;
+  margin-top: 1em;
 }
