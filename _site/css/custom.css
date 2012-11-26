@@ -2,17 +2,14 @@ body {
   padding-top: 20px;
   padding-bottom: 40px;
 }
-
 /* Custom container */
 .container-narrow {
   margin: 0 auto;
   max-width: 940px;
 }
-
 .container-narrow > hr {
   margin: 30px 0;
 }
-
 /* Main marketing message and sign up button */
 .jumbotron {
   margin: 60px 0;
@@ -22,42 +19,37 @@ body {
   font-size: 92px;
   line-height: 1;
 }
-
 .jumbotron p.lead {
-  margin-top:20px;
+  margin-top: 20px;
   font-size: 32px;
 }
 .jumbotron p {
-  color:#777;
+  color: #777;
 }
 .jumbotron .btn {
   font-size: 21px;
   padding: 14px 24px;
 }
-
 .jumbotron .social-icons {
-  padding-top:16px;
-  font-size:48px;
+  padding-top: 16px;
+  font-size: 48px;
 }
-
 .jumbotron .social-icons a {
-  color:#333;
+  color: #333;
 }
 .jumbotron .social-icons a:hover {
-  text-decoration:none;
-  color:#005580;
+  text-decoration: none;
+  color: #005580;
 }
-
 .blog-icons {
-  font-size:32px;
+  font-size: 32px;
 }
-
 .blog-icons a {
-  color:#333;
+  color: #333;
 }
 .blog-icons a:hover {
-  text-decoration:none;
-  color:#005580;
+  text-decoration: none;
+  color: #005580;
 }
 /* Supporting marketing content */
 .marketing {
@@ -66,12 +58,12 @@ body {
 .marketing p + h4 {
   margin-top: 28px;
 }
-
 .contact {
-  text-align:center;
+  text-align: center;
 }
-
 .footer p {
-  font-size:10px;
+  font-size: 10px;
 }
-
+.post-content h2 {
+  margin-top: 10px;
+}
