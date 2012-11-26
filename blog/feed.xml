@@ -3,8 +3,8 @@
 	<channel>
 		<title>JHChabran</title>
 		<description>Thoughts on Ruby, CoffeeScript and Vim from a passionate developer.</description>
-    <link>/blog</link>
-		<atom:link href="/feed.xml" rel="self" type="application/rss+xml" />
+    <link>http://jhchabran.com/blog</link>
+		<atom:link href="http://jhchabran.com/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
 				<title>TabSwitcher got updated</title>
@@ -86,8 +86,8 @@ Urls are now truncated and won't mess the layout.&lt;/p&gt;
 about it!&lt;/p&gt;
 </description>
 				<pubDate>Sun, 25 Nov 2012 00:00:00 -0800</pubDate>
-				<link>/blog/2012/11/25/Tabswitcher-got-updated</link>
-				<guid isPermaLink="true">/blog/2012/11/25/Tabswitcher-got-updated</guid>
+				<link>http://jhchabran.com/blog/2012/11/25/Tabswitcher-got-updated</link>
+				<guid isPermaLink="true">http://jhchabran.com/blog/2012/11/25/Tabswitcher-got-updated</guid>
 			</item>
 		
 			<item>
@@ -238,8 +238,8 @@ that w to advance to the next word isn't required before ci&quot; !&lt;/li&gt;
 
 </description>
 				<pubDate>Thu, 27 Sep 2012 00:00:00 -0700</pubDate>
-				<link>/blog/2012/09/27/vim-isnt-about-speed</link>
-				<guid isPermaLink="true">/blog/2012/09/27/vim-isnt-about-speed</guid>
+				<link>http://jhchabran.com/blog/2012/09/27/vim-isnt-about-speed</link>
+				<guid isPermaLink="true">http://jhchabran.com/blog/2012/09/27/vim-isnt-about-speed</guid>
 			</item>
 		
 			<item>
@@ -249,8 +249,8 @@ list ten awesome &lt;strong&gt;real world&lt;/strong&gt; projects on which you s
 definitively read if you want to improve.&lt;/p&gt;
 </description>
 				<pubDate>Tue, 12 Jun 2012 00:00:00 -0700</pubDate>
-				<link>/blog/2012/06/12/10-high-quality-rails-examples</link>
-				<guid isPermaLink="true">/blog/2012/06/12/10-high-quality-rails-examples</guid>
+				<link>http://jhchabran.com/blog/2012/06/12/10-high-quality-rails-examples</link>
+				<guid isPermaLink="true">http://jhchabran.com/blog/2012/06/12/10-high-quality-rails-examples</guid>
 			</item>
 		
 			<item>
@@ -258,8 +258,8 @@ definitively read if you want to improve.&lt;/p&gt;
 				<description>&lt;p&gt;I will be there as a coach !&lt;/p&gt;
 </description>
 				<pubDate>Sun, 27 May 2012 00:00:00 -0700</pubDate>
-				<link>/blog/2012/05/27/rails-girls-paris</link>
-				<guid isPermaLink="true">/blog/2012/05/27/rails-girls-paris</guid>
+				<link>http://jhchabran.com/blog/2012/05/27/rails-girls-paris</link>
+				<guid isPermaLink="true">http://jhchabran.com/blog/2012/05/27/rails-girls-paris</guid>
 			</item>
 		
 			<item>
@@ -609,8 +609,8 @@ Chrome&lt;/a&gt;.&lt;/li&gt;
 
 </description>
 				<pubDate>Sat, 17 Dec 2011 00:00:00 -0800</pubDate>
-				<link>/blog/2011/12/17/build-a-chrome-extension-with-coffeescript</link>
-				<guid isPermaLink="true">/blog/2011/12/17/build-a-chrome-extension-with-coffeescript</guid>
+				<link>http://jhchabran.com/blog/2011/12/17/build-a-chrome-extension-with-coffeescript</link>
+				<guid isPermaLink="true">http://jhchabran.com/blog/2011/12/17/build-a-chrome-extension-with-coffeescript</guid>
 			</item>
 		
 			<item>
@@ -889,8 +889,8 @@ as documentation for everyone. Those four advices are just basics but at
 least ensure you're heading in the right direction with your specs.&lt;/p&gt;
 </description>
 				<pubDate>Sun, 11 Sep 2011 00:00:00 -0700</pubDate>
-				<link>/blog/2011/09/11/writing-readable-specs</link>
-				<guid isPermaLink="true">/blog/2011/09/11/writing-readable-specs</guid>
+				<link>http://jhchabran.com/blog/2011/09/11/writing-readable-specs</link>
+				<guid isPermaLink="true">http://jhchabran.com/blog/2011/09/11/writing-readable-specs</guid>
 			</item>
 		
 			<item>
@@ -1054,8 +1054,8 @@ myself for the macfuse failed surgery where I
 can only blame myself.&lt;/p&gt;
 </description>
 				<pubDate>Sat, 30 Jul 2011 00:00:00 -0700</pubDate>
-				<link>/blog/2011/07/30/notes-on-migration-to-osx-lion</link>
-				<guid isPermaLink="true">/blog/2011/07/30/notes-on-migration-to-osx-lion</guid>
+				<link>http://jhchabran.com/blog/2011/07/30/notes-on-migration-to-osx-lion</link>
+				<guid isPermaLink="true">http://jhchabran.com/blog/2011/07/30/notes-on-migration-to-osx-lion</guid>
 			</item>
 		
 			<item>
@@ -1152,8 +1152,8 @@ as it is and it does the job really well. Feel free to browse and fork
 my &lt;a href=&quot;https://github.com/jhchabran/vimfiles&quot;&gt;vimrc&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 </description>
 				<pubDate>Thu, 11 Mar 2010 00:00:00 -0800</pubDate>
-				<link>/blog/2010/03/11/Textmate-or-how-to-lock-yourself</link>
-				<guid isPermaLink="true">/blog/2010/03/11/Textmate-or-how-to-lock-yourself</guid>
+				<link>http://jhchabran.com/blog/2010/03/11/Textmate-or-how-to-lock-yourself</link>
+				<guid isPermaLink="true">http://jhchabran.com/blog/2010/03/11/Textmate-or-how-to-lock-yourself</guid>
 			</item>
 		
 	</channel>
