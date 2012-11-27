@@ -7,6 +7,120 @@
 		<atom:link href="http://jhchabran.com/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Setuping tests for a Chrome Extension with CoffeeScript</title>
+				<description>&lt;p&gt;So we've previously seen how to bootstrap a chrome extension with CoffeeScript.
+The next step is about adding testing support. Even if it's a simple
+extension, the whole process of reloading the extension in the browser
+to manually test a feature is plain boring and error prone.&lt;/p&gt;
+
+&lt;p&gt;To illustrate this, TabSwitcher will be used as an example, covering
+basic tasks like setuping the test environment to load the code that
+requires testing.&lt;/p&gt;
+
+&lt;p&gt;This post assume you're already comfortable with testing, if you're not
+you will find resources on TODO.&lt;/p&gt;
+
+&lt;h2&gt;Setuping the tests&lt;/h2&gt;
+
+&lt;p&gt;Before anything, a test framework need to be chosen. A popular choice
+would be Jasmine.
+First step, choosing a testing framework. I didn't want to spend hours
+studying each framework so I went with a popular one : Jasmine.
+Relying on Node package manager is probably the simplest way to install
+it:&lt;/p&gt;
+
+&lt;p&gt;Tests will live under the spec directory (or test, it's a matter of
+taste) :&lt;/p&gt;
+
+&lt;p&gt;And create a file that will contain our tests.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;coffeescript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;describe&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Fuzzy&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; 
+  &lt;span class=&quot;nx&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;should fail&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;toEqual&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;42&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;Run it with&lt;/p&gt;
+
+&lt;p&gt;Our test fails as expected, we can now write some expectactions.&lt;/p&gt;
+
+&lt;h2&gt;Loading the code we want to test&lt;/h2&gt;
+
+&lt;p&gt;Before testing anything we need to load the code that requires testing.&lt;/p&gt;
+
+&lt;p&gt;On one hand, the chrome extension code runs in a browser, scripts are loaded by the html
+pages, through &lt;code&gt;script&lt;/code&gt; tags. On the other hand the jasmine-node binary we installed
+runs the code in a Node.js environment environment. Code loading is
+achieved through the &lt;code&gt;require&lt;/code&gt; function. Defining which objects or
+functions a node module exports is done through the exports object.&lt;/p&gt;
+
+&lt;p&gt;Given &lt;code&gt;src/fuzzy.coffee&lt;/code&gt; defines two public functions, &lt;code&gt;match&lt;/code&gt;
+and &lt;code&gt;sortByMatchingScore&lt;/code&gt; :&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;coffeescript&quot;&gt;&lt;span class=&quot;nv&quot;&gt;exports.match = &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;match&lt;/span&gt;  
+&lt;span class=&quot;nv&quot;&gt;exports.sortByMatchingScore = &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;sortByMatchingScore&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;This code will export these two function, making them available to our
+tests, as shown below in &lt;code&gt;spec/fuzzy_spec.coffee&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;coffeescript&quot;&gt;&lt;span class=&quot;nv&quot;&gt;f = &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;../src/fuzzy&amp;#39;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;describe&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Fuzzy&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; 
+  &lt;span class=&quot;nx&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;should call match&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;match&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;http://google.com&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;ggl&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;We run it again and we got it all green.&lt;/p&gt;
+
+&lt;p&gt;But that won't work in the extension because &lt;code&gt;exports&lt;/code&gt; isn't
+defined. To solve that, assigning &lt;code&gt;window&lt;/code&gt; to &lt;code&gt;`exports&lt;/code&gt; will do
+the trick.&lt;/p&gt;
+
+&lt;p&gt;And now we got our code both running in specs and in the extension.&lt;/p&gt;
+
+&lt;h2&gt;Isolating the code that need to be tested.&lt;/h2&gt;
+
+&lt;p&gt;Extensions makes usage of chrome.* apis. Since we can't use them from
+our tests we go around them by design or mock them. For now let's just
+keep things simple, the later will be described in another post.&lt;/p&gt;
+
+&lt;p&gt;Most of the time we can avoid embedding calls to the chrome api by
+simply separating concerns. In the case of Tabswitcher, the fuzzy
+algorithm's only responsability is to discrimate and sort urls with a short
+string.&lt;/p&gt;
+
+&lt;p&gt;The two key functions prototypes are :&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;coffeescript&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# Given an array of urls and an abbreviation&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Returns an array of matching informations, sorted by their scores.&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;sortByMatchingScore = &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;(urls, abbrev)-&amp;gt;&lt;/span&gt;  
+  &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Given a string and an abbreviation&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Returns a hash of matching informations, &lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# with &amp;#39;score&amp;#39; is an float between 0 and abbrev.length varying upon how&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#              much abbrev match string&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#      &amp;#39;indexes&amp;#39; is an array with the the positions of the chars in the string&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;match = &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;(string, abbrev, offset)-&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;Ok, no mocking needed !&lt;/p&gt;
+</description>
+				<pubDate>Tue, 27 Nov 2012 00:00:00 -0800</pubDate>
+				<link>http://jhchabran.com/blog/2012/11/27/testing-a-chrome-extension</link>
+				<guid isPermaLink="true">http://jhchabran.com/blog/2012/11/27/testing-a-chrome-extension</guid>
+			</item>
+		
+			<item>
 				<title>TabSwitcher got updated</title>
 				<description>&lt;p&gt;TabSwitcher had been started one year ago, to showcase &lt;a href=&quot;http://jhchabran.com/blog/2011/12/17/build-a-chrome-extension-with-coffeescript&quot;&gt;(see previous
 post)&lt;/a&gt;

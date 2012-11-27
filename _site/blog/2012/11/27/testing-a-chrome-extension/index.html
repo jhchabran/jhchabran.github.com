@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     
-    <title>JHChabran | Tag: OSX</title>
+    <title>JHChabran | Setuping tests for a Chrome Extension with CoffeeScript</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -54,33 +54,139 @@ type="text/javascript">try{Typekit.load();}catch(e){}</script>
     
       <div class="row">
   <div class="span8">
-    <h1><a href="tags/osx/index.html">Tag: OSX</a></h1>
+    <h1><a href="/blog/2012/11/27/testing-a-chrome-extension">Setuping tests for a Chrome Extension with CoffeeScript</a></h2>
+    <h4>
+      Posted on November 27, 2012
+      
+      
+      in <a href="/categories/chrome">Chrome</a>
+      
+      
+    </h4>
     <hr/>
 
-    
+    <div class="post-content">
+      <p>So we've previously seen how to bootstrap a chrome extension with CoffeeScript.
+The next step is about adding testing support. Even if it's a simple
+extension, the whole process of reloading the extension in the browser
+to manually test a feature is plain boring and error prone.</p>
 
-  
+<p>To illustrate this, TabSwitcher will be used as an example, covering
+basic tasks like setuping the test environment to load the code that
+requires testing.</p>
+
+<p>This post assume you're already comfortable with testing, if you're not
+you will find resources on TODO.</p>
+
+<h2>Setuping the tests</h2>
+
+<p>Before anything, a test framework need to be chosen. A popular choice
+would be Jasmine.
+First step, choosing a testing framework. I didn't want to spend hours
+studying each framework so I went with a popular one : Jasmine.
+Relying on Node package manager is probably the simplest way to install
+it:</p>
+
+<p>Tests will live under the spec directory (or test, it's a matter of
+taste) :</p>
+
+<p>And create a file that will contain our tests.</p>
+
+<div class="highlight"><pre><code class="coffeescript"><span class="nx">describe</span> <span class="s">&quot;Fuzzy&quot;</span><span class="p">,</span> <span class="o">-&gt;</span> 
+  <span class="nx">it</span> <span class="s">&quot;should fail&quot;</span><span class="p">,</span> <span class="o">-&gt;</span>
+    <span class="nx">expect</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nx">toEqual</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+</code></pre>
+</div>
 
 
+<p>Run it with</p>
 
-<h2><a href="/blog/2011/07/30/notes-on-migration-to-osx-lion">Notes on migrating to OSX Lion</a></h2>
+<p>Our test fails as expected, we can now write some expectactions.</p>
 
-<h4>
-  Posted on July 30, 2011
-  
-  
-  in <a href="/categories/osx">OSX</a>
-  
-  
-</h4>
+<h2>Loading the code we want to test</h2>
 
-<p>I bought Lion yesterday ! People have already tested it against tools I use for work : Homebrew, RVM, MacVim so installing it on a friday night shouldn't be too painful. Plus I got backups everywhere (local server + dropbox + github + tarsnap). What went well Downloading it, I got a stable and fast ADSL connection ( thanks Free.fr ) Installing it right after the download Installing Xcode and Homebrew. FAIL : Uninstalling MacFuse...</p>
-<p>
-<a href="/blog/2011/07/30/notes-on-migration-to-osx-lion">Read more...</a>
-</p>
-<br/>
+<p>Before testing anything we need to load the code that requires testing.</p>
+
+<p>On one hand, the chrome extension code runs in a browser, scripts are loaded by the html
+pages, through <code>script</code> tags. On the other hand the jasmine-node binary we installed
+runs the code in a Node.js environment environment. Code loading is
+achieved through the <code>require</code> function. Defining which objects or
+functions a node module exports is done through the exports object.</p>
+
+<p>Given <code>src/fuzzy.coffee</code> defines two public functions, <code>match</code>
+and <code>sortByMatchingScore</code> :</p>
+
+<div class="highlight"><pre><code class="coffeescript"><span class="nv">exports.match = </span><span class="nx">match</span>  
+<span class="nv">exports.sortByMatchingScore = </span><span class="nx">sortByMatchingScore</span>
+</code></pre>
+</div>
 
 
+<p>This code will export these two function, making them available to our
+tests, as shown below in <code>spec/fuzzy_spec.coffee</code>:</p>
+
+<div class="highlight"><pre><code class="coffeescript"><span class="nv">f = </span><span class="nx">require</span> <span class="s">&#39;../src/fuzzy&#39;</span>
+
+<span class="nx">describe</span> <span class="s">&quot;Fuzzy&quot;</span><span class="p">,</span> <span class="o">-&gt;</span> 
+  <span class="nx">it</span> <span class="s">&quot;should call match&quot;</span><span class="p">.</span> <span class="o">-&gt;</span>
+    <span class="nx">f</span><span class="p">.</span><span class="nx">match</span> <span class="s">&quot;http://google.com&quot;</span><span class="p">,</span> <span class="s">&quot;ggl&quot;</span>
+</code></pre>
+</div>
+
+
+<p>We run it again and we got it all green.</p>
+
+<p>But that won't work in the extension because <code>exports</code> isn't
+defined. To solve that, assigning <code>window</code> to <code>`exports</code> will do
+the trick.</p>
+
+<p>And now we got our code both running in specs and in the extension.</p>
+
+<h2>Isolating the code that need to be tested.</h2>
+
+<p>Extensions makes usage of chrome.* apis. Since we can't use them from
+our tests we go around them by design or mock them. For now let's just
+keep things simple, the later will be described in another post.</p>
+
+<p>Most of the time we can avoid embedding calls to the chrome api by
+simply separating concerns. In the case of Tabswitcher, the fuzzy
+algorithm's only responsability is to discrimate and sort urls with a short
+string.</p>
+
+<p>The two key functions prototypes are :</p>
+
+<div class="highlight"><pre><code class="coffeescript"><span class="c1"># Given an array of urls and an abbreviation</span>
+<span class="c1"># Returns an array of matching informations, sorted by their scores.</span>
+<span class="nv">sortByMatchingScore = </span><span class="nf">(urls, abbrev)-&gt;</span>  
+  <span class="c1"># ...</span>
+
+<span class="c1"># Given a string and an abbreviation</span>
+<span class="c1"># Returns a hash of matching informations, </span>
+<span class="c1"># with &#39;score&#39; is an float between 0 and abbrev.length varying upon how</span>
+<span class="c1">#              much abbrev match string</span>
+<span class="c1">#      &#39;indexes&#39; is an array with the the positions of the chars in the string</span>
+<span class="nv">match = </span><span class="nf">(string, abbrev, offset)-&gt;</span>
+  <span class="c1"># ...</span>
+</code></pre>
+</div>
+
+
+<p>Ok, no mocking needed !</p>
+
+    </div>
+    <div id="disqus_thread"></div>
+<script type="text/javascript">
+var disqus_shortname = 'jhchabran'; 
+
+/* * * DON'T EDIT BELOW THIS LINE * * */
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
 
   </div>
