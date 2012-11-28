@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    
+    <title>JHChabran | Testing a Chrome Extension with Mocha and CoffeeScript</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- styles -->
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+    <link href="/css/pygments/default.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/font-awesome.css">
+ 
+    <!--  fonts, loaded first because it doesn't look nice without -->
+    <script type="text/javascript"
+src="//use.typekit.net/kcf8mke.js"></script>
+    <script
+type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="shortcut icon" href="../assets/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body>
+
+    <div class="container-narrow">
+      <div class="masthead">
+  <ul class="nav nav-pills pull-right app-menu">
+    <li><a href="/">Home</a></li>
+    <li><a href="/blog/">Blog</a></li>
+    <!-- <li><a href="#/">About</a></li> -->
+  </ul>
+  <a href="/"><h1 class="">JHChabran</h1></a>
+  
+    <h4 class="muted">Thoughts on Ruby, CoffeeScript and Vim from a passionate developer.</h4>
+  
+</div>
+
+<hr>
+
+    
+      <div class="row">
+  <div class="span8">
+    <h1><a href="/blog/2012/11/28/testing-a-chrome-extension-with-mocha-and-coffeescript">Testing a Chrome Extension with Mocha and CoffeeScript</a></h2>
+    <h4>
+      Posted on November 28, 2012
+      
+      
+      in <a href="/categories/chrome">Chrome</a>
+      
+      
+    </h4>
+    <hr/>
+
+    <div class="post-content">
+      <p>So we've previously seen how to bootstrap <a href="http://jhchabran.com/blog/2011/12/17/build-a-chrome-extension-with-coffeescript/">a chrome extension with CoffeeScript</a>.
+The next step is about adding testing support. Even if it's a simple
+extension, the whole process of reloading the extension in the browser
+to manually test a feature is incredibly boring and error prone.</p>
+
+<p>To illustrate,
+<a href="https://chrome.google.com/webstore/detail/tabswitcher/gkdkligmcadfbagoeggeohelmgalchcn">TabSwitcher</a> will be used as an example, more
+specifically the <code>match(url, abbreviation)</code> function which returns a <code>float</code>, indicating how close is
+<code>abbreviation</code> is to <code>url</code>.</p>
+
+<p>This post assume you're already comfortable with testing.</p>
+
+<h2>Setuping the tests</h2>
+
+<p>Before anything, a test framework needs to be chosen. Mocha is probably
+the most popular choice nowadays. It doesn't come with an expectation
+library and defaults to NodeJS's standard library :
+<a href="http://nodejs.org/api/assert.html">assert</a>.</p>
+
+<p>As you may know javascript Arrays being objects, testing equality between objects of the same type
+ means testing identity. In short <code>[1,2] == [1,2]</code> evaluates to <code>false</code>.
+It does make sense given how the equality operator is defined yet being
+unusual to someone used to Ruby or Python.</p>
+
+<p>Most of the time, it's equality between elements that is needed when
+writing assertions.</p>
+
+<p>A bad practice to achieve it would be to use  <code>toString()</code>, converting them and
+ running the comparison against the returned strings. It's poor man's
+equality because it would skip elements types, ie comparing <code>[1,2]</code>
+and <code>['1','2']</code> returns <code>true</code> instead of the expected <code>false</code>.</p>
+
+<p>Node's assert library is obviously relying on the equality operator, it
+would yield false positives which are really painful to deal with.</p>
+
+<p>To avoid wasting time plumbing with arrays comparisons, let's just use
+an assertion library, Mocha advertises about should.js which provides
+our expected array comparison:</p>
+
+<div class="highlight"><pre><code class="coffeescript"><span class="nx">it</span> <span class="s">&quot;should success&quot;</span><span class="p">,</span> <span class="o">-&gt;</span>
+  <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">].</span><span class="nx">should</span><span class="p">.</span><span class="nx">eql</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+</code></pre>
+</div>
+
+
+<p>To install these two libraries:</p>
+
+<div class="highlight"><pre><code class="sh">npm install mocha should -g
+</code></pre>
+</div>
+
+
+<p>Storing tests under <code>/tests</code> directory is a no brainer. You can place
+that directory wherever you want, <code>/spec</code> being a common choice
+too.</p>
+
+<div class="highlight"><pre><code class="sh"><span class="nb">cd </span>tabswitcher <span class="c"># extension&#39;s root dir</span>
+mkdir tests
+</code></pre>
+</div>
+
+
+<p>And create a file that will contain our tests.</p>
+
+<div class="highlight"><pre><code class="sh">touch spec/fuzzy_test.coffee
+</code></pre>
+</div>
+
+
+
+
+<div class="highlight"><pre><code class="coffeescript"><span class="nx">require</span> <span class="s">&#39;should&#39;</span>
+
+<span class="nx">describe</span> <span class="s">&quot;Fuzzy&quot;</span><span class="p">,</span> <span class="o">-&gt;</span> 
+  <span class="nx">it</span> <span class="s">&quot;should fail&quot;</span><span class="p">,</span> <span class="o">-&gt;</span>
+    <span class="mi">0</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">eql</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+</code></pre>
+</div>
+
+
+<p>Run it with</p>
+
+<div class="highlight"><pre><code class="sh">mocha --compilers coffee:coffee-script tests 
+
+  .
+
+  X 1 of 1 <span class="nb">test </span>failed:
+
+  1<span class="o">)</span> Fuzzy should fail:
+      
+      actual expected
+      
+      42 0
+      
+      at Object.Assertion.eql
+<span class="o">(</span>/home/tech/code/jhchabran/tabswitcher/node_modules/should/lib/should.js:285:10<span class="o">)</span>
+      at Context.&lt;anonymous&gt;
+<span class="o">(</span>/home/tech/code/jhchabran/tabswitcher/tests/fuzzy_test.coffee:8:24<span class="o">)</span>
+      at Test.Runnable.run
+<span class="o">(</span>/usr/local/lib/node_modules/mocha/lib/runnable.js:213:32<span class="o">)</span>
+      at Runner.runTest
+<span class="o">(</span>/usr/local/lib/node_modules/mocha/lib/runner.js:341:10<span class="o">)</span>
+      at Runner.runTests.next
+<span class="o">(</span>/usr/local/lib/node_modules/mocha/lib/runner.js:387:12<span class="o">)</span>
+      at next <span class="o">(</span>/usr/local/lib/node_modules/mocha/lib/runner.js:267:14<span class="o">)</span>
+      at Runner.hooks
+<span class="o">(</span>/usr/local/lib/node_modules/mocha/lib/runner.js:276:7<span class="o">)</span>
+      at next <span class="o">(</span>/usr/local/lib/node_modules/mocha/lib/runner.js:224:23<span class="o">)</span>
+      at Runner.hook
+<span class="o">(</span>/usr/local/lib/node_modules/mocha/lib/runner.js:244:5<span class="o">)</span>
+      at process.startup.processNextTick.process._tickCallback
+<span class="o">(</span>node.js:244:9<span class="o">)</span>
+</code></pre>
+</div>
+
+
+<p>A <a href="https://github.com/jhchabran/tabswitcher/blob/master/Cakefile#L46">test
+task</a> in the Cakefile comes handy to fire the tests.</p>
+
+<h2>Loading the code we want to test</h2>
+
+<p>Now tests are up and failing, it's time to write expectations about
+functions that will be used in the extension. There is a last bump on
+our road to deal with. Code is ran in two different environments :
+browser and NodeJs.</p>
+
+<p>On one hand, the chrome extension code runs in a browser, scripts are loaded by the html
+pages, through <code>script</code> tags. On the other hand tests
+run the code in a Node.js environment and loading is done through
+<code>require</code> and <code>exports</code> object.</p>
+
+<p>Given <code>src/fuzzy.coffee</code> is going to define a <code>match</code> function
+we need to use in our tests, it first must be exported to be succesfully required
+afterward.</p>
+
+<div class="highlight"><pre><code class="coffeescript"><span class="c1"># /src/fuzzy.coffee</span>
+
+<span class="nv">match = </span><span class="nf">(url, abbreviation)-&gt;</span>
+  <span class="c1"># ...</span>
+
+<span class="nv">exports.match = </span><span class="nx">match</span>  
+</code></pre>
+</div>
+
+
+
+
+<div class="highlight"><pre><code class="coffeescript"><span class="c1"># /tests/fuzzy_spec.coffee</span>
+
+<span class="nv">f = </span><span class="nx">require</span> <span class="s">&#39;../src/fuzzy&#39;</span>
+
+<span class="nx">describe</span> <span class="s">&quot;Fuzzy&quot;</span><span class="p">,</span> <span class="o">-&gt;</span> 
+  <span class="nx">it</span> <span class="s">&quot;should call match&quot;</span><span class="p">.</span> <span class="o">-&gt;</span>
+    <span class="nv">score = </span><span class="nx">f</span><span class="p">.</span><span class="nx">match</span> <span class="s">&quot;http://google.com&quot;</span><span class="p">,</span> <span class="s">&quot;ggl&quot;</span>
+    <span class="nx">score</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">eql</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</code></pre>
+</div>
+
+
+<p>We run it again with <code>cake test</code> and it should fail or success
+depending the implementation of <code>match</code>.</p>
+
+<p>But if the extension is launched within the browser it will whine about
+<code>exports</code> not being defined. No surprise, in a browser
+context,<code>exports</code> doesn't mean anything unless manually defined.</p>
+
+<div class="highlight"><pre><code class="coffeescript"><span class="c1"># Idiomatic predicate</span>
+<span class="nv">isCommonJS = </span><span class="k">typeof</span><span class="p">(</span><span class="nb">window</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;undefined&quot;</span>
+
+<span class="k">if</span> <span class="nx">isCommonJS</span>
+  <span class="nv">exports.match = </span><span class="nx">match</span>
+<span class="k">else</span>
+  <span class="nb">window</span><span class="p">.</span><span class="nv">match = </span><span class="nx">match</span>
+</code></pre>
+</div>
+
+
+<p>And now we got our code both running in specs and in the extension.</p>
+
+<h2>What about Chrome API ?</h2>
+
+<p>Extension code that makes use of chrome.* apis that can't be used in tests as is because they belong to Chrome and we're running tests unde NodeJs.</p>
+
+<p>Usually simply separating concerns solves the problem. In the
+present case, <code>match</code> just returns a float, indicating how close the
+abbreviation is to the url. No api calls are made through computation,
+leaving no need to mock them in some sort.</p>
+
+<p>Sometimes, for simplicity sake, it's shorter to still pass around chrome
+api structures, like <code>chrome.tab</code>. Well, it's just an object, build
+one that mimics the fields you need and that's all.</p>
+
+<div class="highlight"><pre><code class="coffeescript"><span class="c1"># /tests/fuzzy_spec.coffee</span>
+<span class="c1"># ...</span>
+<span class="nv">tab = </span>
+  <span class="nv">url   : </span><span class="s">&quot;http://google.com&quot;</span>
+  <span class="nv">title : </span><span class="s">&quot;Google&quot;</span>
+<span class="c1"># ...</span>
+</code></pre>
+</div>
+
+
+<h2>It's coding time!</h2>
+
+<p>We got our extension running CoffeeScript code and tests can be written as
+needed. Isn't it more comfortable to write a Chrome Extension now ?</p>
+
+<p>As we just added unit testing so far, an interesting question would be how to write some integration tests ? Like testing the whole workflow, considering we must deal with code running in different contexts: background page, popup and inserted in the current page.</p>
+
+<p>You can find the <a href="http://github.com/jhchabran/TabSwitcher">example used through this post on Github</a>.</p>
+
+    </div>
+    <div id="disqus_thread"></div>
+<script type="text/javascript">
+var disqus_shortname = 'jhchabran'; 
+
+/* * * DON'T EDIT BELOW THIS LINE * * */
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  </div>
+  <div class="offset1 span3">
+    <div class="blog-icons">
+<a href="http://feeds.feedburner.com/jhchabran">
+  <i class="icon-rss"></i>
+</a>
+<a href="http://twitter.com/jhchabran">
+  <i class="icon-twitter"></i>
+</a>
+<a href="http://github.com/jchabran">
+  <i class="icon-github"></i>
+</a>
+<a href="http://www.linkedin.com/profile/view?id=25800986&trk=tab_pro">
+  <i class="icon-linkedin"></i>
+</a>
+</div>
+<h3>Categories</h3>
+<a href="/categories/chrome"><strong>Chrome</strong></a> (2)<br /><a href="/categories/coffeescript"><strong>CoffeeScript</strong></a> (1)<br /><a href="/categories/osx"><strong>OSX</strong></a> (1)<br /><a href="/categories/rails"><strong>Rails</strong></a> (2)<br /><a href="/categories/rant"><strong>Rant</strong></a> (1)<br /><a href="/categories/vim"><strong>Vim</strong></a> (1)<br /><a href="/categories/ruby"><strong>Ruby</strong></a> (1)<br />
+<h3>Tags</h3>
+
+            <span style="font-size: 211%">
+              <a href="/tags/chrome/" title="3 posts">Chrome</a>
+            </span>
+          
+            <span style="font-size: 143%">
+              <a href="/tags/coffescript/" title="2 posts">CoffeScript</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/coffeescript/" title="1 post">CoffeeScript</a>
+            </span>
+          
+            <span style="font-size: 143%">
+              <a href="/tags/javascript/" title="2 posts">Javascript</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/osx/" title="1 post">OSX</a>
+            </span>
+          
+            <span style="font-size: 143%">
+              <a href="/tags/opensource/" title="2 posts">OpenSource</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/productivity/" title="1 post">Productivity</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/project/" title="1 post">Project</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/rspec/" title="1 post">RSpec</a>
+            </span>
+          
+            <span style="font-size: 143%">
+              <a href="/tags/rails/" title="2 posts">Rails</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/rant/" title="1 post">Rant</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/ruby/" title="1 post">Ruby</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/talk/" title="1 post">Talk</a>
+            </span>
+          
+            <span style="font-size: 143%">
+              <a href="/tags/testing/" title="2 posts">Testing</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/vim/" title="1 post">Vim</a>
+            </span>
+          
+<h3>Archives</h3>
+<a href="/2012/11"><strong>November 2012</strong></a> (2)<br /><a href="/2012/09"><strong>September 2012</strong></a> (1)<br /><a href="/2012/06"><strong>June 2012</strong></a> (1)<br /><a href="/2012/05"><strong>May 2012</strong></a> (1)<br /><a href="/2011/12"><strong>December 2011</strong></a> (1)<br /><a href="/2011/09"><strong>September 2011</strong></a> (1)<br /><a href="/2011/07"><strong>July 2011</strong></a> (1)<br /><a href="/2010/03"><strong>March 2010</strong></a> (1)<br />
+
+  </div>
+</div>
+
+
+
+
+      <hr>
+
+<div class="footer">
+  <p>&copy; JHCHABRAN 2012  
+  <a class='pull-right' title="Real Time Web Analytics" href="http://getclicky.com/100551085"><img alt="Real Time Web Analytics" src="//static.getclicky.com/media/links/badge.gif" border="0" /></a></p>
+</div>
+
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/js/jquery.js"></script>
+<script src="/js/application.js"></script>
+<script type="text/javascript">
+
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-36508562-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+
+</script>
+<script type="text/javascript">
+var clicky_site_ids = clicky_site_ids || [];
+clicky_site_ids.push(100551085);
+(function() {
+    var s = document.createElement('script');
+      s.type = 'text/javascript';
+        s.async = true;
+          s.src = '//static.getclicky.com/js';
+            ( document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0] ).appendChild( s );
+})();
+</script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/100551085ns.gif" /></p></noscript>
+
+  </body>
+</html>

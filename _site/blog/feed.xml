@@ -7,117 +7,221 @@
 		<atom:link href="http://jhchabran.com/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
-				<title>Setuping tests for a Chrome Extension with CoffeeScript</title>
-				<description>&lt;p&gt;So we've previously seen how to bootstrap a chrome extension with CoffeeScript.
+				<title>Testing a Chrome Extension with Mocha and CoffeeScript</title>
+				<description>&lt;p&gt;So we've previously seen how to bootstrap &lt;a href=&quot;http://jhchabran.com/blog/2011/12/17/build-a-chrome-extension-with-coffeescript/&quot;&gt;a chrome extension with CoffeeScript&lt;/a&gt;.
 The next step is about adding testing support. Even if it's a simple
 extension, the whole process of reloading the extension in the browser
-to manually test a feature is plain boring and error prone.&lt;/p&gt;
+to manually test a feature is incredibly boring and error prone.&lt;/p&gt;
 
-&lt;p&gt;To illustrate this, TabSwitcher will be used as an example, covering
-basic tasks like setuping the test environment to load the code that
-requires testing.&lt;/p&gt;
+&lt;p&gt;To illustrate,
+&lt;a href=&quot;https://chrome.google.com/webstore/detail/tabswitcher/gkdkligmcadfbagoeggeohelmgalchcn&quot;&gt;TabSwitcher&lt;/a&gt; will be used as an example, more
+specifically the &lt;code&gt;match(url, abbreviation)&lt;/code&gt; function which returns a &lt;code&gt;float&lt;/code&gt;, indicating how close is
+&lt;code&gt;abbreviation&lt;/code&gt; is to &lt;code&gt;url&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;This post assume you're already comfortable with testing, if you're not
-you will find resources on TODO.&lt;/p&gt;
+&lt;p&gt;This post assume you're already comfortable with testing.&lt;/p&gt;
 
 &lt;h2&gt;Setuping the tests&lt;/h2&gt;
 
-&lt;p&gt;Before anything, a test framework need to be chosen. A popular choice
-would be Jasmine.
-First step, choosing a testing framework. I didn't want to spend hours
-studying each framework so I went with a popular one : Jasmine.
-Relying on Node package manager is probably the simplest way to install
-it:&lt;/p&gt;
+&lt;p&gt;Before anything, a test framework needs to be chosen. Mocha is probably
+the most popular choice nowadays. It doesn't come with an expectation
+library and defaults to NodeJS's standard library :
+&lt;a href=&quot;http://nodejs.org/api/assert.html&quot;&gt;assert&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;Tests will live under the spec directory (or test, it's a matter of
-taste) :&lt;/p&gt;
+&lt;p&gt;As you may know javascript Arrays being objects, testing equality between objects of the same type
+ means testing identity. In short &lt;code&gt;[1,2] == [1,2]&lt;/code&gt; evaluates to &lt;code&gt;false&lt;/code&gt;.
+It does make sense given how the equality operator is defined yet being
+unusual to someone used to Ruby or Python.&lt;/p&gt;
+
+&lt;p&gt;Most of the time, it's equality between elements that is needed when
+writing assertions.&lt;/p&gt;
+
+&lt;p&gt;A bad practice to achieve it would be to use  &lt;code&gt;toString()&lt;/code&gt;, converting them and
+ running the comparison against the returned strings. It's poor man's
+equality because it would skip elements types, ie comparing &lt;code&gt;[1,2]&lt;/code&gt;
+and &lt;code&gt;['1','2']&lt;/code&gt; returns &lt;code&gt;true&lt;/code&gt; instead of the expected &lt;code&gt;false&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Node's assert library is obviously relying on the equality operator, it
+would yield false positives which are really painful to deal with.&lt;/p&gt;
+
+&lt;p&gt;To avoid wasting time plumbing with arrays comparisons, let's just use
+an assertion library, Mocha advertises about should.js which provides
+our expected array comparison:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;coffeescript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;should success&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;should&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;eql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;To install these two libraries:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;npm install mocha should -g
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;Storing tests under &lt;code&gt;/tests&lt;/code&gt; directory is a no brainer. You can place
+that directory wherever you want, &lt;code&gt;/spec&lt;/code&gt; being a common choice
+too.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;tabswitcher &lt;span class=&quot;c&quot;&gt;# extension&amp;#39;s root dir&lt;/span&gt;
+mkdir tests
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
 
 &lt;p&gt;And create a file that will contain our tests.&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;coffeescript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;describe&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Fuzzy&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; 
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;touch spec/fuzzy_test.coffee
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;coffeescript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;should&amp;#39;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;describe&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Fuzzy&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; 
   &lt;span class=&quot;nx&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;should fail&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;toEqual&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;42&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;should&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;eql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;42&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
 
 &lt;p&gt;Run it with&lt;/p&gt;
 
-&lt;p&gt;Our test fails as expected, we can now write some expectactions.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;mocha --compilers coffee:coffee-script tests 
+
+  .
+
+  X 1 of 1 &lt;span class=&quot;nb&quot;&gt;test &lt;/span&gt;failed:
+
+  1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Fuzzy should fail:
+      
+      actual expected
+      
+      42 0
+      
+      at Object.Assertion.eql
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;/home/tech/code/jhchabran/tabswitcher/node_modules/should/lib/should.js:285:10&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      at Context.&amp;lt;anonymous&amp;gt;
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;/home/tech/code/jhchabran/tabswitcher/tests/fuzzy_test.coffee:8:24&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      at Test.Runnable.run
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;/usr/local/lib/node_modules/mocha/lib/runnable.js:213:32&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      at Runner.runTest
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;/usr/local/lib/node_modules/mocha/lib/runner.js:341:10&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      at Runner.runTests.next
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;/usr/local/lib/node_modules/mocha/lib/runner.js:387:12&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      at next &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;/usr/local/lib/node_modules/mocha/lib/runner.js:267:14&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      at Runner.hooks
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;/usr/local/lib/node_modules/mocha/lib/runner.js:276:7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      at next &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;/usr/local/lib/node_modules/mocha/lib/runner.js:224:23&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      at Runner.hook
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;/usr/local/lib/node_modules/mocha/lib/runner.js:244:5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      at process.startup.processNextTick.process._tickCallback
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;node.js:244:9&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;A &lt;a href=&quot;https://github.com/jhchabran/tabswitcher/blob/master/Cakefile#L46&quot;&gt;test
+task&lt;/a&gt; in the Cakefile comes handy to fire the tests.&lt;/p&gt;
 
 &lt;h2&gt;Loading the code we want to test&lt;/h2&gt;
 
-&lt;p&gt;Before testing anything we need to load the code that requires testing.&lt;/p&gt;
+&lt;p&gt;Now tests are up and failing, it's time to write expectations about
+functions that will be used in the extension. There is a last bump on
+our road to deal with. Code is ran in two different environments :
+browser and NodeJs.&lt;/p&gt;
 
 &lt;p&gt;On one hand, the chrome extension code runs in a browser, scripts are loaded by the html
-pages, through &lt;code&gt;script&lt;/code&gt; tags. On the other hand the jasmine-node binary we installed
-runs the code in a Node.js environment environment. Code loading is
-achieved through the &lt;code&gt;require&lt;/code&gt; function. Defining which objects or
-functions a node module exports is done through the exports object.&lt;/p&gt;
+pages, through &lt;code&gt;script&lt;/code&gt; tags. On the other hand tests
+run the code in a Node.js environment and loading is done through
+&lt;code&gt;require&lt;/code&gt; and &lt;code&gt;exports&lt;/code&gt; object.&lt;/p&gt;
 
-&lt;p&gt;Given &lt;code&gt;src/fuzzy.coffee&lt;/code&gt; defines two public functions, &lt;code&gt;match&lt;/code&gt;
-and &lt;code&gt;sortByMatchingScore&lt;/code&gt; :&lt;/p&gt;
+&lt;p&gt;Given &lt;code&gt;src/fuzzy.coffee&lt;/code&gt; is going to define a &lt;code&gt;match&lt;/code&gt; function
+we need to use in our tests, it first must be exported to be succesfully required
+afterward.&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;coffeescript&quot;&gt;&lt;span class=&quot;nv&quot;&gt;exports.match = &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;match&lt;/span&gt;  
-&lt;span class=&quot;nv&quot;&gt;exports.sortByMatchingScore = &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;sortByMatchingScore&lt;/span&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;coffeescript&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# /src/fuzzy.coffee&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;match = &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;(url, abbreviation)-&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;exports.match = &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;match&lt;/span&gt;  
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
 
-&lt;p&gt;This code will export these two function, making them available to our
-tests, as shown below in &lt;code&gt;spec/fuzzy_spec.coffee&lt;/code&gt;:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;coffeescript&quot;&gt;&lt;span class=&quot;nv&quot;&gt;f = &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;../src/fuzzy&amp;#39;&lt;/span&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;coffeescript&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# /tests/fuzzy_spec.coffee&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;f = &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;../src/fuzzy&amp;#39;&lt;/span&gt;
 
 &lt;span class=&quot;nx&quot;&gt;describe&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Fuzzy&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; 
   &lt;span class=&quot;nx&quot;&gt;it&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;should call match&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;match&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;http://google.com&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;ggl&amp;quot;&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;score = &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;match&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;http://google.com&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;ggl&amp;quot;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;score&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;should&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;eql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
 
-&lt;p&gt;We run it again and we got it all green.&lt;/p&gt;
+&lt;p&gt;We run it again with &lt;code&gt;cake test&lt;/code&gt; and it should fail or success
+depending the implementation of &lt;code&gt;match&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;But that won't work in the extension because &lt;code&gt;exports&lt;/code&gt; isn't
-defined. To solve that, assigning &lt;code&gt;window&lt;/code&gt; to &lt;code&gt;`exports&lt;/code&gt; will do
-the trick.&lt;/p&gt;
+&lt;p&gt;But if the extension is launched within the browser it will whine about
+&lt;code&gt;exports&lt;/code&gt; not being defined. No surprise, in a browser
+context,&lt;code&gt;exports&lt;/code&gt; doesn't mean anything unless manually defined.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;coffeescript&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# Idiomatic predicate&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;isCommonJS = &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typeof&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;undefined&amp;quot;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;isCommonJS&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;exports.match = &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;match&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;match = &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;match&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
 
 &lt;p&gt;And now we got our code both running in specs and in the extension.&lt;/p&gt;
 
-&lt;h2&gt;Isolating the code that need to be tested.&lt;/h2&gt;
+&lt;h2&gt;What about Chrome API ?&lt;/h2&gt;
 
-&lt;p&gt;Extensions makes usage of chrome.* apis. Since we can't use them from
-our tests we go around them by design or mock them. For now let's just
-keep things simple, the later will be described in another post.&lt;/p&gt;
+&lt;p&gt;Extension code that makes use of chrome.* apis that can't be used in tests as is because they belong to Chrome and we're running tests unde NodeJs.&lt;/p&gt;
 
-&lt;p&gt;Most of the time we can avoid embedding calls to the chrome api by
-simply separating concerns. In the case of Tabswitcher, the fuzzy
-algorithm's only responsability is to discrimate and sort urls with a short
-string.&lt;/p&gt;
+&lt;p&gt;Usually simply separating concerns solves the problem. In the
+present case, &lt;code&gt;match&lt;/code&gt; just returns a float, indicating how close the
+abbreviation is to the url. No api calls are made through computation,
+leaving no need to mock them in some sort.&lt;/p&gt;
 
-&lt;p&gt;The two key functions prototypes are :&lt;/p&gt;
+&lt;p&gt;Sometimes, for simplicity sake, it's shorter to still pass around chrome
+api structures, like &lt;code&gt;chrome.tab&lt;/code&gt;. Well, it's just an object, build
+one that mimics the fields you need and that's all.&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;coffeescript&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# Given an array of urls and an abbreviation&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# Returns an array of matching informations, sorted by their scores.&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;sortByMatchingScore = &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;(urls, abbrev)-&amp;gt;&lt;/span&gt;  
-  &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Given a string and an abbreviation&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# Returns a hash of matching informations, &lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# with &amp;#39;score&amp;#39; is an float between 0 and abbrev.length varying upon how&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#              much abbrev match string&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#      &amp;#39;indexes&amp;#39; is an array with the the positions of the chars in the string&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;match = &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;(string, abbrev, offset)-&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;coffeescript&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# /tests/fuzzy_spec.coffee&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;tab = &lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;url   : &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;http://google.com&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;title : &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;Google&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
 
-&lt;p&gt;Ok, no mocking needed !&lt;/p&gt;
+&lt;h2&gt;It's coding time!&lt;/h2&gt;
+
+&lt;p&gt;We got our extension running CoffeeScript code and tests can be written as
+needed. Isn't it more comfortable to write a Chrome Extension now ?&lt;/p&gt;
+
+&lt;p&gt;As we just added unit testing so far, an interesting question would be how to write some integration tests ? Like testing the whole workflow, considering we must deal with code running in different contexts: background page, popup and inserted in the current page.&lt;/p&gt;
+
+&lt;p&gt;You can find the &lt;a href=&quot;http://github.com/jhchabran/TabSwitcher&quot;&gt;example used through this post on Github&lt;/a&gt;.&lt;/p&gt;
 </description>
-				<pubDate>Tue, 27 Nov 2012 00:00:00 -0800</pubDate>
-				<link>http://jhchabran.com/blog/2012/11/27/testing-a-chrome-extension</link>
-				<guid isPermaLink="true">http://jhchabran.com/blog/2012/11/27/testing-a-chrome-extension</guid>
+				<pubDate>Wed, 28 Nov 2012 00:00:00 -0800</pubDate>
+				<link>http://jhchabran.com/blog/2012/11/28/testing-a-chrome-extension-with-mocha-and-coffeescript</link>
+				<guid isPermaLink="true">http://jhchabran.com/blog/2012/11/28/testing-a-chrome-extension-with-mocha-and-coffeescript</guid>
 			</item>
 		
 			<item>

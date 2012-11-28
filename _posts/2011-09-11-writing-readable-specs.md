@@ -4,7 +4,7 @@ title: Writing readable specs
 category: Ruby
 tags:
   - Ruby
-  - TDD
+  - Testing
   - RSpec
 ---
 Writing Rails specs with [RSpec](https://www.relishapp.com/rspec) and 
