@@ -5,7 +5,6 @@ category: Chrome
 tags:
   - CoffeeScript
   - Chrome
-  - OpenSource
   - Testing
 ---
 
