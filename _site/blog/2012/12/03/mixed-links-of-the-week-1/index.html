@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     
-    <title>JHChabran | Notes on migrating to OSX Lion</title>
+    <title>JHChabran | Mixed links of the week (1)</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -54,180 +54,40 @@ type="text/javascript">try{Typekit.load();}catch(e){}</script>
     
       <div class="row">
   <div class="span8">
-    <h1><a href="/blog/2011/07/30/notes-on-migration-to-osx-lion">Notes on migrating to OSX Lion</a></h2>
+    <h1><a href="/blog/2012/12/03/mixed-links-of-the-week-1">Mixed links of the week (1)</a></h2>
     <h4>
-      Posted on July 30, 2011
+      Posted on December 03, 2012
       
       
-      in <a href="/categories/osx">OSX</a>
+      in <a href="/categories/links">Links</a>
       
       
     </h4>
     <hr/>
 
     <div class="post-content">
-      <p>I bought Lion yesterday ! People have already tested it against tools I
-use
-for work : Homebrew, RVM, MacVim so installing it on a friday night
-shouldn't
-be too painful. Plus I got backups everywhere (local server + dropbox +
-github + tarsnap).</p>
-
-<h2>What went well</h2>
-
-<ul>
-<li>Downloading it, I got a stable and fast ADSL connection ( thanks
-Free.fr )</li>
-<li>Installing it right after the download</li>
-<li>Installing Xcode and <a href="http://mxcl.github.com/homebrew/">Homebrew</a>.</li>
+      <ul>
+<li><a href="http://blog.arkency.comb2012/11/not-rails/">Not Rails</a>: Rails isn't
+the right answer for every project.</li>
+<li><a href="http://www.mutuallyhuman.com/blog/2012/11/26/speeding-things-up-with-jruby/">Speeding up things with JRuby</a>: basic example showing how JRuby obliterates MRI when it comes to threading.</li>
+<li><a href="http://podtynnyi.com/2012/11/29/build-mruby-for-android/">Building Mruby on Android</a> : who thought that building mruby on Android would be so easy ?</li>
+<li><a href="http://elcuervo.github.com/minuteman/">Fast Analytics with Redis</a> :
+old tricks never dies, Redis and its bitwise operations to store analytics.</li>
+<li><a href="http://www.reddit.com/r/vim/comments/141vhx/efficient_command_mode">Vim: efficient command mode</a>: an interesting thread on reddit, found many Vim tips I never heard about.</li>
+<li><a href="http://craigkerstiens.com/2012/11/30/sharding-your-database/">Sharding your database</a>: a well explained introduction to database sharding.</li>
 </ul>
 
-
-<h2>FAIL : Uninstalling MacFuse</h2>
-
-<ul>
-<li>Uninstalling <a href="http://code.google.com/p/macfuse/">MacFuse</a> after the
-install. I forgot to remove it before
-intalling Lion, since it's quite unmaintained, you can guess it's
-going be boring to remove it correctly.</li>
-<li>The uninstall script will fail with various errors.
-
-<ul>
-<li><a href="http://www.mail-archive.com/macfuse@googlegroups.com/msg01094.html">Mailing list thread that sum up what's going
-on</a></li>
-</ul>
-</li>
-<li>Removing it manually, <em>but wait that's my fault !</em> I inspected the
-uninstall shell script
-and decided to do some quick shell script surgery.
-
-<ul>
-<li>Looks like I messed up there. Even if I manually unplugged the Kext
-before starting it, I got a weird freeze where no more application
-could be launched, they were bouncing endlessly.</li>
-<li>Forced reboot.</li>
-<li>Lion detects a broken os and decided to re-install itself.</li>
-</ul>
-</li>
-</ul>
-
-
-<h2>FAIL : Admin privileges</h2>
-
-<ul>
-<li>Second install, Lion did not set any admin rights to my main user.
-This
-means :
-
-<ul>
-<li>I can't touch anything in system preferences.</li>
-<li>I can't sudo.</li>
-</ul>
-</li>
-<li>Fixed it by booting in single user mode and adding myself manually to
-admin group :
-
-<ul>
-<li>Reboot and hold cmd+s</li>
-<li>Remount your partition to have it writable
-
-<ul>
-<li><em>/sbin/fsck -fy</em></li>
-<li><em>/sbin/mount -uw /</em></li>
-</ul>
-</li>
-<li>Add myself to admin group
-
-<ul>
-<li><em>dseeditgroup -o edit -a myusername -t user admin</em></li>
-</ul>
-</li>
-<li>Reboot</li>
-</ul>
-</li>
-</ul>
-
-
-<h2>FAIL : SSH encoding issues</h2>
-
-<ul>
-<li>SSH'ing into any box messed up completely my encoding settings.</li>
-<li>Comment <em>SendEnv LANG LC_</em> * in <em>/etc/ssh_config</em> to get back to the
-pre-Lion behavior.</li>
-<li>Lion does not set its locale to <em>en_us.utf8</em> by default,
-appending it to your <em>~/.profile</em> with <em>export LC_ALL=en_US.UTF-8</em>
-corrects this issue if you want to adapt to the new
-default.</li>
-</ul>
-
-
-<h2>FAIL : Rvm and Ruby Entreprise edition ( Ree )</h2>
-
-<ul>
-<li>Segfault !</li>
-</ul>
-
-
-<p><code>
-ld: warning: directory not found for option '-L/opt/local/lib'
-./ext/purelib.rb:2: [BUG] Segmentation fault
-ruby 1.8.7 (2011-02-18 patchlevel 334) [i686-darwin11.0.0],
-MBARI 0x6770, Ruby Enterprise Edition 2011.03
-</code></p>
-
-<p>  <a href="https://gist.github.com/1115457">fulls logs</a></p>
-
-<ul>
-<li>Fixed by using gcc instead of llvm</li>
-</ul>
-
-
-<p><code>
-rvm remove ree
-export CC=/usr/bin/gcc-4.2
-rvm install --force ree
-</code></p>
-
-<p>  <a href="http://stackoverflow.com/questions/6804195/cant-install-ruby-enterprise-edition-with-rvm-on-osx-lion">StackOverflow
-thread</a></p>
-
-<h2>FAIL : Rvm and Postgresql with Homebrew</h2>
-
-<ul>
-<li>Fail to exec the <em>Postgresql</em> recipe :</li>
-</ul>
-
-
-<p><code>
-Error: undefined method `strip' for #&lt;KegOnlyReason:0x10ac404b8&gt;
-</code></p>
-
-<ul>
-<li>I updated and relaunched <em>brew install postgresql</em> which ran smoothly
-thanks to <a href="https://github.com/mxcl/homebrew/commit/20d2edf18deefb6d6439d415625f506c662dcba2">this
-fix</a></li>
-</ul>
-
-
-<h2>FAIL : Fullscreen :</h2>
-
-<ul>
-<li>Can't use cmd+` to alternate windows while in fullscreen, this isn't
-vital but it's quite annoying.</li>
-</ul>
-
-
-<h2>Finally</h2>
-
-<p>As I wasn't expecting everything to work for the first time, those small
-issues did not upset me and weren't hard to fix. I laughed hard at
-myself for the macfuse failed surgery where I
-can only blame myself.</p>
 
       
       <br/>
       <h4>Related posts</h4>
       
+        <a href="/blog/2012/09/27/vim-isnt-about-speed">Vim isn't about speed</a><br />
+        
+        <a href="/blog/2011/09/11/writing-readable-specs">Writing readable specs</a><br />
+        
+        <a href="/blog/2012/06/12/10-high-quality-rails-examples">10 Rails Quality Examples</a><br />
+        
     </div>
     <br/>
     <div id="disqus_thread"></div>

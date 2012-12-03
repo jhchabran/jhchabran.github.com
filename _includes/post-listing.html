@@ -14,9 +14,13 @@
   {% endunless %}
 </h4>
 
-<p>{{ post.content | strip_html | truncatewords: num_words }}</p>
 <p>
-<a href="{{ post.url }}">Read more...</a>
+  {% unless post.show_content_in_index %}
+    {{ post.content | strip_html | truncatewords: num_words }}
+    <p><a href="{{ post.url }}">Read more...</a></p>
+  {% else %}
+    {{ post.content }}
+  {% endunless %}
 </p>
 <br/>
 {% endfor %}
