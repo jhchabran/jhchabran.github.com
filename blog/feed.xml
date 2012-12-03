@@ -7,6 +7,25 @@
 		<atom:link href="http://jhchabran.com/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Mixed links of the week (1)</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://blog.arkency.comb2012/11/not-rails/&quot;&gt;Not Rails&lt;/a&gt;: Rails isn't
+the right answer for every project.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.mutuallyhuman.com/blog/2012/11/26/speeding-things-up-with-jruby/&quot;&gt;Speeding up things with JRuby&lt;/a&gt;: basic example showing how JRuby obliterates MRI when it comes to threading.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://podtynnyi.com/2012/11/29/build-mruby-for-android/&quot;&gt;Building Mruby on Android&lt;/a&gt; : who thought that building mruby on Android would be so easy ?&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://elcuervo.github.com/minuteman/&quot;&gt;Fast Analytics with Redis&lt;/a&gt; :
+old tricks never dies, Redis and its bitwise operations to store analytics.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.reddit.com/r/vim/comments/141vhx/efficient_command_mode&quot;&gt;Vim: efficient command mode&lt;/a&gt;: an interesting thread on reddit, found many Vim tips I never heard about.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://craigkerstiens.com/2012/11/30/sharding-your-database/&quot;&gt;Sharding your database&lt;/a&gt;: a well explained introduction to database sharding.&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+				<pubDate>Mon, 03 Dec 2012 00:00:00 -0800</pubDate>
+				<link>http://jhchabran.com/blog/2012/12/03/mixed-links-of-the-week-1</link>
+				<guid isPermaLink="true">http://jhchabran.com/blog/2012/12/03/mixed-links-of-the-week-1</guid>
+			</item>
+		
+			<item>
 				<title>Testing a Chrome Extension with Mocha and CoffeeScript</title>
 				<description>&lt;p&gt;So we've previously seen how to bootstrap &lt;a href=&quot;http://jhchabran.com/blog/2011/12/17/build-a-chrome-extension-with-coffeescript/&quot;&gt;a chrome extension with CoffeeScript&lt;/a&gt;.
 The next step is about adding testing support. Even if it's a simple
