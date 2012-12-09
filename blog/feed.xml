@@ -7,6 +7,227 @@
 		<atom:link href="http://jhchabran.com/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Fun with to_proc and compositions</title>
+				<description>&lt;p&gt;What about being able to shorten &lt;code&gt;users.collect { |user| user.order.city }&lt;/code&gt; or its
+unefficient form &lt;code&gt;users.collect(&amp;amp;:order).collect(&amp;amp;:city)&lt;/code&gt; into&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;users&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:order&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:city&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;It can be achieved by composing functions, in Ruby's case by composing Procs.
+This is an amusing exercise that demonstrates Ruby's functional abilites.&lt;/p&gt;
+
+&lt;p&gt;Just in case you need to freshen your memory about composing functions, it's a common notion in functional programming and it's also found early in mathematics courses.&lt;/p&gt;
+
+&lt;p&gt;Given two functions &lt;code&gt;f(x)&lt;/code&gt; and &lt;code&gt;g(x)&lt;/code&gt;, &lt;code&gt;(f o g)(x) ==
+g(f(x))&lt;/code&gt;, &lt;code&gt;o&lt;/code&gt; being the symbol of the composition operation.&lt;/p&gt;
+
+&lt;h2&gt;Unchaining method calls&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;users.collect { |user| user.order.city }&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;The first step here is to compact the &lt;code&gt;#order&lt;/code&gt; and &lt;code&gt;#city&lt;/code&gt; method calls.&lt;/p&gt;
+
+&lt;p&gt;To achieve that, it's interesting to know how methods calls are done
+under the hood. Python, by being explicit by design as opposed to Ruby, gives a clear
+answer :&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;User&lt;/span&gt; 
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;firstname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lastname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;firstname&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;firstname&lt;/span&gt;
+    &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lastname&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lastname&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;firstname&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lastname&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;Each method accepts a first argument which is always &lt;code&gt;self&lt;/code&gt;.
+It's simple as that, a method is nothing more than a function
+ whose first argument is the instance. This way, attributes can be
+accessed trough self inside the function. Under the hood in Ruby &lt;code&gt;@firstname&lt;/code&gt; is basically just a nice way to grab it from the instance without having to be explicit about &lt;code&gt;self&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Back to our example, with that knowledge we can say that :&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;users&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collect&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;order&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;city&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;is equivalent in the underlying implementation to :&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# pseudo-code&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;users&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collect&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;city&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;order&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;So that's it, in theory we got functions here and composing them makes
+sense :&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# pseudo-code, &amp;#39;o&amp;#39; being the hypothetical composition operator.&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;get_order_then_city&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;order&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;o&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;city&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;users&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collect&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_order_then_city&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;Finally, let's convert that to real Ruby code, artificially reverting methods to
+their primitive forms, functions.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;order&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Proc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;order&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;city&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Proc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;order&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;order&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;city&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;Those two Procs still need to be composed, sadly Ruby don't come with a
+defined composition operator for Proc, so let's write one.&lt;/p&gt;
+
+&lt;h2&gt;Composing functions in Ruby&lt;/h2&gt;
+
+&lt;p&gt;As Procs are Ruby objects, it's simply a matter of adding a composition
+operator to the Proc class. As the symbol used in mathematics, &lt;code&gt;o&lt;/code&gt; can't be used here,
+it's usually &lt;code&gt;*&lt;/code&gt; that takes its place.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;  &lt;span class=&quot;n&quot;&gt;increment&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Proc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;square&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Proc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;increment_and_square&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;increment&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;square&lt;/span&gt; 
+  
+  &lt;span class=&quot;nb&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;increment_and_square&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; (2+1)^2 = 9&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;Implementation is pretty straight-forward :&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Proc&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;other&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;no&quot;&gt;Proc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;other&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;Now &lt;code&gt;increment&lt;/code&gt; and &lt;code&gt;square&lt;/code&gt; can be composed throught the
+&lt;code&gt;*&lt;/code&gt;
+operator and it works as expected.&lt;/p&gt;
+
+&lt;h2&gt;Back to business&lt;/h2&gt;
+
+&lt;p&gt;At this point, the job is almost finished. Procs can be composed,
+and symbols can be converted to Procs thanks to &lt;code&gt;&amp;amp;:order&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;&amp;amp;:order&lt;/code&gt; is quite common but before composing it, how does it really works ?&lt;/p&gt;
+
+&lt;p&gt;Behind its somewhat exotic syntax, it calls &lt;code&gt;#to_proc&lt;/code&gt; which creates a Proc that sends the
+symbol itself, (&lt;code&gt;:order&lt;/code&gt; in this case) to an object. Then it
+converts the Proc into a block so it can be passed to methods like
+&lt;code&gt;#each&lt;/code&gt; or &lt;code&gt;#collect&lt;/code&gt; that expects one.&lt;/p&gt;
+
+&lt;p&gt;In more concrete terms &lt;code&gt;&amp;amp;:order&lt;/code&gt; creates the following Proc:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;  &lt;span class=&quot;n&quot;&gt;get_order&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Proc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;order&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;And its generalized form:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Symbol&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;to_proc&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# This is a simplified version, the real one can handle multiple&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# arguments.&lt;/span&gt;
+    &lt;span class=&quot;no&quot;&gt;Proc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__send__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;Such Procs can as previously seen, be easily composed with the brand new &lt;code&gt;*&lt;/code&gt;
+operator on Procs.&lt;/p&gt;
+
+&lt;p&gt;At this point it can be tempting to write  &lt;code&gt;users.collect(&amp;amp;:order * &amp;amp;:city)&lt;/code&gt; but
+this can't work. As a block isn't an object, calling any method on it (&lt;code&gt;#*&lt;/code&gt; in this case) makes absolutely no sense.
+Only a single unary &lt;code&gt;&amp;amp;&lt;/code&gt; can exist in an expression. Ruby will raise a &lt;code&gt;SyntaxError&lt;/code&gt; if
+a second one is present.&lt;/p&gt;
+
+&lt;p&gt;The correct syntax with a single &lt;code&gt;&amp;amp;&lt;/code&gt; isn't really shiny, but it
+works as expected.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;users&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:order&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_proc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:city&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_proc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# =&amp;gt; [&amp;#39;Kuala Lumpur&amp;#39;, &amp;#39;Paris&amp;#39;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;But frankly, from a syntactic point of view, it's sill far from being simpler
+than a traditional &lt;code&gt;users.collect { |user| user.order.city }&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2&gt;Adding Syntactic Sugar&lt;/h2&gt;
+
+&lt;p&gt;Even if it's just for fun, better syntax can be achived by calling
+Array to the rescue. Having a list of Procs that will be composed makes some sense and provides a lighter syntax.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;users&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:order&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:city&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# =&amp;gt; [&amp;#39;Kuala Lumpur&amp;#39;, &amp;#39;Paris&amp;#39;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;&lt;code&gt;#to_proc&lt;/code&gt; can be added to basically any object, while this opens
+many weird and exotic possibilites it suits perfectly what is needed
+here.&lt;/p&gt;
+
+&lt;p&gt;So building a Proc from an array of symbols, given they can be converted
+to procs and then composed, can be written as the following:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Array&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;to_proc&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;collect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:to_proc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;inject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;users&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:order&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:city&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# =&amp;gt; [&amp;#39;Kuala Lumpur&amp;#39;, &amp;#39;Paris&amp;#39;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;Fine, it does the job and with a nice syntax. The only bad thing here is
+it has to create a Proc for each symbol. A much more efficient version
+can be written by reusing &lt;code&gt;Symbol#to_proc&lt;/code&gt; implementation code in an
+&lt;code&gt;#inject&lt;/code&gt; to finally create only one Proc. Composition is still
+here, but hidden by &lt;code&gt;#inject&lt;/code&gt; and &lt;code&gt;#send&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Array&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;to_proc&lt;/span&gt;
+    &lt;span class=&quot;no&quot;&gt;Proc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;inject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;method_id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;method_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;And that's it. Short and elegant, thanks to Ruby.&lt;/p&gt;
+</description>
+				<pubDate>Sun, 09 Dec 2012 00:00:00 -0800</pubDate>
+				<link>http://jhchabran.com/blog/2012/12/09/fun-with-to-proc-and-compositions</link>
+				<guid isPermaLink="true">http://jhchabran.com/blog/2012/12/09/fun-with-to-proc-and-compositions</guid>
+			</item>
+		
+			<item>
 				<title>Mixed links of the week (1)</title>
 				<description>&lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;http://blog.arkency.comb2012/11/not-rails/&quot;&gt;Not Rails&lt;/a&gt;: Rails isn't
@@ -1293,104 +1514,6 @@ can only blame myself.&lt;/p&gt;
 				<pubDate>Sat, 30 Jul 2011 00:00:00 -0700</pubDate>
 				<link>http://jhchabran.com/blog/2011/07/30/notes-on-migration-to-osx-lion</link>
 				<guid isPermaLink="true">http://jhchabran.com/blog/2011/07/30/notes-on-migration-to-osx-lion</guid>
-			</item>
-		
-			<item>
-				<title>Textmate or How to Lock Yourself</title>
-				<description>&lt;p&gt;I tried every code editor out there, every IDE I could find. Six or
-seven years ago, I came to the conclusion that I do prefer simple
-editors to them, mostly because I prefer a sharp tool than a clumsy
-thing that tries to solve every problem. Oh sure, stuff like NetBeans or
-Eclipse perform really well on Java, but I don't code with this
-language, so let's skip directly to code editors.&lt;/p&gt;
-
-&lt;p&gt;I spent something like two years with Emacs, it was great since I really
-enjoy Lisp but I never really liked the way the you input the shortcuts,
-making you holding Ctrl every couple of seconds to do something.
-Moreover, the way you have to setup it, installing loads of libraries,
-byte-compiling everything to have something still going fast was fun,
-but those shitloads of stuff to install can drive you crazy when
-something goes wrong with your install.&lt;/p&gt;
-
-&lt;p&gt;Vim had been my favorite code-editor for most of the time, maybe like
-five years. It's clearly an awesome piece of software and was convinced
-it would be my daily companion until something better come-out. Great
-plugins, blazing fast editing, tons of colorschemes (yeah I like
-changing those two or three times per week, mostly to visually break
-routine).&lt;/p&gt;
-
-&lt;p&gt;And two years ago I got a MacBook, switched from daily C++ development
-to Rails. Textmate always tickled me, and I finally gave it a try. I
-loved it. The feeling of having something modern, clean and simple,
-focusing on just what you need, providing new features like snippets,
-that cmd -T shortcut to jump to any file, it was just so cool.&lt;/p&gt;
-
-&lt;p&gt;But recently, things felt wrong. I'm using it daily for two years now
-and some details made me realize it's going nowhere, which is the point
-in this blog post.&lt;/p&gt;
-
-&lt;p&gt;No window splitting at all Scripting it with your favorite language
-basically means writing a script which will be called by your TM script
-You can crash it just by opening any log file Colorschemes are so damn
-cool nobody tries to create new ones ! But those are minor problems,
-except for the splitting issue which I really miss. The main problem is
-:&lt;/p&gt;
-
-&lt;p&gt;Textmate 1 is abandoned. We're all waiting for Textmate 2 to came out.
-But it's taking ages, and sincerely like its author said, it just
-another Duke Nukem Forever incarnation. I even doubt it will be
-released, maybe because if it's not perfect, its author will be flamed
-to oblivion by everyone, encouraging him to continue until its perfect.
-Well, it may not be the case, but currently we have no clue of a
-potential release date.&lt;/p&gt;
-
-&lt;p&gt;To me, Textmate is like a modern vim (ok, it's not open-source, it
-sucks, but I can accept that if the tool is really awesome, which is
-almost the case). No need to look at your keyboard and asking yourself
-why the fuck it's ctrl-] to jump on a help subject, it's just simple.
-Another cool one : moving around in Vim with jk keys is really nice, but
-as I still have to use arrows to browse in my cmd history, I can't get
-my fingers escaping from those arrows. For sure another shortcut must
-exist to do that, there are many reasons to excuse this behavior, but
-it's still not &quot;great&quot;, it's just cool.&lt;/p&gt;
-
-&lt;p&gt;You'll probably think by reading this that I'm an unsatisfied programmer
-who can't find its editor (which is true) but the point isnnt exactly
-that. I found my editor of choice. I'm raging against it because :&lt;/p&gt;
-
-&lt;p&gt;Even if they won tons of money while selling Textmate, there's only one
-developer. Come on, it's a code editor, it's serious business.
-Communication around Textmate 2 is a nice example of worst practices.
-Its author is trapped in that Babylon tower thingy, if he don't release
-it, he'll be smashed by everyone (which is already the case) Its author
-have to release something great or everyone will flame him, write awful
-frustrated blog posts, Scotty will beam him up to pluto ...&lt;/p&gt;
-
-&lt;p&gt;Learning an editor is an investment, we all know that, and feeling stuck because you
-can't help its author to make it great, you can't do anything at all
-'cause its closed-source. It feels like I bet and lost. I'm not blaming
-its author for its license choices, I'm okay with that, people have to
-eat, but that implies Macromates have duties too. A big one, update our
-fucking editor for god's sake. Writing good stuff then disappearing is
-the best fucking way to frustrate everyone. Moreover, I'm stucked. Emacs
-or Vim don't satisfy me anymore, 20 years old software rocks for
-stability, but there's some evolutions we had since I'd like to have in
-my editor.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Conclusion&lt;/strong&gt;: there must be a law against selling closed-source
-editors, I killed thousands of kittens with the troll potential of this
-blog post.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Addendum&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;I finally threw away my never ending thirst of perfection. I'm happily
-sticking to Vim
-as it is and it does the job really well. Feel free to browse and fork
-my &lt;a href=&quot;https://github.com/jhchabran/vimfiles&quot;&gt;vimrc&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-</description>
-				<pubDate>Thu, 11 Mar 2010 00:00:00 -0800</pubDate>
-				<link>http://jhchabran.com/blog/2010/03/11/Textmate-or-how-to-lock-yourself</link>
-				<guid isPermaLink="true">http://jhchabran.com/blog/2010/03/11/Textmate-or-how-to-lock-yourself</guid>
 			</item>
 		
 	</channel>
