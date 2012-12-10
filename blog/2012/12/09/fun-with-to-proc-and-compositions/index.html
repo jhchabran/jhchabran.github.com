@@ -263,7 +263,7 @@ to procs and then composed, can be written as the following:</p>
 it has to create a Proc for each symbol. A much more efficient version
 can be written by reusing <code>Symbol#to_proc</code> implementation code in an
 <code>#inject</code> to finally create only one Proc. Composition is still
-here, but hidden by <code>#inject</code> and <code>#send</code>.</p>
+here, but hidden by <code>#inject</code>.</p>
 
 <div class="highlight"><pre><code class="ruby"><span class="k">class</span> <span class="nc">Array</span>
   <span class="k">def</span> <span class="nf">to_proc</span>

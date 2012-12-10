@@ -205,7 +205,7 @@ to procs and then composed, can be written as the following:&lt;/p&gt;
 it has to create a Proc for each symbol. A much more efficient version
 can be written by reusing &lt;code&gt;Symbol#to_proc&lt;/code&gt; implementation code in an
 &lt;code&gt;#inject&lt;/code&gt; to finally create only one Proc. Composition is still
-here, but hidden by &lt;code&gt;#inject&lt;/code&gt; and &lt;code&gt;#send&lt;/code&gt;.&lt;/p&gt;
+here, but hidden by &lt;code&gt;#inject&lt;/code&gt;.&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Array&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;to_proc&lt;/span&gt;
