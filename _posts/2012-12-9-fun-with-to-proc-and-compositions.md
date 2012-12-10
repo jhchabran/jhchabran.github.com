@@ -191,7 +191,7 @@ Fine, it does the job and with a nice syntax. The only bad thing here is
 it has to create a Proc for each symbol. A much more efficient version
 can be written by reusing ```Symbol#to_proc``` implementation code in an
 ```#inject``` to finally create only one Proc. Composition is still
-here, but hidden by ```#inject``` and ```#send```.
+here, but hidden by ```#inject```. 
 
 {% highlight ruby %}
 class Array
