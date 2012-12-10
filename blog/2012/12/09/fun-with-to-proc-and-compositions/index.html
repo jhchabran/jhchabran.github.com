@@ -79,7 +79,7 @@ This is an amusing exercise that demonstrates Ruby's functional abilites.</p>
 
 <p>Just in case you need to freshen your memory about composing functions, it's a common notion in functional programming and it's also found early in mathematics courses.</p>
 
-<p>Given two functions <code>f(x)</code> and <code>g(x)</code>, <code>(f o g)(x) ==
+<p>Given two functions <code>f(x)</code> and <code>g(x)</code>, <code>(g o f)(x) ==
 g(f(x))</code>, <code>o</code> being the symbol of the composition operation.</p>
 
 <h2>Unchaining method calls</h2>
@@ -127,7 +127,7 @@ accessed trough self inside the function. Under the hood in Ruby <code>@firstnam
 sense :</p>
 
 <div class="highlight"><pre><code class="ruby"><span class="c1"># pseudo-code, &#39;o&#39; being the hypothetical composition operator.</span>
-<span class="n">get_order_then_city</span> <span class="o">=</span> <span class="n">order</span> <span class="n">o</span> <span class="n">city</span>
+<span class="n">get_order_then_city</span> <span class="o">=</span> <span class="n">city</span> <span class="n">o</span> <span class="n">order</span>
 <span class="n">users</span><span class="o">.</span><span class="n">collect</span> <span class="p">{</span> <span class="o">|</span><span class="n">user</span><span class="o">|</span> <span class="n">get_order_then_city</span><span class="p">(</span><span class="n">user</span><span class="p">)</span> <span class="p">}</span>
 </code></pre>
 </div>
@@ -154,7 +154,7 @@ it's usually <code>*</code> that takes its place.</p>
 <div class="highlight"><pre><code class="ruby">  <span class="n">increment</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">}</span>
   <span class="n">square</span>    <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="p">}</span>
 
-  <span class="n">increment_and_square</span> <span class="o">=</span> <span class="n">increment</span> <span class="o">*</span> <span class="n">square</span> 
+  <span class="n">increment_and_square</span> <span class="o">=</span> <span class="n">square</span> <span class="o">*</span> <span class="n">increment</span> 
   
   <span class="nb">p</span> <span class="n">increment_and_square</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
   <span class="c1"># =&gt; (2+1)^2 = 9</span>
