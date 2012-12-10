@@ -100,7 +100,7 @@ Implementation is pretty straight-forward :
 {% highlight ruby %}
 class Proc
   def *(other)
-    Proc.new { |x| other.call(call(x)) }
+    Proc.new { |x| call(other.call(x)) }
   end
 end
 {% endhighlight %}
@@ -143,7 +143,7 @@ end
 Such Procs can as previously seen, be easily composed with the brand new ```*```
 operator on Procs. 
 
-At this point it can be tempting to write  ```users.collect(&:order * &:city)``` but 
+At this point it can be tempting to write  ```users.collect(&:city * &:order)``` but 
 this can't work. As a block isn't an object, calling any method on it (```#*``` in this case) makes absolutely no sense. 
 Only a single unary ```&``` can exist in an expression. Ruby will raise a ```SyntaxError``` if 
 a second one is present.
@@ -152,12 +152,13 @@ The correct syntax with a single ```&``` isn't really shiny, but it
 works as expected.
 
 {% highlight ruby %}
-users.collect(&(:order.to_proc * :city.to_proc))
+users.collect(&(:city.to_proc * :order.to_proc))
 # => ['Kuala Lumpur', 'Paris']
 {% endhighlight %}
 
 But frankly, from a syntactic point of view, it's sill far from being simpler
-than a traditional ```users.collect { |user| user.order.city }```.
+than a traditional ```users.collect { |user| user.order.city }``` and
+the order feels a bit backward.
 
 ## Adding Syntactic Sugar
 
@@ -165,7 +166,7 @@ Even if it's just for fun, better syntax can be achived by calling
 Array to the rescue. Having a list of Procs that will be composed makes some sense and provides a lighter syntax.
 
 {% highlight ruby %}
-users.collect(&[:order, :city])
+users.collect(&[:city, :order])
 # => ['Kuala Lumpur', 'Paris']
 {% endhighlight %}
 
@@ -177,21 +178,34 @@ So building a Proc from an array of symbols, given they can be converted
 to procs and then composed, can be written as the following: 
 
 {% highlight ruby %}
-class Array
+class array
   def to_proc
     collect(&:to_proc).inject(&:*)
   end
 end
 
-users.collect(&[:order, :city])
-# => ['Kuala Lumpur', 'Paris']
+users.collect(&[:city, :order])
+# => ['kuala lumpur', 'paris']
 {% endhighlight %}
 
-Fine, it does the job and with a nice syntax. The only bad thing here is
-it has to create a Proc for each symbol. A much more efficient version
-can be written by reusing ```Symbol#to_proc``` implementation code in an
-```#inject``` to finally create only one Proc. Composition is still
-here, but hidden by ```#inject```. 
+Yet without knowing we're composing stuff under the hood, it would be
+nice to have the symbols ordered like the chained method calls.
+
+{% highlight ruby %}
+class array
+  def to_proc
+    reverse.collect(&:to_proc).inject(&:*)
+  end
+end
+
+users.collect(&[:order, :city])
+# => ['kuala lumpur', 'paris']
+{% endhighlight %}
+
+And it does the job and with a nice syntax! 
+
+The only bad thing here is it has to create a Proc for each symbol and that's why nobody should use it in real code. A less fun but more practical version can be written by using
+```#inject``` and ```#send```:
 
 {% highlight ruby %}
 class Array
@@ -205,4 +219,3 @@ class Array
 end
 {% endhighlight %}
 
-And that's it. Short and elegant, thanks to Ruby. 

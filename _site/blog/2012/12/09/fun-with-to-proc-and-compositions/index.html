@@ -166,7 +166,7 @@ it's usually <code>*</code> that takes its place.</p>
 
 <div class="highlight"><pre><code class="ruby"><span class="k">class</span> <span class="nc">Proc</span>
   <span class="k">def</span> <span class="nf">*</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
-    <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">other</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">call</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="p">}</span>
+    <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">call</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="p">}</span>
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre>
@@ -212,7 +212,7 @@ converts the Proc into a block so it can be passed to methods like
 <p>Such Procs can as previously seen, be easily composed with the brand new <code>*</code>
 operator on Procs.</p>
 
-<p>At this point it can be tempting to write  <code>users.collect(&amp;:order * &amp;:city)</code> but
+<p>At this point it can be tempting to write  <code>users.collect(&amp;:city * &amp;:order)</code> but
 this can't work. As a block isn't an object, calling any method on it (<code>#*</code> in this case) makes absolutely no sense.
 Only a single unary <code>&amp;</code> can exist in an expression. Ruby will raise a <code>SyntaxError</code> if
 a second one is present.</p>
@@ -220,21 +220,22 @@ a second one is present.</p>
 <p>The correct syntax with a single <code>&amp;</code> isn't really shiny, but it
 works as expected.</p>
 
-<div class="highlight"><pre><code class="ruby"><span class="n">users</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="ss">:order</span><span class="o">.</span><span class="n">to_proc</span> <span class="o">*</span> <span class="ss">:city</span><span class="o">.</span><span class="n">to_proc</span><span class="p">))</span>
+<div class="highlight"><pre><code class="ruby"><span class="n">users</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="ss">:city</span><span class="o">.</span><span class="n">to_proc</span> <span class="o">*</span> <span class="ss">:order</span><span class="o">.</span><span class="n">to_proc</span><span class="p">))</span>
 <span class="c1"># =&gt; [&#39;Kuala Lumpur&#39;, &#39;Paris&#39;]</span>
 </code></pre>
 </div>
 
 
 <p>But frankly, from a syntactic point of view, it's sill far from being simpler
-than a traditional <code>users.collect { |user| user.order.city }</code>.</p>
+than a traditional <code>users.collect { |user| user.order.city }</code> and
+the order feels a bit backward.</p>
 
 <h2>Adding Syntactic Sugar</h2>
 
 <p>Even if it's just for fun, better syntax can be achived by calling
 Array to the rescue. Having a list of Procs that will be composed makes some sense and provides a lighter syntax.</p>
 
-<div class="highlight"><pre><code class="ruby"><span class="n">users</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="o">&amp;[</span><span class="ss">:order</span><span class="p">,</span> <span class="ss">:city</span><span class="o">]</span><span class="p">)</span>
+<div class="highlight"><pre><code class="ruby"><span class="n">users</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="o">&amp;[</span><span class="ss">:city</span><span class="p">,</span> <span class="ss">:order</span><span class="o">]</span><span class="p">)</span>
 <span class="c1"># =&gt; [&#39;Kuala Lumpur&#39;, &#39;Paris&#39;]</span>
 </code></pre>
 </div>
@@ -247,23 +248,37 @@ here.</p>
 <p>So building a Proc from an array of symbols, given they can be converted
 to procs and then composed, can be written as the following:</p>
 
-<div class="highlight"><pre><code class="ruby"><span class="k">class</span> <span class="nc">Array</span>
+<div class="highlight"><pre><code class="ruby"><span class="k">class</span> <span class="n">array</span>
   <span class="k">def</span> <span class="nf">to_proc</span>
     <span class="n">collect</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:to_proc</span><span class="p">)</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:*</span><span class="p">)</span>
   <span class="k">end</span>
 <span class="k">end</span>
 
-<span class="n">users</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="o">&amp;[</span><span class="ss">:order</span><span class="p">,</span> <span class="ss">:city</span><span class="o">]</span><span class="p">)</span>
-<span class="c1"># =&gt; [&#39;Kuala Lumpur&#39;, &#39;Paris&#39;]</span>
+<span class="n">users</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="o">&amp;[</span><span class="ss">:city</span><span class="p">,</span> <span class="ss">:order</span><span class="o">]</span><span class="p">)</span>
+<span class="c1"># =&gt; [&#39;kuala lumpur&#39;, &#39;paris&#39;]</span>
 </code></pre>
 </div>
 
 
-<p>Fine, it does the job and with a nice syntax. The only bad thing here is
-it has to create a Proc for each symbol. A much more efficient version
-can be written by reusing <code>Symbol#to_proc</code> implementation code in an
-<code>#inject</code> to finally create only one Proc. Composition is still
-here, but hidden by <code>#inject</code>.</p>
+<p>Yet without knowing we're composing stuff under the hood, it would be
+nice to have the symbols ordered like the chained method calls.</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="k">class</span> <span class="n">array</span>
+  <span class="k">def</span> <span class="nf">to_proc</span>
+    <span class="n">reverse</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:to_proc</span><span class="p">)</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:*</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">users</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="o">&amp;[</span><span class="ss">:order</span><span class="p">,</span> <span class="ss">:city</span><span class="o">]</span><span class="p">)</span>
+<span class="c1"># =&gt; [&#39;kuala lumpur&#39;, &#39;paris&#39;]</span>
+</code></pre>
+</div>
+
+
+<p>And it does the job and with a nice syntax!</p>
+
+<p>The only bad thing here is it has to create a Proc for each symbol and that's why nobody should use it in real code. A less fun but more practical version can be written by using
+<code>#inject</code> and <code>#send</code>:</p>
 
 <div class="highlight"><pre><code class="ruby"><span class="k">class</span> <span class="nc">Array</span>
   <span class="k">def</span> <span class="nf">to_proc</span>
@@ -278,7 +293,7 @@ here, but hidden by <code>#inject</code>.</p>
 </div>
 
 
-<p>And that's it. Short and elegant, thanks to Ruby.</p>
+
 
       
       <br/>
