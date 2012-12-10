@@ -18,7 +18,7 @@ This is an amusing exercise that demonstrates Ruby's functional abilites.
 
 Just in case you need to freshen your memory about composing functions, it's a common notion in functional programming and it's also found early in mathematics courses. 
 
-Given two functions ```f(x)``` and ```g(x)```, ```(f o g)(x) ==
+Given two functions ```f(x)``` and ```g(x)```, ```(g o f)(x) ==
 g(f(x))```, ```o``` being the symbol of the composition operation.
 
 ## Unchaining method calls
@@ -64,7 +64,7 @@ sense :
 
 {% highlight ruby %}
 # pseudo-code, 'o' being the hypothetical composition operator.
-get_order_then_city = order o city
+get_order_then_city = city o order
 users.collect { |user| get_order_then_city(user) }
 {% endhighlight %}
 
@@ -89,7 +89,7 @@ it's usually ```*``` that takes its place.
   increment = Proc.new { |x| x + 1 }
   square    = Proc.new { |x| x * x }
 
-  increment_and_square = increment * square 
+  increment_and_square = square * increment 
   
   p increment_and_square(2)
   # => (2+1)^2 = 9
