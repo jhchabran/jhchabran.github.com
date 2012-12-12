@@ -1,6 +1,6 @@
 permalink: /blog/:year/:month/:day/:title
 pygments: true
-exclude: ['Rakefile', 'README.md', 'write_list.md']
+exclude: ['Rakefile', 'README.md', 'write_list.md', 'License.md']
 markdown: rdiscount
 
 domain: jhchabran.com
