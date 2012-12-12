@@ -16,7 +16,7 @@
 
 <p>
   {% unless post.show_content_in_index %}
-    {{ post.content | strip_html | truncatewords: num_words }}
+    {{ post.content | excerpt }}
     <p><a href="{{ post.url }}">Read more...</a></p>
   {% else %}
     {{ post.content }}
