@@ -19,7 +19,9 @@ coder
 you're staying around seven hours per day typing, so why not try
 something really efficient ? 
 
-It hardly convinced anyone with that.
+It hardly convinced anyone.
+
+{% end_excerpt %}
 
 Sublime Text 2, Textmate, are common answers, gladly followed by a "It
 does the job".

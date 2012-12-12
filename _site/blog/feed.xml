@@ -19,6 +19,9 @@ unefficient form &lt;code&gt;users.collect(&amp;amp;:order).collect(&amp;amp;:ci
 &lt;p&gt;It can be achieved by composing functions, in Ruby's case by composing Procs.
 This is an amusing exercise that demonstrates Ruby's functional abilites.&lt;/p&gt;
 
+&lt;!--more--&gt;
+
+
 &lt;p&gt;Just in case you need to freshen your memory about composing functions, it's a common notion in functional programming and it's also found early in mathematics courses.&lt;/p&gt;
 
 &lt;p&gt;Given two functions &lt;code&gt;f(x)&lt;/code&gt; and &lt;code&gt;g(x)&lt;/code&gt;, &lt;code&gt;(g o f)(x) ==
@@ -268,6 +271,9 @@ The next step is about adding testing support. Even if it's a simple
 extension, the whole process of reloading the extension in the browser
 to manually test a feature is incredibly boring and error prone.&lt;/p&gt;
 
+&lt;!--more--&gt;
+
+
 &lt;p&gt;To illustrate,
 &lt;a href=&quot;https://chrome.google.com/webstore/detail/tabswitcher/gkdkligmcadfbagoeggeohelmgalchcn&quot;&gt;TabSwitcher&lt;/a&gt; will be used as an example, more
 specifically the &lt;code&gt;match(url, abbreviation)&lt;/code&gt; function which returns a &lt;code&gt;float&lt;/code&gt;, indicating how close is
@@ -489,6 +495,9 @@ extension.&lt;/p&gt;
 
 &lt;p&gt;Before describing the changes, what problem does it aims to solve ?&lt;/p&gt;
 
+&lt;!--more--&gt;
+
+
 &lt;h2&gt;Switching between tabs like ninja&lt;/h2&gt;
 
 &lt;p&gt;I mostly work with more than thirty tabs opened in my browser. Between
@@ -578,7 +587,10 @@ coder
 you're staying around seven hours per day typing, so why not try
 something really efficient ?&lt;/p&gt;
 
-&lt;p&gt;It hardly convinced anyone with that.&lt;/p&gt;
+&lt;p&gt;It hardly convinced anyone.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
 
 &lt;p&gt;Sublime Text 2, Textmate, are common answers, gladly followed by a &quot;It
 does the job&quot;.&lt;/p&gt;
@@ -746,6 +758,9 @@ wrote in CoffeeScript. While being familiar with the latest is mandatory
 to understand
 what's going on there, no previous experience with Google Chrome is
 needed.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
 
 &lt;p&gt;Our chrome extension will be a fully fonctional tab switcher that mimics
 Command-T feature of Textmate (also known as fuzzy finding).&lt;/p&gt;
@@ -1099,6 +1114,9 @@ and ask him to handle your task!&lt;/p&gt;
 &lt;p&gt;The following points are basic principles to keep in mind while writing
 specs to avoid being stuck with an unreadable spec.&lt;/p&gt;
 
+&lt;!--more--&gt;
+
+
 &lt;p&gt;We deal with four models : User, Cart, Order and Item.
 Their relationships are obviously as simplified as possible to keep
 ourselves focused on their tests.&lt;/p&gt;
@@ -1374,6 +1392,9 @@ for work : Homebrew, RVM, MacVim so installing it on a friday night
 shouldn't
 be too painful. Plus I got backups everywhere (local server + dropbox +
 github + tarsnap).&lt;/p&gt;
+
+&lt;!--more--&gt;
+
 
 &lt;h2&gt;What went well&lt;/h2&gt;
 

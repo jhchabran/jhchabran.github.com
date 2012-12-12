@@ -17,6 +17,8 @@ to understand
 what's going on there, no previous experience with Google Chrome is
 needed.
 
+{% end_excerpt %}
+
 Our chrome extension will be a fully fonctional tab switcher that mimics
 Command-T feature of Textmate (also known as fuzzy finding).
 

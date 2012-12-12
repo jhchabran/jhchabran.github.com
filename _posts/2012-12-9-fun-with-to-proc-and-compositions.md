@@ -16,6 +16,8 @@ users.collect(&[:order, :city])
 It can be achieved by composing functions, in Ruby's case by composing Procs. 
 This is an amusing exercise that demonstrates Ruby's functional abilites.
 
+{% end_excerpt %}
+
 Just in case you need to freshen your memory about composing functions, it's a common notion in functional programming and it's also found early in mathematics courses. 
 
 Given two functions ```f(x)``` and ```g(x)```, ```(g o f)(x) ==

@@ -18,6 +18,8 @@ and ask him to handle your task!
 The following points are basic principles to keep in mind while writing
 specs to avoid being stuck with an unreadable spec.
 
+{% end_excerpt %}
+
 We deal with four models : User, Cart, Order and Item.
 Their relationships are obviously as simplified as possible to keep
 ourselves focused on their tests.

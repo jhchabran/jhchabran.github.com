@@ -12,6 +12,8 @@ shouldn't
 be too painful. Plus I got backups everywhere (local server + dropbox +
 github + tarsnap). 
 
+{% end_excerpt %}
+
 ## What went well
 
 - Downloading it, I got a stable and fast ADSL connection ( thanks

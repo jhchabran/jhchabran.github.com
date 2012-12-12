@@ -17,6 +17,8 @@ extension.
 
 Before describing the changes, what problem does it aims to solve ?
 
+{% end_excerpt %}
+
 ## Switching between tabs like ninja
 
 I mostly work with more than thirty tabs opened in my browser. Between

@@ -13,6 +13,8 @@ The next step is about adding testing support. Even if it's a simple
 extension, the whole process of reloading the extension in the browser
 to manually test a feature is incredibly boring and error prone.
 
+{% end_excerpt %}
+
 To illustrate,
 [TabSwitcher](https://chrome.google.com/webstore/detail/tabswitcher/gkdkligmcadfbagoeggeohelmgalchcn) will be used as an example, more
 specifically the ```match(url, abbreviation)``` function which returns a ```float```, indicating how close is 

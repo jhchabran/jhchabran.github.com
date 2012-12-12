@@ -2,6 +2,7 @@
 layout: post
 title: 10 Rails Quality Examples
 category: Rails
+show_content_in_index: true
 tags:
   - Rails
 ---
