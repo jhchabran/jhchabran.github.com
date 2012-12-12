@@ -73,7 +73,18 @@ type="text/javascript">try{Typekit.load();}catch(e){}</script>
 
 <p>
   
-    What about being able to shorten users.collect { |user| user.order.city } or its unefficient form users.collect(&amp;:order).collect(&amp;:city) into users.collect(&amp;[:order, :city]) It can be achieved by composing functions, in Ruby's case by composing Procs. This is an amusing exercise that demonstrates Ruby's functional abilites. Just in case you need to freshen your memory about composing functions, it's a common notion in functional programming and it's also found early in mathematics courses. Given two functions f(x) and g(x),...
+    <p>What about being able to shorten <code>users.collect { |user| user.order.city }</code> or its
+unefficient form <code>users.collect(&amp;:order).collect(&amp;:city)</code> into</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="n">users</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="o">&amp;[</span><span class="ss">:order</span><span class="p">,</span> <span class="ss">:city</span><span class="o">]</span><span class="p">)</span>
+</code></pre>
+</div>
+
+
+<p>It can be achieved by composing functions, in Ruby's case by composing Procs.
+This is an amusing exercise that demonstrates Ruby's functional abilites.</p>
+
+
     <p><a href="/blog/2012/12/09/fun-with-to-proc-and-compositions">Read more...</a></p>
   
 </p>
@@ -88,7 +99,18 @@ type="text/javascript">try{Typekit.load();}catch(e){}</script>
 
 <p>
   
-    Writing Rails specs with RSpec and FactoryGirl is easy to do when you got a basic understanding of testing principles but you may have noticed how these specs tends to get cluttered over time. Even to the point you don't get what's going on at all and call your co-worker who wrote them and ask him to handle your task! The following points are basic principles to keep in mind while writing specs to avoid...
+    <p>Writing Rails specs with <a href="https://www.relishapp.com/rspec">RSpec</a> and
+<a href="https://github.com/thoughtbot/factory_girl">FactoryGirl</a> is easy to do
+when you
+got a basic understanding of testing principles but you may have noticed
+how these specs tends to get cluttered over time. Even to the point you
+don't get what's going on at all and call your co-worker who wrote them
+and ask him to handle your task!</p>
+
+<p>The following points are basic principles to keep in mind while writing
+specs to avoid being stuck with an unreadable spec.</p>
+
+
     <p><a href="/blog/2011/09/11/writing-readable-specs">Read more...</a></p>
   
 </p>

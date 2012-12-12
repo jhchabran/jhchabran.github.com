@@ -76,7 +76,18 @@ type="text/javascript">try{Typekit.load();}catch(e){}</script>
 
 <p>
   
-    What about being able to shorten users.collect { |user| user.order.city } or its unefficient form users.collect(&amp;:order).collect(&amp;:city) into users.collect(&amp;[:order, :city]) It can be achieved by composing functions, in Ruby's case by composing Procs. This is an amusing exercise that demonstrates Ruby's functional abilites. Just in case you need to freshen your memory about composing functions, it's a common notion in functional programming and it's also found early in mathematics courses. Given two functions f(x) and g(x),...
+    <p>What about being able to shorten <code>users.collect { |user| user.order.city }</code> or its
+unefficient form <code>users.collect(&amp;:order).collect(&amp;:city)</code> into</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="n">users</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="o">&amp;[</span><span class="ss">:order</span><span class="p">,</span> <span class="ss">:city</span><span class="o">]</span><span class="p">)</span>
+</code></pre>
+</div>
+
+
+<p>It can be achieved by composing functions, in Ruby's case by composing Procs.
+This is an amusing exercise that demonstrates Ruby's functional abilites.</p>
+
+
     <p><a href="/blog/2012/12/09/fun-with-to-proc-and-compositions">Read more...</a></p>
   
 </p>
@@ -124,7 +135,12 @@ old tricks never dies, Redis and its bitwise operations to store analytics.</li>
 
 <p>
   
-    So we've previously seen how to bootstrap a chrome extension with CoffeeScript. The next step is about adding testing support. Even if it's a simple extension, the whole process of reloading the extension in the browser to manually test a feature is incredibly boring and error prone. To illustrate, TabSwitcher will be used as an example, more specifically the match(url, abbreviation) function which returns a float, indicating how close is abbreviation is to url. This...
+    <p>So we've previously seen how to bootstrap <a href="http://jhchabran.com/blog/2011/12/17/build-a-chrome-extension-with-coffeescript/">a chrome extension with CoffeeScript</a>.
+The next step is about adding testing support. Even if it's a simple
+extension, the whole process of reloading the extension in the browser
+to manually test a feature is incredibly boring and error prone.</p>
+
+
     <p><a href="/blog/2012/11/28/testing-a-chrome-extension-with-mocha-and-coffeescript">Read more...</a></p>
   
 </p>
@@ -143,7 +159,15 @@ old tricks never dies, Redis and its bitwise operations to store analytics.</li>
 
 <p>
   
-    TabSwitcher had been started one year ago, to showcase (see previous post) how a Chrome Extension using CoffeeScript can be built. I recently spend some time polishing it to bring it to the level of a decently featured extension. Before describing the changes, what problem does it aims to solve ? Switching between tabs like ninja I mostly work with more than thirty tabs opened in my browser. Between Gmail, Basecamp, Github, various documentations, news...
+    <p>TabSwitcher had been started one year ago, to showcase <a href="http://jhchabran.com/blog/2011/12/17/build-a-chrome-extension-with-coffeescript">(see previous
+post)</a>
+how a Chrome Extension using CoffeeScript can be built. I recently spend some
+time polishing it to bring it to the level of a decently featured
+extension.</p>
+
+<p>Before describing the changes, what problem does it aims to solve ?</p>
+
+
     <p><a href="/blog/2012/11/25/Tabswitcher-got-updated">Read more...</a></p>
   
 </p>
@@ -162,7 +186,22 @@ old tricks never dies, Redis and its bitwise operations to store analytics.</li>
 
 <p>
   
-    Vim users, myself included, often advocate about gaining speed, carving text like a ninja and banning that awful device named a mouse. The follow-up to this is people saying, "Vim seems to be awesome but I don't need to be that fast anyway." Each time I heard that, I tried to advocate about the fact that as a coder you're staying around seven hours per day typing, so why not try something really efficient ?...
+    <p>Vim users, myself included, often advocate about gaining speed, carving
+text like a
+ninja and banning that awful device named a mouse.</p>
+
+<p>The follow-up to this is people saying, "Vim seems to be awesome but I
+don't need to
+be that fast anyway."</p>
+
+<p>Each time I heard that, I tried to advocate about the fact that as a
+coder
+you're staying around seven hours per day typing, so why not try
+something really efficient ?</p>
+
+<p>It hardly convinced anyone.</p>
+
+
     <p><a href="/blog/2012/09/27/vim-isnt-about-speed">Read more...</a></p>
   
 </p>
@@ -181,11 +220,10 @@ old tricks never dies, Redis and its bitwise operations to store analytics.</li>
 
 <p>
   
-    Learning Rails by example is a great way to progress. This blog post
-list ten awesome real world projects on which you should
-definitively read if you want to improve.
+    <p>Learning Rails by example is a great way to progress. This <a href="http://jetpackweb.com/blog/2009/10/14/high-quality-ruby-on-rails-example-applications/">blog post</a>
+list ten awesome <strong>real world</strong> projects on which you should
+definitively read if you want to improve.</p>
 
-    <p><a href="/blog/2012/06/12/10-high-quality-rails-examples">Read more...</a></p>
   
 </p>
 <br/>
@@ -203,9 +241,8 @@ definitively read if you want to improve.
 
 <p>
   
-    I will be there as a coach !
+    <p>I will be there as a coach !</p>
 
-    <p><a href="/blog/2012/05/27/rails-girls-paris">Read more...</a></p>
   
 </p>
 <br/>
@@ -223,7 +260,17 @@ definitively read if you want to improve.
 
 <p>
   
-    Ever had an idea for a great Chrome Extension ? Did you know that a chrome extension is just javascript ? And where there's Javascript, we can write some CoffeeScript ! This post aims to give you an overview of building a chrome extension wrote in CoffeeScript. While being familiar with the latest is mandatory to understand what's going on there, no previous experience with Google Chrome is needed. Our chrome extension will be a...
+    <p>Ever had an idea for a great Chrome Extension ? Did you know that a
+chrome extension is just javascript ? And where there's Javascript, we
+can write some CoffeeScript !</p>
+
+<p>This post aims to give you an overview of building a chrome extension
+wrote in CoffeeScript. While being familiar with the latest is mandatory
+to understand
+what's going on there, no previous experience with Google Chrome is
+needed.</p>
+
+
     <p><a href="/blog/2011/12/17/build-a-chrome-extension-with-coffeescript">Read more...</a></p>
   
 </p>
@@ -242,7 +289,18 @@ definitively read if you want to improve.
 
 <p>
   
-    Writing Rails specs with RSpec and FactoryGirl is easy to do when you got a basic understanding of testing principles but you may have noticed how these specs tends to get cluttered over time. Even to the point you don't get what's going on at all and call your co-worker who wrote them and ask him to handle your task! The following points are basic principles to keep in mind while writing specs to avoid...
+    <p>Writing Rails specs with <a href="https://www.relishapp.com/rspec">RSpec</a> and
+<a href="https://github.com/thoughtbot/factory_girl">FactoryGirl</a> is easy to do
+when you
+got a basic understanding of testing principles but you may have noticed
+how these specs tends to get cluttered over time. Even to the point you
+don't get what's going on at all and call your co-worker who wrote them
+and ask him to handle your task!</p>
+
+<p>The following points are basic principles to keep in mind while writing
+specs to avoid being stuck with an unreadable spec.</p>
+
+
     <p><a href="/blog/2011/09/11/writing-readable-specs">Read more...</a></p>
   
 </p>
@@ -261,7 +319,14 @@ definitively read if you want to improve.
 
 <p>
   
-    I bought Lion yesterday ! People have already tested it against tools I use for work : Homebrew, RVM, MacVim so installing it on a friday night shouldn't be too painful. Plus I got backups everywhere (local server + dropbox + github + tarsnap). What went well Downloading it, I got a stable and fast ADSL connection ( thanks Free.fr ) Installing it right after the download Installing Xcode and Homebrew. FAIL : Uninstalling MacFuse...
+    <p>I bought Lion yesterday ! People have already tested it against tools I
+use
+for work : Homebrew, RVM, MacVim so installing it on a friday night
+shouldn't
+be too painful. Plus I got backups everywhere (local server + dropbox +
+github + tarsnap).</p>
+
+
     <p><a href="/blog/2011/07/30/notes-on-migration-to-osx-lion">Read more...</a></p>
   
 </p>
@@ -280,7 +345,14 @@ definitively read if you want to improve.
 
 <p>
   
-    I tried every code editor out there, every IDE I could find. Six or seven years ago, I came to the conclusion that I do prefer simple editors to them, mostly because I prefer a sharp tool than a clumsy thing that tries to solve every problem. Oh sure, stuff like NetBeans or Eclipse perform really well on Java, but I don't code with this language, so let's skip directly to code editors. I spent...
+    <p>I tried every code editor out there, every IDE I could find. Six or
+seven years ago, I came to the conclusion that I do prefer simple
+editors to them, mostly because I prefer a sharp tool than a clumsy
+thing that tries to solve every problem. Oh sure, stuff like NetBeans or
+Eclipse perform really well on Java, but I don't code with this
+language, so let's skip directly to code editors.</p>
+
+
     <p><a href="/blog/2010/03/11/Textmate-or-how-to-lock-yourself">Read more...</a></p>
   
 </p>
