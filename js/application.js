@@ -20,7 +20,10 @@
     });
 
     $('a[href*=jhchabran-20]').click(function() {
-      _gaq.push(['_trackEvent','AmazonAffiliates','Link',$(this).attr('href')]);
+        var myTracker=_gat._getTrackerByName();
+        _gaq.push(['myTracker._trackEvent', "affiliates-amazon" , 'click' ]);
+        setTimeout('document.location = "' + this.href + '"', 100)
+        return false
     });
   });
 }(window.jQuery);
