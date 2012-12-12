@@ -9,3 +9,11 @@ You can help me to improve by either by pinging me on Twitter (@jhchabran), open
 
 Posts and content here are my property but its code is open source,
 feel free to fork this repository to power your own blog.
+
+# License
+
+The content of the site (i.e., blog posts and page content) is licensed
+under a [Creative Commons Attribution License](http://creativecommons.org/licenses/by/3.0/us/): you may use it, but you must give attribution.
+
+You may feel free to reuse any part of the structure, design, and layout
+of this site; it is all licensed under the MIT License.
