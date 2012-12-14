@@ -3,8 +3,8 @@ layout: post
 title: Textmate or How to Lock Yourself
 category: Rant
 tags:
-  - Rant
-  - OpenSource
+  - Rants
+
 ---
 I tried every code editor out there, every IDE I could find. Six or
 seven years ago, I came to the conclusion that I do prefer simple
