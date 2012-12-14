@@ -4,6 +4,7 @@ title: Fun with to_proc and compositions
 category: Ruby
 tags:
   - Ruby
+  - FP
 ---
 
 What about being able to shorten ```users.collect { |user| user.order.city }``` or its
