@@ -7,6 +7,51 @@
 		<atom:link href="http://jhchabran.com/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Mixed links of the week (2)</title>
+				<description>&lt;p&gt;It's been eleven days since my last &lt;a href=&quot;http://jhchabran.com/blog/2012/12/03/mixed-links-of-the-week-1&quot;&gt;mixed links of the week&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;So far I managed to get enough motivation to write at least one article
+per week, thanks to &lt;a href=&quot;http://www.amazon.com/gp/product/1934356883/ref=as_li_qf_sp_asin_tl?ie=UTF8&amp;amp;camp=1789&amp;amp;creative=9325&amp;amp;creativeASIN=1934356883&amp;amp;linkCode=as2&amp;amp;tag=jhchabran-20&quot; title=&quot;&quot;&gt;this great book&lt;/a&gt;, I still have trouble posting these mixed links on a fixed day :).&lt;/p&gt;
+
+&lt;p&gt;Anyway, this week includes Ruby, Haskell, R, an interview,
+communications and a surprising initiative!&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+
+&lt;p&gt;During these eleven days I stumbled upon many interesting articles,
+starting with &lt;a href=&quot;http://patshaughnessy.net/&quot;&gt;Pat Shaughnessy&lt;/a&gt; which
+crafted &lt;a href=&quot;http://www.rubyinside.com/ruby-mri-code-walk-tour-6020.html&quot;&gt;a neat codewalk into Ruby MRI source
+code&lt;/a&gt;. If
+you never dived into Ruby source code before and had thoughts like &quot;Where the fuck
+do I start&quot; (as everyone did at some point), this video is a must-see.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://zachholman.com/&quot;&gt;Zach Holman&lt;/a&gt;, a notorious Githubber, posted a really well written article explaining how &lt;a href=&quot;http://zachholman.com/posts/chat/&quot;&gt;chat trumps meetings&lt;/a&gt;. Text based discussions are really a better way to communicate according to Zach. And I'm convinced he's right, I'll just add that it's true as long as you work with people with that actually are used to write. Sadly it's a skill that is often underlooked among developers and almost never introduced in programming courses.&lt;/p&gt;
+
+&lt;p&gt;Broaden your mind with Haskell with &lt;a href=&quot;http://bendyworks.com/geekville/articles/2012/12/from-ruby-to-haskell-part-1-testing&quot;&gt;a Ruby to Haskell&lt;/a&gt;
+ post which is the first of of the series, beginning with testing. It introduces at some point &lt;a href=&quot;http://hackage.haskell.org/package/QuickCheck&quot;&gt;QuickCheck&lt;/a&gt; which is basically a fuzzy testing library that mess with functions to ensure constraints are correctly met. Trust me, have a look at this thing, it's very weird for a Rubyist!&lt;/p&gt;
+
+&lt;p&gt;CodeSchool published a &lt;a href=&quot;http://tryr.codeschool.com/&quot;&gt;course abour R programming language&lt;/a&gt;, a language designed to deal with
+statistics and data modeling. Maybe you remember Zed Shaw using R, in his &quot;Play by Play&quot; Peepcode episode. He showed how he used it to make statistics about his efficiency at different times of the day. Seriously, I wish I had such wonderful content to learn programming when I was a kid.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.confreaks.com/presenters/24-jim-weirich&quot;&gt;Jim Weirich&lt;/a&gt;, mostly known for his many public talks and being the author of Rake, &lt;a href=&quot;http://rubysource.com/an-interview-with-jim-weirich/&quot;&gt;was interviewd by RubySource&lt;/a&gt;. He addresses many topics such as how he got hooked into Ruby, functional programming, threading, testing.&lt;/p&gt;
+
+&lt;p&gt;Caching partials with Rails and memcache is still too slow? Have a look
+at how the guy behind Obama's campaign website used &lt;code&gt;read_multi&lt;/code&gt; to avoid
+fetching sequentially from Memcache. It's smart, simple and comes with a
+gem ! &lt;a href=&quot;http://ninjasandrobots.com/rails-faster-partial-rendering-and-caching/&quot;&gt;Faster partial rendering and caching, the Obama way&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Thought the Haskell link was exotic ? Here comes the Darling project, aiming
+to &lt;a href=&quot;http://www.phoronix.com/scan.php?page=news_item&amp;amp;px=MTI0Njc&quot;&gt;run OSX binaries on Linux&lt;/a&gt;.
+Still at its very beginning, but hey, Wine got Windows binaries running
+on Linux, why couldn't OSX binaries be ran too? Sincerely, I got a huge admiration for people starting such tremendous projects.&lt;/p&gt;
+</description>
+				<pubDate>Fri, 14 Dec 2012 00:00:00 -0800</pubDate>
+				<link>http://jhchabran.com/blog/2012/12/14/mixed-links-of-the-week-2</link>
+				<guid isPermaLink="true">http://jhchabran.com/blog/2012/12/14/mixed-links-of-the-week-2</guid>
+			</item>
+		
+			<item>
 				<title>Fun with to_proc and compositions</title>
 				<description>&lt;p&gt;What about being able to shorten &lt;code&gt;users.collect { |user| user.order.city }&lt;/code&gt; or its
 unefficient form &lt;code&gt;users.collect(&amp;amp;:order).collect(&amp;amp;:city)&lt;/code&gt; into&lt;/p&gt;
@@ -1382,174 +1427,6 @@ least ensure you're heading in the right direction with your specs.&lt;/p&gt;
 				<pubDate>Sun, 11 Sep 2011 00:00:00 -0700</pubDate>
 				<link>http://jhchabran.com/blog/2011/09/11/writing-readable-specs</link>
 				<guid isPermaLink="true">http://jhchabran.com/blog/2011/09/11/writing-readable-specs</guid>
-			</item>
-		
-			<item>
-				<title>Notes on migrating to OSX Lion</title>
-				<description>&lt;p&gt;I bought Lion yesterday ! People have already tested it against tools I
-use
-for work : Homebrew, RVM, MacVim so installing it on a friday night
-shouldn't
-be too painful. Plus I got backups everywhere (local server + dropbox +
-github + tarsnap).&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-
-&lt;h2&gt;What went well&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Downloading it, I got a stable and fast ADSL connection ( thanks
-Free.fr )&lt;/li&gt;
-&lt;li&gt;Installing it right after the download&lt;/li&gt;
-&lt;li&gt;Installing Xcode and &lt;a href=&quot;http://mxcl.github.com/homebrew/&quot;&gt;Homebrew&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h2&gt;FAIL : Uninstalling MacFuse&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Uninstalling &lt;a href=&quot;http://code.google.com/p/macfuse/&quot;&gt;MacFuse&lt;/a&gt; after the
-install. I forgot to remove it before
-intalling Lion, since it's quite unmaintained, you can guess it's
-going be boring to remove it correctly.&lt;/li&gt;
-&lt;li&gt;The uninstall script will fail with various errors.
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://www.mail-archive.com/macfuse@googlegroups.com/msg01094.html&quot;&gt;Mailing list thread that sum up what's going
-on&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Removing it manually, &lt;em&gt;but wait that's my fault !&lt;/em&gt; I inspected the
-uninstall shell script
-and decided to do some quick shell script surgery.
-
-&lt;ul&gt;
-&lt;li&gt;Looks like I messed up there. Even if I manually unplugged the Kext
-before starting it, I got a weird freeze where no more application
-could be launched, they were bouncing endlessly.&lt;/li&gt;
-&lt;li&gt;Forced reboot.&lt;/li&gt;
-&lt;li&gt;Lion detects a broken os and decided to re-install itself.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h2&gt;FAIL : Admin privileges&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Second install, Lion did not set any admin rights to my main user.
-This
-means :
-
-&lt;ul&gt;
-&lt;li&gt;I can't touch anything in system preferences.&lt;/li&gt;
-&lt;li&gt;I can't sudo.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Fixed it by booting in single user mode and adding myself manually to
-admin group :
-
-&lt;ul&gt;
-&lt;li&gt;Reboot and hold cmd+s&lt;/li&gt;
-&lt;li&gt;Remount your partition to have it writable
-
-&lt;ul&gt;
-&lt;li&gt;&lt;em&gt;/sbin/fsck -fy&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;/sbin/mount -uw /&lt;/em&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Add myself to admin group
-
-&lt;ul&gt;
-&lt;li&gt;&lt;em&gt;dseeditgroup -o edit -a myusername -t user admin&lt;/em&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Reboot&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h2&gt;FAIL : SSH encoding issues&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;SSH'ing into any box messed up completely my encoding settings.&lt;/li&gt;
-&lt;li&gt;Comment &lt;em&gt;SendEnv LANG LC_&lt;/em&gt; * in &lt;em&gt;/etc/ssh_config&lt;/em&gt; to get back to the
-pre-Lion behavior.&lt;/li&gt;
-&lt;li&gt;Lion does not set its locale to &lt;em&gt;en_us.utf8&lt;/em&gt; by default,
-appending it to your &lt;em&gt;~/.profile&lt;/em&gt; with &lt;em&gt;export LC_ALL=en_US.UTF-8&lt;/em&gt;
-corrects this issue if you want to adapt to the new
-default.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h2&gt;FAIL : Rvm and Ruby Entreprise edition ( Ree )&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Segfault !&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;code&gt;
-ld: warning: directory not found for option '-L/opt/local/lib'
-./ext/purelib.rb:2: [BUG] Segmentation fault
-ruby 1.8.7 (2011-02-18 patchlevel 334) [i686-darwin11.0.0],
-MBARI 0x6770, Ruby Enterprise Edition 2011.03
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;  &lt;a href=&quot;https://gist.github.com/1115457&quot;&gt;fulls logs&lt;/a&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Fixed by using gcc instead of llvm&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;code&gt;
-rvm remove ree
-export CC=/usr/bin/gcc-4.2
-rvm install --force ree
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;  &lt;a href=&quot;http://stackoverflow.com/questions/6804195/cant-install-ruby-enterprise-edition-with-rvm-on-osx-lion&quot;&gt;StackOverflow
-thread&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2&gt;FAIL : Rvm and Postgresql with Homebrew&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Fail to exec the &lt;em&gt;Postgresql&lt;/em&gt; recipe :&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;code&gt;
-Error: undefined method `strip' for #&amp;lt;KegOnlyReason:0x10ac404b8&amp;gt;
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I updated and relaunched &lt;em&gt;brew install postgresql&lt;/em&gt; which ran smoothly
-thanks to &lt;a href=&quot;https://github.com/mxcl/homebrew/commit/20d2edf18deefb6d6439d415625f506c662dcba2&quot;&gt;this
-fix&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h2&gt;FAIL : Fullscreen :&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Can't use cmd+` to alternate windows while in fullscreen, this isn't
-vital but it's quite annoying.&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h2&gt;Finally&lt;/h2&gt;
-
-&lt;p&gt;As I wasn't expecting everything to work for the first time, those small
-issues did not upset me and weren't hard to fix. I laughed hard at
-myself for the macfuse failed surgery where I
-can only blame myself.&lt;/p&gt;
-</description>
-				<pubDate>Sat, 30 Jul 2011 00:00:00 -0700</pubDate>
-				<link>http://jhchabran.com/blog/2011/07/30/notes-on-migration-to-osx-lion</link>
-				<guid isPermaLink="true">http://jhchabran.com/blog/2011/07/30/notes-on-migration-to-osx-lion</guid>
 			</item>
 		
 	</channel>
