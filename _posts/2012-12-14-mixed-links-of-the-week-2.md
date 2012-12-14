@@ -18,7 +18,7 @@ per week, thanks to [this great book](http://www.amazon.com/gp/product/193435688
 Anyway, this week includes Ruby, Haskell, R, an interview,
 communications and a surprising initiative!
 
-French readers, don't miss [Dimelo Ruby Christmas Contest](http://contest.dimelo.com/) and win a Nexus 7 by submitting Pull Requests to [open source projects](http://contest.dimelo.com/#packaging).
+French readers, don't miss [Dimelo Ruby Christmas Contest](http://contest.dimelo.com/), win a Nexus 7 by submitting pull requests to [open source projects](http://contest.dimelo.com/#packaging).
 
 {% end_excerpt %}
 
