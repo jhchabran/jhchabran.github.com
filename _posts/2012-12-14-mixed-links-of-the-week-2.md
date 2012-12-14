@@ -12,7 +12,7 @@ tags:
 
 It's been eleven days since my last [mixed links of the week](http://jhchabran.com/blog/2012/12/03/mixed-links-of-the-week-1).
 
-So far I managed to get enough motivation to write at least one article
+So far I managed to build up enough motivation to write at least one article
 per week, thanks to [this great book](http://www.amazon.com/gp/product/1934356883/ref=as_li_qf_sp_asin_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=1934356883&linkCode=as2&tag=jhchabran-20"), I still have trouble posting these mixed links on a fixed day :).
 
 Anyway, this week includes Ruby, Haskell, R, an interview,
