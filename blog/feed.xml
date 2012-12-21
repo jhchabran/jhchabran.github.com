@@ -7,6 +7,28 @@
 		<atom:link href="http://jhchabran.com/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Guest post about CoffeeScript on DevQuotes</title>
+				<description>&lt;p&gt;CoffeeScript is now four years old and had been introduced into
+Rails 3 default stack in april 2011. Yet CoffeeScript isn't well known
+among the gigantic community of web developers!&lt;/p&gt;
+
+&lt;p&gt;So as friends of mine are running &lt;a href=&quot;http://devquotes.com&quot;&gt;a generalist blog about development and
+security&lt;/a&gt;, I took the opportunity of introducing
+CoffeeScript there to their heterogeneous audience.&lt;/p&gt;
+
+&lt;p&gt;I wrote a &lt;a href=&quot;http://www.devquotes.com/2012/12/15/coffeescript-javascript-like-a-sir/&quot;&gt;guest post there, introducing CoffeeScript&lt;/a&gt; with a quick overview, stressing as it should be
+the fact that CoffeeScript is a drop in replacement for Javascript, not
+a costful technology change.&lt;/p&gt;
+
+&lt;p&gt;CoffeeScript is a rare bird, web developers from any language and
+framework can benefit from it, I wonder how its usage will grow in 2013.&lt;/p&gt;
+</description>
+				<pubDate>Fri, 21 Dec 2012 00:00:00 -0800</pubDate>
+				<link>http://jhchabran.com/blog/2012/12/21/guest-post-about-coffee-script</link>
+				<guid isPermaLink="true">http://jhchabran.com/blog/2012/12/21/guest-post-about-coffee-script</guid>
+			</item>
+		
+			<item>
 				<title>Mixed links of the week (2)</title>
 				<description>&lt;p&gt;It's been eleven days since my last &lt;a href=&quot;http://jhchabran.com/blog/2012/12/03/mixed-links-of-the-week-1&quot;&gt;mixed links of the week&lt;/a&gt;.&lt;/p&gt;
 
@@ -1146,289 +1168,6 @@ Chrome&lt;/a&gt;.&lt;/li&gt;
 				<pubDate>Sat, 17 Dec 2011 00:00:00 -0800</pubDate>
 				<link>http://jhchabran.com/blog/2011/12/17/build-a-chrome-extension-with-coffeescript</link>
 				<guid isPermaLink="true">http://jhchabran.com/blog/2011/12/17/build-a-chrome-extension-with-coffeescript</guid>
-			</item>
-		
-			<item>
-				<title>Writing readable specs</title>
-				<description>&lt;p&gt;Writing Rails specs with &lt;a href=&quot;https://www.relishapp.com/rspec&quot;&gt;RSpec&lt;/a&gt; and
-&lt;a href=&quot;https://github.com/thoughtbot/factory_girl&quot;&gt;FactoryGirl&lt;/a&gt; is easy to do
-when you
-got a basic understanding of testing principles but you may have noticed
-how these specs tends to get cluttered over time. Even to the point you
-don't get what's going on at all and call your co-worker who wrote them
-and ask him to handle your task!&lt;/p&gt;
-
-&lt;p&gt;The following points are basic principles to keep in mind while writing
-specs to avoid being stuck with an unreadable spec.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-
-&lt;p&gt;We deal with four models : User, Cart, Order and Item.
-Their relationships are obviously as simplified as possible to keep
-ourselves focused on their tests.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;class User
-  has_one :cart 
-  has_many :orders
-end
-
-class Cart
-  belongs_to :user
-  has_many :items
-end
-
-class Order
-  has_many :items
-  belongs_to :user
-end
-
-class Item 
-  belongs_to :cart
-  belongs_to :order
-  belongs_to :product
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2&gt;Don't Repeat Yourself&lt;/h2&gt;
-
-&lt;p&gt;As usual, the DRY principle. Consider the following code (user_spec.rb)
-:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;describe User do
-  before :each do
-    @user = Factory.create :user
-  end
-
-  it &quot;should order the cart with one item&quot; do
-    @cart = Factory.create :cart, :user =&amp;gt; @user
-    @item = Factory.create :item, :cart =&amp;gt; @cart
-
-    @user.order! @cart
-    @cart.should be_ordered
-  end
-
-  it &quot;should discard the cart&quot; do
-    @cart = Factory.create :cart, :user =&amp;gt; @user
-    @item = Factory.create :item, :cart =&amp;gt; @cart
-
-    @user.discard_cart
-    @cart.items.should be_empty
-  end
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Quite clean by itself, we create a user for each test, as expected for a
-spec about the user model. Yet you can easily notice we're building
-other models
-in our two tests.&lt;/p&gt;
-
-&lt;p&gt;We can factorize these factories instanciation to stay DRY :&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;describe User do
-  before :each do
-    @user    = Factory.create :user
-    @cart    = Factory.create :cart, :user =&amp;gt; @user
-    @item    = Factory.create :item, :cart =&amp;gt; @cart
-  end
-
-  it &quot;should order the cart with one item&quot; do
-    @user.order! @cart
-    @cart.should be_ordered
-  end
-
-  it &quot;should discard the cart&quot; do
-    @user.discard_cart
-    @cart.items.should be_empty
-  end
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Now we got two tests and this example rise the following principle :&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Test code should be almost a direct translation of its name&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Any context initialization, should be done in a before block to avoid
-polluting the test code itself.&lt;/p&gt;
-
-&lt;h2&gt;Enhance readability&lt;/h2&gt;
-
-&lt;p&gt;As we avoid to pollute code to enhance readability, we can also
-emphasize on what's important. It allows the reader to grasp with ease
-what's going on.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;describe User do
-  before :each do
-    @user    = Factory.create :user
-    @cart    = Factory.create :cart, :user =&amp;gt; @user
-    @item    = Factory.create :item
-
-    @cart.items &amp;lt;&amp;lt; @item # focus on adding an item
-  end
-
-  # ...
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The main point of this before block is to craft a cart with an item
-within. As factories are cool, it doesn't mean we have to use their
-features all the time.&lt;/p&gt;
-
-&lt;p&gt;Using the &amp;lt;&amp;lt; operator on line 7, on the items association
-emphasize on adding our item to the cart instead of diluting it
-through the factories. This line of is the most important
-considering we're testing how a user interacts with items.&lt;/p&gt;
-
-&lt;p&gt;So while writing your test code, be sure to &lt;strong&gt;avoid embedding your
-intentions in the basic plumbing&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;h2&gt;One expectation per test please&lt;/h2&gt;
-
-&lt;p&gt;To pursue in our readability quest, you may have noticed that the
-example used in the previous points was really simple. But what makes
-theses so simple ? Those two tests got only one expectation at a time.&lt;/p&gt;
-
-&lt;p&gt;Consider the following code :&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;describe User do
-  before :each do
-    @user = Factory.create :user
-    @cart = Factory.create :cart, :user =&amp;gt; @user
-    @item = Factory.create :item, :cart =&amp;gt; @cart
-
-    @order = @user.order! @cart
-  end
-
-  it &quot;should finalize the order&quot; do
-    @order.finalize!
-    @user.should have(1).finalized_orders
-    @order.should be_finalized
-  end
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;We've got two &lt;em&gt;should&lt;/em&gt; call there. Even if it's just slightly more
-complicated than before, you can separate concerns. We wrote &lt;em&gt;describe
-User&lt;/em&gt; meaning we talk about user here. We do not want to mix
-expectations about orders and users.&lt;/p&gt;
-
-&lt;p&gt;Accordingly expectation on line 12 , even if being really similar to
-line 11 has
-nothing to do here. So we can rewrite this test in two separated tests
-(order_spec.rb) :&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;describe Order do
-  before :each do
-    @cart  = Factory.create :cart
-    @user  = @cart.user
-    @cart.items &amp;lt;&amp;lt; Factory.create_list :item, 3
-
-    @order = @user.order! @cart 
-  end
-
-  it &quot;should finalize the order&quot; do
-    @order.finalize
-    @order.should be_finalized
-  end
-end
-
-
-
-describe User do
-  before :each do
-    @user = Factory.create :user
-    @cart = Factory.create :cart, :user =&amp;gt; @user
-    @item = Factory.create :item, :cart =&amp;gt; @cart
-
-    @order = @user.order! @cart
-  end
-
-  it &quot;should finalize the order&quot; do
-    @order.finalize!
-    @user.should have(1).finalized_orders
-  end
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Plain simple, just &lt;strong&gt;formulate expectations about your current subject
-while writing test
-and ignore the rest&lt;/strong&gt;. Why ? Because if you don't you're leaving the
-coast
-of unit tests to head around integration testing land.&lt;/p&gt;
-
-&lt;h2&gt;Slice your specs with different contexts&lt;/h2&gt;
-
-&lt;p&gt;When it comes to models, there's a lot to handle. Business logic,
-mass-assignements, validation sanity.( Remember &lt;a href=&quot;http://weblog.jamisbuck.org/2006/10/18/skinny-controller-fat-model&quot;&gt;&lt;em&gt;fat models for skinny
-controllers&lt;/em&gt;&lt;/a&gt;
-eh ? It's for a reason ! )&lt;/p&gt;
-
-&lt;p&gt;While you can argue if you should test validations and assignments or
-not, which is out
-of the topic here, we still have to test for a wide range of business
-logic cases.&lt;/p&gt;
-
-&lt;p&gt;All of these case can easily be sliced by concerns, for example a user
-can be edited and can order items through a cart. An easy way to
-name contexts is to use the ing form of the verb describing the action :&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;describe User do
-  context &quot;editing informations&quot; do
-    # ...
-  end
-
-  context &quot;ordering items&quot; do
-    # ...
-  end
-
-  context &quot;canceling cart&quot; do
-    # ...
-  end
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Writing &quot;while editing ...&quot; or &quot;when editing ...&quot; is a matter of taste,
-while I personally tend to prefer a concise description.&lt;/p&gt;
-
-&lt;p&gt;And if we add validations and assignments ? (helpers are provided by
-&lt;a href=&quot;https://github.com/thoughtbot/shoulda-matchers&quot;&gt;should-matchers&lt;/a&gt;)&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;describe User do
-  describe &quot;validations&quot; do
-    it { should validate_presence_of(:email) }
-    it { should validate_presence_of(:name) }
-  end
-
-  describe &quot;assignments&quot; do
-    it { should allow_mass_assignment_of(:email) }
-    it { should allow_mass_assignment_of(:name) }
-
-    it { should_not allow_mass_assignment_of(:administrator) }
-  end
-
-  context &quot;editing informations&quot; do
-    # ...
-  end
-
-  context &quot;ordering items&quot; do
-    # ...
-  end
-
-  context &quot;canceling cart&quot; do
-    # ...
-  end
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;That makes a readable skeleton for our tests.&lt;/p&gt;
-
-&lt;p&gt;The point of writing specs is to keep them enjoyable and litteraly act
-as documentation for everyone. Those four advices are just basics but at
-least ensure you're heading in the right direction with your specs.&lt;/p&gt;
-</description>
-				<pubDate>Sun, 11 Sep 2011 00:00:00 -0700</pubDate>
-				<link>http://jhchabran.com/blog/2011/09/11/writing-readable-specs</link>
-				<guid isPermaLink="true">http://jhchabran.com/blog/2011/09/11/writing-readable-specs</guid>
 			</item>
 		
 	</channel>
