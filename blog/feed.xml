@@ -7,6 +7,112 @@
 		<atom:link href="http://jhchabran.com/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Introducing Photograph</title>
+				<description>&lt;p&gt;&lt;a href=&quot;http://github.com/jhchabran/photograph/&quot;&gt;Photograph&lt;/a&gt; is a really simple
+gem that provides to take screenshots of webpages as they are rendered
+in webkit. Give Photograph the url you want and that's all.&lt;/p&gt;
+
+&lt;p&gt;The interesting part is how easy this was to code !&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+
+&lt;h2&gt;Throwing gems at it&lt;/h2&gt;
+
+&lt;p&gt;It's about using Capybara with Polteirgeist (which wraps PhantomJS) to take the screenshot itself, then use MiniMagick
+to crop if needed. Adding some Ruby around it makes the Ruby API :&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;artist&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Artist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;http://jhchabran.com&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:wait&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;artist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shoot!&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;send_file&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;png&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;Quite easy isn't it ? Cropping can be done through the optionals
+parameters &lt;code&gt;:x :y :w :h&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Deciding when to take the screenshot is probably the only tricky part.
+You can either specify a timer through &lt;code&gt;:wait&lt;/code&gt;  or wait for some dive
+to appear with &lt;code&gt;:selector =&amp;gt; &quot;.page&quot;&lt;/code&gt; for example.&lt;/p&gt;
+
+&lt;h2&gt;As a webservice&lt;/h2&gt;
+
+&lt;p&gt;As photograph after all the layers ends by running webkit, it can be
+used to produce screenshots reflecting exactly the rendering got an a
+platform. The use case we had that led to coding photograph some months ago
+was requiring OSX rendering. As we had an iPad client rendering rich
+content fetched from the backend, we had to rely on screenshots when
+listing the different pages to avoid fully rendering them which would
+have been very costly, especially since listing don't need any
+interaction at all.&lt;/p&gt;
+
+&lt;p&gt;Well, as we were obviously not hosting our webservice on an OSX machine
+but on Heroku, a thin Sinatra layer was added to make calls from Heroku
+to Photograph, which was hosted on a Mac.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+  GET
+http://photograph.somewhere.com/shoot?url=http://jhchabran.com&amp;amp;selector=.page
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;And it answers with a png within 1 to 3 seconds. Wrap that into a
+Delayed or Resque Job and problem solved.&lt;/p&gt;
+
+&lt;p&gt;Need more photographs ? Spawn more Sinatra instances !&lt;/p&gt;
+
+&lt;h2&gt;Good and bad parts&lt;/h2&gt;
+
+&lt;p&gt;What is really interesting there is the fact the code is so simple that
+there's almost no room for bugs besides those that may be carried by the
+libraries photograph's relies on. Obviously, Sinatra and Capybara are
+robusts, the only small issue we had was on Capybara-Webkit which had
+its &lt;code&gt;webkit-server&lt;/code&gt; dying after being online for some hours. Switching
+to PhantomJS thanks to Polteirgeist solved the problem.&lt;/p&gt;
+
+&lt;p&gt;But such simple code comes with its limitations. Having GET requests
+that takes more than 2 seconds can be irritating. Plus scaling can be
+achieved in a much better way than having one webkit instance running
+per Sinatra.&lt;/p&gt;
+
+&lt;p&gt;As our use case require tons of screenshots, we finally switched to
+Url2Png which worked great so far. As we were already working with SAAS
+everywhere it really made sense to add some cash there and let people
+focused on that problem solving it for us.&lt;/p&gt;
+
+&lt;p&gt;Nevertheless if taking a few screenshots is all you need, firing some
+photograph instance is probably the simplest way to achieve it.&lt;/p&gt;
+
+&lt;h2&gt;Upcoming&lt;/h2&gt;
+
+&lt;p&gt;So far, I'm really surprised to see how simple all of this was to write.
+Photograph had been successfully used in production on two apps.
+Experience shows that adding some features to scale it would improve the
+whole usability and decrease the amount of code required to use it.&lt;/p&gt;
+
+&lt;p&gt;I'm currently thinking of adding Resque to photograph, having one
+phantomjs instance per worker thus making scaling easy as &lt;code&gt;COUNT=5
+QUEUE=* rake resque:workers&lt;/code&gt;. The screenshot would be provided
+afterward with a POST uploading it to the web app that needs it, with
+the url specified in a &lt;code&gt;callback&lt;/code&gt; parameter.&lt;/p&gt;
+
+&lt;p&gt;There also might be some work to be done to detect &lt;code&gt;window.onload&lt;/code&gt;
+instead of the crappy &lt;code&gt;wait&lt;/code&gt; timer, to speed up the whole process.&lt;/p&gt;
+
+&lt;h2&gt;Getting it&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/jhchabran/photograph/&quot;&gt;Source are available here&lt;/a&gt;
+and as a gem &lt;code&gt;gem install photograph&lt;/code&gt; then &lt;code&gt;photograph -h 192.168.0.1
+-p 8080&lt;/code&gt; for example.&lt;/p&gt;
+</description>
+				<pubDate>Thu, 10 Jan 2013 00:00:00 -0800</pubDate>
+				<link>http://jhchabran.com/blog/2013/01/10/introducing-photograph</link>
+				<guid isPermaLink="true">http://jhchabran.com/blog/2013/01/10/introducing-photograph</guid>
+			</item>
+		
+			<item>
 				<title>Guest post about CoffeeScript on DevQuotes</title>
 				<description>&lt;p&gt;CoffeeScript is now four years old and had been introduced into
 Rails 3 default stack in april 2011. Yet CoffeeScript isn't well known
@@ -814,360 +920,6 @@ definitively read if you want to improve.&lt;/p&gt;
 				<pubDate>Sun, 27 May 2012 00:00:00 -0700</pubDate>
 				<link>http://jhchabran.com/blog/2012/05/27/rails-girls-paris</link>
 				<guid isPermaLink="true">http://jhchabran.com/blog/2012/05/27/rails-girls-paris</guid>
-			</item>
-		
-			<item>
-				<title>Build a chrome extension with Coffee Script</title>
-				<description>&lt;p&gt;Ever had an idea for a great Chrome Extension ? Did you know that a
-chrome extension is just javascript ? And where there's Javascript, we
-can write some CoffeeScript !&lt;/p&gt;
-
-&lt;p&gt;This post aims to give you an overview of building a chrome extension
-wrote in CoffeeScript. While being familiar with the latest is mandatory
-to understand
-what's going on there, no previous experience with Google Chrome is
-needed.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-
-&lt;p&gt;Our chrome extension will be a fully fonctional tab switcher that mimics
-Command-T feature of Textmate (also known as fuzzy finding).&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://media.tumblr.com/tumblr_m4jvww3J2t1qf7p5m.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2&gt;Why doing it in CoffeeScript ?&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://jashkenas.github.com/coffee-script/&quot;&gt;Coffee Script&lt;/a&gt; is a thin
-and elegant syntaxic layer on top of Javascript, allowing
-you to write cleaner and concise code and still outputting almost
-readable javascript. Why should we avoid a such nice tool to write a
-chrome extension ! Plus it's fun to write, it will remind you Ruby and
-Python, while still letting you do Javascript wizardry.&lt;/p&gt;
-
-&lt;p&gt;For french readers, I gave a talk at a recent
-&lt;a href=&quot;http://www.meetup.com/parisrb/&quot;&gt;Paris.rb&lt;/a&gt; event, you can
-read my
-&lt;a href=&quot;http://www.slideshare.net/jhchabran/introduction-coffeescript-pour-parisrb&quot;&gt;slides&lt;/a&gt;
-until we get the video online.&lt;/p&gt;
-
-&lt;h2&gt;Our goal&lt;/h2&gt;
-
-&lt;p&gt;Command-T is a battle-tested quick-file-access method that proved to be
-efficient. It should be useful to have it available in Chrome,
-especially if you
-often have more than 20 tabs opened, where they all look like pinned
-ones.
-Typing a few letter of the URL is clearly faster than hammering like a
-monkey the next tab hotkey !&lt;/p&gt;
-
-&lt;p&gt;Couldn't we port that great feature in Chrome ?&lt;/p&gt;
-
-&lt;h2&gt;Dissecting an extension&lt;/h2&gt;
-
-&lt;p&gt;Chrome being a popular browser, it is as expected from a modern browser,
-pretty easy to extend.
-&lt;a href=&quot;http://code.google.com/chrome/extensions/getstarted.html&quot;&gt;Google's starter
-guide&lt;/a&gt; is a
-good resource and gives you a quick intro.&lt;/p&gt;
-
-&lt;p&gt;Skipping implementation details, it's basically the following :&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;A &lt;em&gt;content script&lt;/em&gt; is executed in the context of the current page,
-having access to the DOM&lt;/li&gt;
-&lt;li&gt;An &lt;em&gt;extension script&lt;/em&gt; is executed in what you could call chrome
-context, meaning it can manipulate chrome objects like tabs, windows&lt;/li&gt;
-&lt;li&gt;The &lt;em&gt;background page&lt;/em&gt; include the &lt;em&gt;extension script&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;These two contexts are &lt;em&gt;sandboxed&lt;/em&gt;, meaning you can't collide with
-the scripts running on the page&lt;/li&gt;
-&lt;li&gt;Communication between them are made through &lt;em&gt;message passing&lt;/em&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;h2&gt;Get confortable&lt;/h2&gt;
-
-&lt;p&gt;The absolute minimum is the following structure :&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;tabswitcher               # Repository root 
-      /background.html    # Extension's 'main view'
-      /manifest.json      # Extension settings 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Coffee Script need to be compiled in the first place, automating it
-brings two benefits : it's comfortable to develop with, a contributor
-can just check out your sources and run your command to build the whole
-thing. This lower the entry barrier for contributing to our extension
-=).&lt;/p&gt;
-
-&lt;p&gt;The simplest way to handle compilation easily is to build a &lt;em&gt;Cakefile&lt;/em&gt;
-(a &lt;em&gt;Rakefile&lt;/em&gt; or &lt;em&gt;Makefile&lt;/em&gt; in CoffeeScript).&lt;/p&gt;
-
-&lt;p&gt;We'll write it to take *.coffee input from &lt;em&gt;/src&lt;/em&gt; and output javascript
-in  &lt;em&gt;/build&lt;/em&gt; using this command. Our goal is to do the following to
-build our extension :&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ cake build
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;But while in development, it's easier to have our files monitored to
-reflect changes as we save them. So To watch the &lt;em&gt;src/&lt;/em&gt; folder and
-reflect any
-changes made there, there's the &lt;em&gt;watch&lt;/em&gt; command :&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ cake build
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;em&gt;coffee -h&lt;/em&gt; tells us these commands are directly available :&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ coffee --output build/ --compile src/
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Good. It's time to bake this into a &lt;em&gt;Cakefile&lt;/em&gt;. Below are the
-interesting parts
-of it :&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;task 'build', 'Build extension code into build/', -&amp;gt;
-  if_coffee -&amp;gt; 
-    ps = spawn(&quot;coffee&quot;, [&quot;--output&quot;, JAVASCRIPTS_PATH,&quot;--
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;compile&quot;,COFFEESCRIPTS_PATH])&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;    ps.stdout.on('data', log)
-    ps.stderr.on('data', log)
-    ps.on 'exit', (code)-&amp;gt;
-      if code != 0
-        console.log 'failed'
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;If you've alreay wrote any Rakefile, it's quite similar. If not, we
-basically declare the command &lt;em&gt;build&lt;/em&gt; to be invokable through &lt;em&gt;cake
-build&lt;/em&gt;. We handle if the coffee binary is available or not in the $PATH
-and finally execute our coffee command as expected.&lt;/p&gt;
-
-&lt;h2&gt;A small overview&lt;/h2&gt;
-
-&lt;p&gt;Manipulating the DOM through the standard API bores me to death, so
-let's grab &lt;a href=&quot;http://zeptojs.com/&quot;&gt;Zepto&lt;/a&gt; to do the big work for us. We
-could have used JQuery
-but we don't need all the browser compatibility stuff, so Zepto with its
-minimal features set is a perfect match. Let's store it in &lt;em&gt;/libs&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;Our final structure is the following :&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;tabswitcher               # Repository root 
-      /build              # Generated Javascripts end there
-      /libs               # Dependencies
-      /src                # Our code
-      /background.html    # Extension's 'main view'
-      /manifest.json      # Extension settings 
-      /Cakefile           # Starts build task
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Ok, we're now ready to spill some coffee into Chrome :&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ cake watch
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2&gt;The extension itself&lt;/h2&gt;
-
-&lt;p&gt;Our extension is quite simple in its behavior :&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;listen for keyboard events if  &lt;em&gt;ctrl-\&lt;/em&gt; was pressed&lt;/li&gt;
-&lt;li&gt;if pressed, insert some html in the page containing our UI&lt;/li&gt;
-&lt;li&gt;display opened tabs&lt;/li&gt;
-&lt;li&gt;wait for user input&lt;/li&gt;
-&lt;li&gt;on enter in the input, go to that tab&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;So in these steps, those two are calls to &lt;em&gt;chrome api&lt;/em&gt; :&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;list all opened tabs, we'll name it  &lt;em&gt;getTabs&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;go to a tag, as &lt;em&gt;switchTab&lt;/em&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;Our &lt;em&gt;content script&lt;/em&gt; that run in the current page, it will send these
-two messages to
-the &lt;em&gt;background script&lt;/em&gt;, which is the only one that can make these
-calls.&lt;/p&gt;
-
-&lt;p&gt;We end with the following process :&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://media.tumblr.com/tumblr_m4jvypXYCB1qf7p5m.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The red arrows are message passed from the content script to the
-background page ( &lt;a href=&quot;http://code.google.com/chrome/extensions/messaging.html&quot;&gt;message
-passing&lt;/a&gt; ).
-It's similar to firing custom events with JQuery and listening for them,
-but with a particular API.&lt;/p&gt;
-
-&lt;h2&gt;Implementation&lt;/h2&gt;
-
-&lt;p&gt;The &lt;em&gt;content script&lt;/em&gt; is &lt;em&gt;src/content.coffee&lt;/em&gt; and &lt;em&gt;background script&lt;/em&gt;
-lives in &lt;em&gt;src/background.coffee&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;First things first : a tab. It's simpler than what you may have expected&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;  tab = 
-    id : 43
-    windowId : 4
-    url: &quot;http://google.com&quot;
-    title: &quot;Google&quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;We don't need to handle them directly as the Chrome API will do the job
-for us, but it's a starting point.&lt;/p&gt;
-
-&lt;p&gt;Let's examine the &lt;em&gt;content script&lt;/em&gt;, which is where all the work happens.&lt;/p&gt;
-
-&lt;p&gt;An &lt;em&gt;Application&lt;/em&gt; class encapsulates the main logic. It setups the UI,
-binds the
-callbacks and pass messages to the &lt;em&gt;background page&lt;/em&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;class Application
-  constructor: -&amp;gt;
-    # Inject our html into the view
-    @injectView()
-
-    # Install a listener for our input 
-    @element().find('input').keyup (event)=&amp;gt;
-      @onInput(event)
-
-    # Spawn a view that handle results display
-    @tabListView = new TabListView @element().find('ul')
-
-  element: -&amp;gt;
-    # Return our base div
-    @element_ ||= $('#tabswitcher-overlay')
-
-  onInput: (event)-&amp;gt;
-    # When something is entered is the input, filter tabs !
-    candidates = fuzzy(@tabs(), event.target.value)
-
-    # Update tabs that match
-    @tabListView.update candidates 
-
-    # If enter
-    if event.keyCode == 13
-      # Go to that tab
-      @switchTab candidates[0].tab iftes?
-
-  hide: -&amp;gt;
-    # ...
-  show: -&amp;gt;
-    # ...
-
-  switchTab: (tab)-&amp;gt;  
-    # We're switching tab, hide the UI before leaving
-    @hide()
-
-    # Send message to the background script
-    chrome.extension.sendRequest(message:&quot;switchTab&quot;, target:tab)
-
-  hotKeyListener: (event)-&amp;gt;
-    # Listen for ctrl-\
-    if event.keyCode
-      if event.ctrlKey &amp;amp;&amp;amp; event.keyCode == 220 # Ctrl + \
-        # Send message to background script, ask for list of tabs
-        chrome.extension.sendRequest {message: &quot;getTabs&quot;}, 
-          (response)=&amp;gt;
-            @tabs_ = response.tabs
-            @show()
-
-      else if event.keyCode == 27 # ESC
-        @hide()
-
-  injectView: -&amp;gt;
-    # Inject our UI in the DOM
-    $('body').append ...
-
-app = new Application()
-
-# Attach our handler
-window.addEventListener(&quot;keyup&quot;, (e)-&amp;gt;
-  app.hotKeyListener(e), false)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;After defining Application we just instanciate it and bind our
-listener, to grab keyboard events. For the sake of readability, I've
-skipped the &lt;a href=&quot;https://github.com/jhchabran/tabswitcher/blob/master/src/hook.coffee#L4&quot;&gt;fuzzy filter
-implementation&lt;/a&gt;,
-which is kind of naive but do
-the job as expected. Bold stuff as you can see in the screenshot in the
-beginning of the post is handled in another class named &lt;em&gt;TabView&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;Let's now see the script running on the &lt;em&gt;background page&lt;/em&gt; that respond
-to calls made from the &lt;em&gt;content script&lt;/em&gt; :&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;# Install the message listener
-chrome.extension.onRequest.addListener (request, sender,
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;sendResponse)-&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;  # Select the right response given the message
-  switch request.message
-    # Grab all tabs
-    when &quot;getTabs&quot;
-      chrome.windows.getCurrent (window)-&amp;gt;
-        chrome.tabs.getAllInWindow window.id, (tabs)-&amp;gt;
-          # We've collected all tabs, let's send them back
-          sendResponse(tabs:tabs)
-      break
-    when &quot;switchTab&quot;
-      chrome.tabs.update(request.target.id, selected:true)
-      sendResponse({})
-      break
-    else
-      sendResponse({})
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Pretty straight-forward, we just take incoming message and handle them.
-Only the message 'getTabs' sends back a response : an array of tabs
-returned by
-Chrome.&lt;/p&gt;
-
-&lt;h2&gt;What now ?&lt;/h2&gt;
-
-&lt;p&gt;Well, beside some crappy HTML to render tabs, there's nothing left. The
-complete code of this extension is available on
-&lt;a href=&quot;http://github.com/jhchabran/tabswitcher&quot;&gt;GitHub&lt;/a&gt; where you can explore
-it, fork it as you want !&lt;/p&gt;
-
-&lt;p&gt;Remember that you need to enable developer's mode in chrome extensions
-to install it directly from the sources.&lt;/p&gt;
-
-&lt;p&gt;You can also install the &lt;a href=&quot;https://chrome.google.com/webstore/detail/gkdkligmcadfbagoeggeohelmgalchcn&quot;&gt;released
-version&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Coffee Script is available everywhere you can use javascript, with some
-tooling to kick in compilation ! Set up two tasks,
-adjust .gitignore and there it works.&lt;/p&gt;
-
-&lt;p&gt;Chrome extensions are way simpler to write than I thought ! Next,
-understanding how Chrome
-handles security and isolation through sandboxing and still sharing DOM
-access is
-pretty impressive.&lt;/p&gt;
-
-&lt;p&gt;Once you grasped the big picture, it's finally just like building any
-web app interactive UI !&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://chrome.google.com/webstore/detail/gkdkligmcadfbagoeggeohelmgalchcn&quot;&gt;Install it directly on your
-Chrome&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://github.com/jhchabran/tabswitcher&quot;&gt;Source code&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-				<pubDate>Sat, 17 Dec 2011 00:00:00 -0800</pubDate>
-				<link>http://jhchabran.com/blog/2011/12/17/build-a-chrome-extension-with-coffeescript</link>
-				<guid isPermaLink="true">http://jhchabran.com/blog/2011/12/17/build-a-chrome-extension-with-coffeescript</guid>
 			</item>
 		
 	</channel>
