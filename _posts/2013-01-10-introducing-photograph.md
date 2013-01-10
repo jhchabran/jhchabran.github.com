@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Introducing Photograph
-category: Rant
+category: Ruby
 tags:
   - Ruby
 ---
