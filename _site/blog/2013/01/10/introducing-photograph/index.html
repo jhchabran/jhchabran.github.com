@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     
-    <title>JHChabran | Tag: Project</title>
+    <title>JHChabran | Introducing Photograph</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -57,43 +57,142 @@ type="text/javascript">try{Typekit.load();}catch(e){}</script>
     
       <div class="row">
   <div class="span8">
-    <h1><a href="tags/project/index.html">Tag: Project</a></h1>
+    <h1><a href="/blog/2013/01/10/introducing-photograph">Introducing Photograph</a></h2>
+    <h4>
+      Posted on January 10, 2013
+      
+      
+      in <a href="/categories/rant">Rant</a>
+      
+      
+    </h4>
     <hr/>
 
-    
+    <div class="post-content">
+      <p><a href="http://github.com/jhchabran/photograph/">Photograph</a> is a really simple
+gem that provides to take screenshots of webpages as they are rendered
+in webkit. Give Photograph the url you want and that's all.</p>
 
-  
+<p>The interesting part is how easy this was to code !</p>
 
-
-
-<h2><a href="/blog/2012/11/25/Tabswitcher-got-updated">TabSwitcher got updated</a></h2>
-
-<h4>
-  Posted on November 25, 2012
-  
-  
-  in <a href="/categories/chrome">Chrome</a>
-  
-  
-</h4>
-
-<p>
-  
-    <p>TabSwitcher had been started one year ago, to showcase <a href="http://jhchabran.com/blog/2011/12/17/build-a-chrome-extension-with-coffeescript">(see previous
-post)</a>
-how a Chrome Extension using CoffeeScript can be built. I recently spend some
-time polishing it to bring it to the level of a decently featured
-extension.</p>
-
-<p>Before describing the changes, what problem does it aims to solve ?</p>
+<!--more-->
 
 
-    <p><a href="/blog/2012/11/25/Tabswitcher-got-updated">Read more...</a></p>
-  
-</p>
-<br/>
+<h2>Throwing gems at it</h2>
+
+<p>It's about using Capybara with Polteirgeist (which wraps PhantomJS) to take the screenshot itself, then use MiniMagick
+to crop if needed. Adding some Ruby around it makes the Ruby API :</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="n">artist</span> <span class="o">=</span> <span class="no">Artist</span><span class="o">.</span><span class="n">new</span> <span class="ss">:url</span> <span class="o">=&gt;</span> <span class="s2">&quot;http://jhchabran.com&quot;</span><span class="p">,</span> <span class="ss">:wait</span> <span class="o">=&gt;</span> <span class="mi">2</span>
+
+<span class="n">artist</span><span class="o">.</span><span class="n">shoot!</span> <span class="k">do</span> <span class="o">|</span><span class="n">image</span><span class="o">|</span>
+  <span class="n">send_file</span> <span class="n">image</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="ss">:type</span> <span class="o">=&gt;</span> <span class="s2">&quot;png&quot;</span>
+<span class="k">end</span>
+</code></pre>
+</div>
 
 
+<p>Quite easy isn't it ? Cropping can be done through the optionals
+parameters <code>:x :y :w :h</code>.</p>
+
+<p>Deciding when to take the screenshot is probably the only tricky part.
+You can either specify a timer through <code>:wait</code>  or wait for some dive
+to appear with <code>:selector =&gt; ".page"</code> for example.</p>
+
+<h2>As a webservice</h2>
+
+<p>As photograph after all the layers ends by running webkit, it can be
+used to produce screenshots reflecting exactly the rendering got an a
+platform. The use case we had that led to coding photograph some months ago
+was requiring OSX rendering. As we had an iPad client rendering rich
+content fetched from the backend, we had to rely on screenshots when
+listing the different pages to avoid fully rendering them which would
+have been very costly, especially since listing don't need any
+interaction at all.</p>
+
+<p>Well, as we were obviously not hosting our webservice on an OSX machine
+but on Heroku, a thin Sinatra layer was added to make calls from Heroku
+to Photograph, which was hosted on a Mac.</p>
+
+<p><code>
+  GET
+http://photograph.somewhere.com/shoot?url=http://jhchabran.com&amp;selector=.page
+</code></p>
+
+<p>And it answers with a png within 1 to 3 seconds. Wrap that into a
+Delayed or Resque Job and problem solved.</p>
+
+<p>Need more photographs ? Spawn more Sinatra instances !</p>
+
+<h2>Good and bad parts</h2>
+
+<p>What is really interesting there is the fact the code is so simple that
+there's almost no room for bugs besides those that may be carried by the
+libraries photograph's relies on. Obviously, Sinatra and Capybara are
+robusts, the only small issue we had was on Capybara-Webkit which had
+its <code>webkit-server</code> dying after being online for some hours. Switching
+to PhantomJS thanks to Polteirgeist solved the problem.</p>
+
+<p>But such simple code comes with its limitations. Having GET requests
+that takes more than 2 seconds can be irritating. Plus scaling can be
+achieved in a much better way than having one webkit instance running
+per Sinatra.</p>
+
+<p>As our use case require tons of screenshots, we finally switched to
+Url2Png which worked great so far. As we were already working with SAAS
+everywhere it really made sense to add some cash there and let people
+focused on that problem solving it for us.</p>
+
+<p>Nevertheless if taking a few screenshots is all you need, firing some
+photograph instance is probably the simplest way to achieve it.</p>
+
+<h2>Upcoming</h2>
+
+<p>So far, I'm really surprised to see how simple all of this was to write.
+Photograph had been successfully used in production on two apps.
+Experience shows that adding some features to scale it would improve the
+whole usability and decrease the amount of code required to use it.</p>
+
+<p>I'm currently thinking of adding Resque to photograph, having one
+phantomjs instance per worker thus making scaling easy as <code>COUNT=5
+QUEUE=* rake resque:workers</code>. The screenshot would be provided
+afterward with a POST uploading it to the web app that needs it, with
+the url specified in a <code>callback</code> parameter.</p>
+
+<p>There also might be some work to be done to detect <code>window.onload</code>
+instead of the crappy <code>wait</code> timer, to speed up the whole process.</p>
+
+<h2>Getting it</h2>
+
+<p><a href="https://github.com/jhchabran/photograph/">Source are available here</a>
+and as a gem <code>gem install photograph</code> then <code>photograph -h 192.168.0.1
+-p 8080</code> for example.</p>
+
+      
+      <br/>
+      <h4>Related posts</h4>
+      
+        <a href="/blog/2012/12/14/mixed-links-of-the-week-2">Mixed links of the week (2)</a><br />
+        
+        <a href="/blog/2012/12/09/fun-with-to-proc-and-compositions">Fun with to_proc and compositions</a><br />
+        
+        <a href="/blog/2012/12/03/mixed-links-of-the-week-1">Mixed links of the week (1)</a><br />
+        
+    </div>
+    <br/>
+    <div id="disqus_thread"></div>
+<script type="text/javascript">
+var disqus_shortname = 'jhchabran'; 
+
+/* * * DON'T EDIT BELOW THIS LINE * * */
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
 
   </div>
