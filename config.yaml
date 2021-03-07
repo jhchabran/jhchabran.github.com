@@ -1,0 +1,50 @@
+baseURL: "http://jhchabran.dev/"
+languageCode: "en-us"
+title: "jhchabran"
+theme: PaperMod
+
+enableRobotsTXT: true
+enableEmoji: true
+
+minify:
+  disableXML: true
+  minifyOutput: true
+
+params:
+  AuthorName: "J.H. Chabran"
+  GithubUser: "jhchabran"
+  description: "J.H. Chabran personal website"
+  comments: false
+  ShowReadingTime: true
+  hideSummary: true
+  profileMode:
+    enabled: true
+    title: "Jean-Hadrien Chabran"
+    imageUrl: "./avatar.jpg"
+
+  socialIcons: # optional
+    - name: Github
+      url: https://github.com/jhchabran
+    - name: Twitter
+      url: https://twitter.com/jhchabran
+    - name: Linkedin
+      url: https://www.linkedin.com/in/jhchabran/
+
+menu:
+  main:
+    - identifier: about
+      name: about
+      url: /about/
+      weight: 10
+    - identifier: posts
+      name: posts
+      url: /posts/
+      weight: 10
+    - identifier: categories
+      name: categories
+      url: /categories/
+      weight: 20
+    - identifier: tags
+      name: tags
+      url: /tags/
+      weight: 20
