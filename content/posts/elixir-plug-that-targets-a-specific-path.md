@@ -137,7 +137,7 @@ defmodule MyAppWeb.Endpoint do
   # This plug must absolutely be included **before** `plug MyAppWeb.Router`
   plug HealthCheck.Plug
   plug MyAppWeb.Router
-en d
+end
 ```
 
 ## Conclusion
