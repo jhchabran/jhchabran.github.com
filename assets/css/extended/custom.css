@@ -1,0 +1,19 @@
+:root {
+  --theme: rgba(255, 255, 249, 1);
+  --code-bg: rgba(255, 255, 249, 1);
+  --entry: rgba(255, 255, 249, 1);
+  --primary: rgba(0, 0, 6, 0.88);
+  --secondary: rgba(0, 0, 6, 0.56);
+  --tertiary: rgba(0, 0, 6, 0.16);
+  --content: rgba(0, 0, 6, 0.88);
+}
+
+.about-illustration img {
+  padding-top: 2em;
+  margin: 0 auto;
+  width: 50%;
+}
+
+body {
+  font-family: proxima-nova, sans-serif;
+}
