@@ -13,3 +13,7 @@
   margin: 0 auto;
   width: 50%;
 }
+
+body {
+  font-family: proxima-nova, sans-serif !important;
+}

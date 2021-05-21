@@ -17,6 +17,8 @@ params:
   comments: false
   ShowReadingTime: true
   hideSummary: true
+  defaultTheme: light
+  disableThemeToggle: true
   profileMode:
     enabled: true
     title: "Jean-Hadrien Chabran"
