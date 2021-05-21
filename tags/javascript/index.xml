@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Javascript on jhchabran</title>
+    <link>http://jhchabran.dev/tags/javascript/</link>
+    <description>Recent content in Javascript on jhchabran</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 25 Nov 2012 00:00:00 +0000</lastBuildDate><atom:link href="http://jhchabran.dev/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TabSwitcher got updated</title>
+      <link>http://jhchabran.dev/posts/2012-11-25-tabswitcher-got-updated/</link>
+      <pubDate>Sun, 25 Nov 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/2012-11-25-tabswitcher-got-updated/</guid>
+      <description>TabSwitcher had been started one year ago, to showcase (see previous post) how a Chrome Extension using CoffeeScript can be built. I recently spend some time polishing it to bring it to the level of a decently featured extension.
+Before describing the changes, what problem does it aims to solve ?
+{% end_excerpt %}
+Switching between tabs like ninja I mostly work with more than thirty tabs opened in my browser.</description>
+    </item>
+    
+    <item>
+      <title>Build a chrome extension with Coffee Script</title>
+      <link>http://jhchabran.dev/posts/2011-12-17-build-a-chrome-extension-with-coffeescript/</link>
+      <pubDate>Sat, 17 Dec 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/2011-12-17-build-a-chrome-extension-with-coffeescript/</guid>
+      <description>Ever had an idea for a great Chrome Extension ? Did you know that a chrome extension is just javascript ? And where there&amp;rsquo;s Javascript, we can write some CoffeeScript !
+This post aims to give you an overview of building a chrome extension wrote in CoffeeScript. While being familiar with the latest is mandatory to understand what&amp;rsquo;s going on there, no previous experience with Google Chrome is needed.
+{% end_excerpt %}</description>
+    </item>
+    
+  </channel>
+</rss>

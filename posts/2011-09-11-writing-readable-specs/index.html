@@ -1,0 +1,204 @@
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Writing readable specs | jhchabran</title><meta name=keywords content="Ruby,Testing,RSpec"><meta name=description content="Writing Rails specs with RSpec and FactoryGirl is easy to do when you got a basic understanding of testing principles but you may have noticed how these specs tends to get cluttered over time. Even to the point you don&rsquo;t get what&rsquo;s going on at all and call your co-worker who wrote them and ask him to handle your task!
+The following points are basic principles to keep in mind while writing specs to avoid being stuck with an unreadable spec."><meta name=author content="J.H. Chabran"><link rel=canonical href=http://jhchabran.dev/posts/2011-09-11-writing-readable-specs/><link rel=stylesheet href=https://use.typekit.net/pmg0uoe.css><link href=/assets/css/stylesheet.min.f12e8a3e88e7a0a98cde28893b674bf5adb5629a42bace74ca84312ee4921642.css integrity="sha256-8S6KPojnoKmM3iiJO2dL9a21YppCus50yoQxLuSSFkI=" rel="preload stylesheet" as=style><link rel=icon href=http://jhchabran.dev/favicon.ico><link rel=icon type=image/png sizes=16x16 href=http://jhchabran.dev/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=http://jhchabran.dev/favicon-32x32.png><link rel=apple-touch-icon href=http://jhchabran.dev/apple-touch-icon.png><link rel=mask-icon href=http://jhchabran.dev/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><meta name=generator content="Hugo 0.83.1"><meta property="og:title" content="Writing readable specs"><meta property="og:description" content="Writing Rails specs with RSpec and FactoryGirl is easy to do when you got a basic understanding of testing principles but you may have noticed how these specs tends to get cluttered over time. Even to the point you don&rsquo;t get what&rsquo;s going on at all and call your co-worker who wrote them and ask him to handle your task!
+The following points are basic principles to keep in mind while writing specs to avoid being stuck with an unreadable spec."><meta property="og:type" content="article"><meta property="og:url" content="http://jhchabran.dev/posts/2011-09-11-writing-readable-specs/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2011-09-11T00:00:00+00:00"><meta property="article:modified_time" content="2011-09-11T00:00:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Writing readable specs"><meta name=twitter:description content="Writing Rails specs with RSpec and FactoryGirl is easy to do when you got a basic understanding of testing principles but you may have noticed how these specs tends to get cluttered over time. Even to the point you don&rsquo;t get what&rsquo;s going on at all and call your co-worker who wrote them and ask him to handle your task!
+The following points are basic principles to keep in mind while writing specs to avoid being stuck with an unreadable spec."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"http://jhchabran.dev/posts/"},{"@type":"ListItem","position":2,"name":"Writing readable specs","item":"http://jhchabran.dev/posts/2011-09-11-writing-readable-specs/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Writing readable specs","name":"Writing readable specs","description":"Writing Rails specs with RSpec and FactoryGirl is easy to do when you got a basic understanding of testing principles but you may have noticed how these specs tends to get cluttered over time. Even to the point you don\u0026rsquo;t get what\u0026rsquo;s going on at all and call your co-worker who wrote them and ask him to handle your task!\nThe following points are basic principles to keep in mind while writing specs to avoid being stuck with an unreadable spec.","keywords":["Ruby","Testing","RSpec"],"articleBody":"Writing Rails specs with RSpec and FactoryGirl is easy to do when you got a basic understanding of testing principles but you may have noticed how these specs tends to get cluttered over time. Even to the point you don’t get what’s going on at all and call your co-worker who wrote them and ask him to handle your task!\nThe following points are basic principles to keep in mind while writing specs to avoid being stuck with an unreadable spec.\n{% end_excerpt %}\nWe deal with four models : User, Cart, Order and Item. Their relationships are obviously as simplified as possible to keep ourselves focused on their tests.\nclass User has_one :cart has_many :orders end class Cart belongs_to :user has_many :items end class Order has_many :items belongs_to :user end class Item belongs_to :cart belongs_to :order belongs_to :product end  Don’t Repeat Yourself  As usual, the DRY principle. Consider the following code (user_spec.rb) describe User do before :each do @user = Factory.create :user end it \"should order the cart with one item\" do @cart = Factory.create :cart, :user = @user @item = Factory.create :item, :cart = @cart @user.order! @cart @cart.should be_ordered end it \"should discard the cart\" do @cart = Factory.create :cart, :user = @user @item = Factory.create :item, :cart = @cart @user.discard_cart @cart.items.should be_empty end  end\n  Quite clean by itself, we create a user for each test, as expected for a spec about the user model. Yet you can easily notice we’re building other models in our two tests.\nWe can factorize these factories instanciation to stay DRY :\ndescribe User do before :each do @user = Factory.create :user @cart = Factory.create :cart, :user = @user @item = Factory.create :item, :cart = @cart end it \"should order the cart with one item\" do @user.order! @cart @cart.should be_ordered end it \"should discard the cart\" do @user.discard_cart @cart.items.should be_empty end end  Now we got two tests and this example rise the following principle :\nTest code should be almost a direct translation of its name\nAny context initialization, should be done in a before block to avoid polluting the test code itself.\nEnhance readability As we avoid to pollute code to enhance readability, we can also emphasize on what’s important. It allows the reader to grasp with ease what’s going on.\ndescribe User do before :each do @user = Factory.create :user @cart = Factory.create :cart, :user = @user @item = Factory.create :item @cart.items  The main point of this before block is to craft a cart with an item within. As factories are cool, it doesn’t mean we have to use their features all the time.\nUsing the So while writing your test code, be sure to avoid embedding your intentions in the basic plumbing.\nOne expectation per test please To pursue in our readability quest, you may have noticed that the example used in the previous points was really simple. But what makes theses so simple ? Those two tests got only one expectation at a time.\nConsider the following code :\ndescribe User do before :each do @user = Factory.create :user @cart = Factory.create :cart, :user = @user @item = Factory.create :item, :cart = @cart @order = @user.order! @cart end it \"should finalize the order\" do @order.finalize! @user.should have(1).finalized_orders @order.should be_finalized end end  We’ve got two should call there. Even if it’s just slightly more complicated than before, you can separate concerns. We wrote describe User meaning we talk about user here. We do not want to mix expectations about orders and users.\nAccordingly expectation on line 12 , even if being really similar to line 11 has nothing to do here. So we can rewrite this test in two separated tests (order_spec.rb) :\ndescribe Order do before :each do @cart = Factory.create :cart @user = @cart.user @cart.items @user @item = Factory.create :item, :cart = @cart @order = @user.order! @cart end it \"should finalize the order\" do @order.finalize! @user.should have(1).finalized_orders end end  Plain simple, just formulate expectations about your current subject while writing test and ignore the rest. Why ? Because if you don’t you’re leaving the coast of unit tests to head around integration testing land.\nSlice your specs with different contexts When it comes to models, there’s a lot to handle. Business logic, mass-assignements, validation sanity.( Remember fat models for skinny controllers eh ? It’s for a reason ! )\nWhile you can argue if you should test validations and assignments or not, which is out of the topic here, we still have to test for a wide range of business logic cases.\nAll of these case can easily be sliced by concerns, for example a user can be edited and can order items through a cart. An easy way to name contexts is to use the ing form of the verb describing the action :\ndescribe User do context \"editing informations\" do # ... end context \"ordering items\" do # ... end context \"canceling cart\" do # ... end end  Writing “while editing …” or “when editing …” is a matter of taste, while I personally tend to prefer a concise description.\nAnd if we add validations and assignments ? (helpers are provided by should-matchers)\ndescribe User do describe \"validations\" do it { should validate_presence_of(:email) } it { should validate_presence_of(:name) } end describe \"assignments\" do it { should allow_mass_assignment_of(:email) } it { should allow_mass_assignment_of(:name) } it { should_not allow_mass_assignment_of(:administrator) } end context \"editing informations\" do # ... end context \"ordering items\" do # ... end context \"canceling cart\" do # ... end end  That makes a readable skeleton for our tests.\nThe point of writing specs is to keep them enjoyable and litteraly act as documentation for everyone. Those four advices are just basics but at least ensure you’re heading in the right direction with your specs.\n","wordCount":"1048","inLanguage":"en","datePublished":"2011-09-11T00:00:00Z","dateModified":"2011-09-11T00:00:00Z","author":{"@type":"Person","name":"J.H. Chabran"},"mainEntityOfPage":{"@type":"WebPage","@id":"http://jhchabran.dev/posts/2011-09-11-writing-readable-specs/"},"publisher":{"@type":"Organization","name":"jhchabran","logo":{"@type":"ImageObject","url":"http://jhchabran.dev/favicon.ico"}}}</script></head><body id=top><noscript><style type=text/css>#theme-toggle,.top-link{display:none}</style></noscript><header class=header><nav class=nav><div class=logo><a href=http://jhchabran.dev/ accesskey=h title="jhchabran (Alt + H)">jhchabran</a>
+<span class=logo-switches></span></div><ul id=menu><li><a href=http://jhchabran.dev/about/ title=about><span>about</span></a></li><li><a href=http://jhchabran.dev/posts/ title=posts><span>posts</span></a></li><li><a href=http://jhchabran.dev/categories/ title=categories><span>categories</span></a></li><li><a href=http://jhchabran.dev/tags/ title=tags><span>tags</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class=post-title>Writing readable specs</h1><div class=post-meta>September 11, 2011&nbsp;·&nbsp;5 min&nbsp;·&nbsp;J.H. Chabran</div></header><div class=post-content><p>Writing Rails specs with <a href=https://www.relishapp.com/rspec>RSpec</a> and
+<a href=https://github.com/thoughtbot/factory_girl>FactoryGirl</a> is easy to do
+when you
+got a basic understanding of testing principles but you may have noticed
+how these specs tends to get cluttered over time. Even to the point you
+don&rsquo;t get what&rsquo;s going on at all and call your co-worker who wrote them
+and ask him to handle your task!</p><p>The following points are basic principles to keep in mind while writing
+specs to avoid being stuck with an unreadable spec.</p><p>{% end_excerpt %}</p><p>We deal with four models : User, Cart, Order and Item.
+Their relationships are obviously as simplified as possible to keep
+ourselves focused on their tests.</p><pre><code>class User
+  has_one :cart 
+  has_many :orders
+end
+
+class Cart
+  belongs_to :user
+  has_many :items
+end
+
+class Order
+  has_many :items
+  belongs_to :user
+end
+
+class Item 
+  belongs_to :cart
+  belongs_to :order
+  belongs_to :product
+end
+</code></pre><h2 id=dont-repeat-yourself>Don&rsquo;t Repeat Yourself<a hidden class=anchor aria-hidden=true href=#dont-repeat-yourself>#</a></h2><dl><dt>As usual, the DRY principle. Consider the following code (user_spec.rb)</dt><dd>describe User do
+before :each do
+@user = Factory.create :user
+end<pre><code>it &quot;should order the cart with one item&quot; do
+  @cart = Factory.create :cart, :user =&gt; @user
+  @item = Factory.create :item, :cart =&gt; @cart
+
+  @user.order! @cart
+  @cart.should be_ordered
+end
+
+it &quot;should discard the cart&quot; do
+  @cart = Factory.create :cart, :user =&gt; @user
+  @item = Factory.create :item, :cart =&gt; @cart
+
+  @user.discard_cart
+  @cart.items.should be_empty
+end
+</code></pre><p>end</p></dd></dl><p>Quite clean by itself, we create a user for each test, as expected for a
+spec about the user model. Yet you can easily notice we&rsquo;re building
+other models
+in our two tests.</p><p>We can factorize these factories instanciation to stay DRY :</p><pre><code>describe User do
+  before :each do
+    @user    = Factory.create :user
+    @cart    = Factory.create :cart, :user =&gt; @user
+    @item    = Factory.create :item, :cart =&gt; @cart
+  end
+
+  it &quot;should order the cart with one item&quot; do
+    @user.order! @cart
+    @cart.should be_ordered
+  end
+
+  it &quot;should discard the cart&quot; do
+    @user.discard_cart
+    @cart.items.should be_empty
+  end
+end
+</code></pre><p>Now we got two tests and this example rise the following principle :</p><p><strong>Test code should be almost a direct translation of its name</strong></p><p>Any context initialization, should be done in a before block to avoid
+polluting the test code itself.</p><h2 id=enhance-readability>Enhance readability<a hidden class=anchor aria-hidden=true href=#enhance-readability>#</a></h2><p>As we avoid to pollute code to enhance readability, we can also
+emphasize on what&rsquo;s important. It allows the reader to grasp with ease
+what&rsquo;s going on.</p><pre><code>describe User do
+  before :each do
+    @user    = Factory.create :user
+    @cart    = Factory.create :cart, :user =&gt; @user
+    @item    = Factory.create :item
+
+    @cart.items &lt;&lt; @item # focus on adding an item
+  end
+
+  # ...
+end
+</code></pre><p>The main point of this before block is to craft a cart with an item
+within. As factories are cool, it doesn&rsquo;t mean we have to use their
+features all the time.</p><p>Using the &lt;&lt; operator on line 7, on the items association
+emphasize on adding our item to the cart instead of diluting it
+through the factories. This line of is the most important
+considering we&rsquo;re testing how a user interacts with items.</p><p>So while writing your test code, be sure to <strong>avoid embedding your
+intentions in the basic plumbing</strong>.</p><h2 id=one-expectation-per-test-please>One expectation per test please<a hidden class=anchor aria-hidden=true href=#one-expectation-per-test-please>#</a></h2><p>To pursue in our readability quest, you may have noticed that the
+example used in the previous points was really simple. But what makes
+theses so simple ? Those two tests got only one expectation at a time.</p><p>Consider the following code :</p><pre><code>describe User do
+  before :each do
+    @user = Factory.create :user
+    @cart = Factory.create :cart, :user =&gt; @user
+    @item = Factory.create :item, :cart =&gt; @cart
+
+    @order = @user.order! @cart
+  end
+
+  it &quot;should finalize the order&quot; do
+    @order.finalize!
+    @user.should have(1).finalized_orders
+    @order.should be_finalized
+  end
+end
+</code></pre><p>We&rsquo;ve got two <em>should</em> call there. Even if it&rsquo;s just slightly more
+complicated than before, you can separate concerns. We wrote <em>describe
+User</em> meaning we talk about user here. We do not want to mix
+expectations about orders and users.</p><p>Accordingly expectation on line 12 , even if being really similar to
+line 11 has
+nothing to do here. So we can rewrite this test in two separated tests
+(order_spec.rb) :</p><pre><code>describe Order do
+  before :each do
+    @cart  = Factory.create :cart
+    @user  = @cart.user
+    @cart.items &lt;&lt; Factory.create_list :item, 3
+
+    @order = @user.order! @cart 
+  end
+
+  it &quot;should finalize the order&quot; do
+    @order.finalize
+    @order.should be_finalized
+  end
+end
+
+
+
+describe User do
+  before :each do
+    @user = Factory.create :user
+    @cart = Factory.create :cart, :user =&gt; @user
+    @item = Factory.create :item, :cart =&gt; @cart
+
+    @order = @user.order! @cart
+  end
+
+  it &quot;should finalize the order&quot; do
+    @order.finalize!
+    @user.should have(1).finalized_orders
+  end
+end
+</code></pre><p>Plain simple, just <strong>formulate expectations about your current subject
+while writing test
+and ignore the rest</strong>. Why ? Because if you don&rsquo;t you&rsquo;re leaving the
+coast
+of unit tests to head around integration testing land.</p><h2 id=slice-your-specs-with-different-contexts>Slice your specs with different contexts<a hidden class=anchor aria-hidden=true href=#slice-your-specs-with-different-contexts>#</a></h2><p>When it comes to models, there&rsquo;s a lot to handle. Business logic,
+mass-assignements, validation sanity.( Remember <a href=http://weblog.jamisbuck.org/2006/10/18/skinny-controller-fat-model><em>fat models for skinny
+controllers</em></a>
+eh ? It&rsquo;s for a reason ! )</p><p>While you can argue if you should test validations and assignments or
+not, which is out
+of the topic here, we still have to test for a wide range of business
+logic cases.</p><p>All of these case can easily be sliced by concerns, for example a user
+can be edited and can order items through a cart. An easy way to
+name contexts is to use the ing form of the verb describing the action :</p><pre><code>describe User do
+  context &quot;editing informations&quot; do
+    # ...
+  end
+
+  context &quot;ordering items&quot; do
+    # ...
+  end
+
+  context &quot;canceling cart&quot; do
+    # ...
+  end
+end
+</code></pre><p>Writing &ldquo;while editing &mldr;&rdquo; or &ldquo;when editing &mldr;&rdquo; is a matter of taste,
+while I personally tend to prefer a concise description.</p><p>And if we add validations and assignments ? (helpers are provided by
+<a href=https://github.com/thoughtbot/shoulda-matchers>should-matchers</a>)</p><pre><code>describe User do
+  describe &quot;validations&quot; do
+    it { should validate_presence_of(:email) }
+    it { should validate_presence_of(:name) }
+  end
+
+  describe &quot;assignments&quot; do
+    it { should allow_mass_assignment_of(:email) }
+    it { should allow_mass_assignment_of(:name) }
+
+    it { should_not allow_mass_assignment_of(:administrator) }
+  end
+
+  context &quot;editing informations&quot; do
+    # ...
+  end
+
+  context &quot;ordering items&quot; do
+    # ...
+  end
+
+  context &quot;canceling cart&quot; do
+    # ...
+  end
+end
+</code></pre><p>That makes a readable skeleton for our tests.</p><p>The point of writing specs is to keep them enjoyable and litteraly act
+as documentation for everyone. Those four advices are just basics but at
+least ensure you&rsquo;re heading in the right direction with your specs.</p></div><footer class=post-footer><ul class=post-tags><li><a href=http://jhchabran.dev/tags/ruby/>Ruby</a></li><li><a href=http://jhchabran.dev/tags/testing/>Testing</a></li><li><a href=http://jhchabran.dev/tags/rspec/>RSpec</a></li></ul></footer></article></main><footer class=footer><span>&copy; 2021 <a href=http://jhchabran.dev/>jhchabran</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)"><button class=top-link id=top-link type=button accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></button></a>
+<script>let menu=document.getElementById('menu');menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)},document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script></body></html>

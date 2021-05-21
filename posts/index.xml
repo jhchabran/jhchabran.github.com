@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Posts on jhchabran</title>
+    <link>http://jhchabran.dev/posts/</link>
+    <description>Recent content in Posts on jhchabran</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 15 Nov 2018 00:00:00 +0000</lastBuildDate><atom:link href="http://jhchabran.dev/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Developer Care</title>
+      <link>http://jhchabran.dev/posts/dev-care/</link>
+      <pubDate>Thu, 15 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/dev-care/</guid>
+      <description>💡 EDIT 2021/03/04, This post was a collaborative effort between Geoffrey Teale and myself, originally published post on Inside Heetch.
+ Introduction In this article, we’ll talk about our experiences scaling up our development team at Heetch. In particular, we’ll focus on the organisational issues that emerged from growth, and from technical changes. Finally, we’ll introduce the concept of “Developer Care”, and how we’ve used it to overcome these challenges.</description>
+    </item>
+    
+    <item>
+      <title>An Elixir Plug that targets a specific path</title>
+      <link>http://jhchabran.dev/posts/elixir-plug-that-targets-a-specific-path/</link>
+      <pubDate>Thu, 29 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/elixir-plug-that-targets-a-specific-path/</guid>
+      <description>I originally published this post on Heetch Engineering and has been ported here for archiving purposes.
+  Plug is a cornerstone of Elixir and handling HTTP requests. It’s striking how simple it is to write one:
+defmodule Example.HelloWorldPlug do import Plug.Conn def init(options), do: options def call(conn, _opts) do conn |&amp;gt; put_resp_content_type(&amp;#34;text/plain&amp;#34;) |&amp;gt; send_resp(200, &amp;#34;Hello World!\n&amp;#34;) end end Yet simple does not necessarily mean that it is easy to use, especially when you’re getting started.</description>
+    </item>
+    
+    <item>
+      <title>Introducing Photograph</title>
+      <link>http://jhchabran.dev/posts/2013-01-10-introducing-photograph/</link>
+      <pubDate>Thu, 10 Jan 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/2013-01-10-introducing-photograph/</guid>
+      <description>Photograph is a really simple gem that provides to take screenshots of webpages as they are rendered in webkit. Give Photograph the url you want and that&amp;rsquo;s all.
+The interesting part is how easy this was to code !
+{% end_excerpt %}
+Throwing gems at it It&amp;rsquo;s about using Capybara with Polteirgeist (which wraps PhantomJS) to take the screenshot itself, then use MiniMagick to crop if needed. Adding some Ruby around it makes the Ruby API :</description>
+    </item>
+    
+    <item>
+      <title>Mixed links of the week (2)</title>
+      <link>http://jhchabran.dev/posts/2012-12-14-mixed-links-of-the-week-2/</link>
+      <pubDate>Fri, 14 Dec 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/2012-12-14-mixed-links-of-the-week-2/</guid>
+      <description>It&amp;rsquo;s been eleven days since my last mixed links of the week.
+So far I managed to build up enough motivation to write at least one article per week, thanks to this great book, I still have trouble posting these mixed links on a fixed day :).
+Anyway, this week includes Ruby, Haskell, R, an interview, communications and a surprising initiative!
+French readers, don&amp;rsquo;t miss Dimelo Ruby Christmas Contest, win a Nexus 7 by submitting pull requests to open source projects.</description>
+    </item>
+    
+    <item>
+      <title>Fun with to_proc and compositions</title>
+      <link>http://jhchabran.dev/posts/2012-12-9-fun-with-to-proc-and-compositions/</link>
+      <pubDate>Sun, 09 Dec 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/2012-12-9-fun-with-to-proc-and-compositions/</guid>
+      <description>What about being able to shorten users.collect { |user| user.order.city } or its unefficient form users.collect(&amp;amp;:order).collect(&amp;amp;:city) into
+{% highlight ruby %} users.collect(&amp;amp;[:order, :city]) {% endhighlight %}
+It can be achieved by composing functions, in Ruby&amp;rsquo;s case by composing Procs. This is an amusing exercise that demonstrates Ruby&amp;rsquo;s functional abilites.
+{% end_excerpt %}
+Just in case you need to freshen your memory about composing functions, it&amp;rsquo;s a common notion in functional programming and it&amp;rsquo;s also found early in mathematics courses.</description>
+    </item>
+    
+    <item>
+      <title>Testing a Chrome Extension with Mocha and CoffeeScript</title>
+      <link>http://jhchabran.dev/posts/2012-11-28-testing-a-chrome-extension-with-mocha-and-coffeescript/</link>
+      <pubDate>Wed, 28 Nov 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/2012-11-28-testing-a-chrome-extension-with-mocha-and-coffeescript/</guid>
+      <description>So we&amp;rsquo;ve previously seen how to bootstrap a chrome extension with CoffeeScript. The next step is about adding testing support. Even if it&amp;rsquo;s a simple extension, the whole process of reloading the extension in the browser to manually test a feature is incredibly boring and error prone.
+{% end_excerpt %}
+To illustrate, TabSwitcher will be used as an example, more specifically the match(url, abbreviation) function which returns a float, indicating how close is abbreviation is to url.</description>
+    </item>
+    
+    <item>
+      <title>TabSwitcher got updated</title>
+      <link>http://jhchabran.dev/posts/2012-11-25-tabswitcher-got-updated/</link>
+      <pubDate>Sun, 25 Nov 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/2012-11-25-tabswitcher-got-updated/</guid>
+      <description>TabSwitcher had been started one year ago, to showcase (see previous post) how a Chrome Extension using CoffeeScript can be built. I recently spend some time polishing it to bring it to the level of a decently featured extension.
+Before describing the changes, what problem does it aims to solve ?
+{% end_excerpt %}
+Switching between tabs like ninja I mostly work with more than thirty tabs opened in my browser.</description>
+    </item>
+    
+    <item>
+      <title>Vim isn&#39;t about speed</title>
+      <link>http://jhchabran.dev/posts/2012-09-27-vim-isnt-about-speed/</link>
+      <pubDate>Thu, 27 Sep 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/2012-09-27-vim-isnt-about-speed/</guid>
+      <description>Vim users, myself included, often advocate about gaining speed, carving text like a ninja and banning that awful device named a mouse.
+The follow-up to this is people saying, &amp;ldquo;Vim seems to be awesome but I don&amp;rsquo;t need to be that fast anyway.&amp;rdquo;
+Each time I heard that, I tried to advocate about the fact that as a coder you&amp;rsquo;re staying around seven hours per day typing, so why not try something really efficient ?</description>
+    </item>
+    
+    <item>
+      <title>Build a chrome extension with Coffee Script</title>
+      <link>http://jhchabran.dev/posts/2011-12-17-build-a-chrome-extension-with-coffeescript/</link>
+      <pubDate>Sat, 17 Dec 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/2011-12-17-build-a-chrome-extension-with-coffeescript/</guid>
+      <description>Ever had an idea for a great Chrome Extension ? Did you know that a chrome extension is just javascript ? And where there&amp;rsquo;s Javascript, we can write some CoffeeScript !
+This post aims to give you an overview of building a chrome extension wrote in CoffeeScript. While being familiar with the latest is mandatory to understand what&amp;rsquo;s going on there, no previous experience with Google Chrome is needed.
+{% end_excerpt %}</description>
+    </item>
+    
+    <item>
+      <title>Writing readable specs</title>
+      <link>http://jhchabran.dev/posts/2011-09-11-writing-readable-specs/</link>
+      <pubDate>Sun, 11 Sep 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/2011-09-11-writing-readable-specs/</guid>
+      <description>Writing Rails specs with RSpec and FactoryGirl is easy to do when you got a basic understanding of testing principles but you may have noticed how these specs tends to get cluttered over time. Even to the point you don&amp;rsquo;t get what&amp;rsquo;s going on at all and call your co-worker who wrote them and ask him to handle your task!
+The following points are basic principles to keep in mind while writing specs to avoid being stuck with an unreadable spec.</description>
+    </item>
+    
+    <item>
+      <title>Notes on migrating to OSX Lion</title>
+      <link>http://jhchabran.dev/posts/2011-07-30-notes-on-migration-to-osx-lion/</link>
+      <pubDate>Sat, 30 Jul 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/2011-07-30-notes-on-migration-to-osx-lion/</guid>
+      <description>I bought Lion yesterday ! People have already tested it against tools I use for work : Homebrew, RVM, MacVim so installing it on a friday night shouldn&amp;rsquo;t be too painful. Plus I got backups everywhere (local server + dropbox + github + tarsnap).
+{% end_excerpt %}
+What went well  Downloading it, I got a stable and fast ADSL connection ( thanks Free.fr ) Installing it right after the download Installing Xcode and Homebrew.</description>
+    </item>
+    
+    <item>
+      <title>Textmate or How to Lock Yourself</title>
+      <link>http://jhchabran.dev/posts/2010-03-11-textmate-or-how-to-lock-yourself/</link>
+      <pubDate>Thu, 11 Mar 2010 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/2010-03-11-textmate-or-how-to-lock-yourself/</guid>
+      <description>I tried every code editor out there, every IDE I could find. Six or seven years ago, I came to the conclusion that I do prefer simple editors to them, mostly because I prefer a sharp tool than a clumsy thing that tries to solve every problem. Oh sure, stuff like NetBeans or Eclipse perform really well on Java, but I don&amp;rsquo;t code with this language, so let&amp;rsquo;s skip directly to code editors.</description>
+    </item>
+    
+    <item>
+      <title>Mixed links of the week (1)</title>
+      <link>http://jhchabran.dev/posts/2012-12-3-mixed-links-of-the-week-1/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/2012-12-3-mixed-links-of-the-week-1/</guid>
+      <description>Not Rails: Rails isn&amp;rsquo;t the right answer for every project. Speeding up things with JRuby: basic example showing how JRuby obliterates MRI when it comes to threading. Building Mruby on Android : who thought that building mruby on Android would be so easy ? Fast Analytics with Redis : old tricks never dies, Redis and its bitwise operations to store analytics. Vim: efficient command mode: an interesting thread on reddit, found many Vim tips I never heard about.</description>
+    </item>
+    
+  </channel>
+</rss>

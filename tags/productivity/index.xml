@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Productivity on jhchabran</title>
+    <link>http://jhchabran.dev/tags/productivity/</link>
+    <description>Recent content in Productivity on jhchabran</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 27 Sep 2012 00:00:00 +0000</lastBuildDate><atom:link href="http://jhchabran.dev/tags/productivity/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vim isn&#39;t about speed</title>
+      <link>http://jhchabran.dev/posts/2012-09-27-vim-isnt-about-speed/</link>
+      <pubDate>Thu, 27 Sep 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/2012-09-27-vim-isnt-about-speed/</guid>
+      <description>Vim users, myself included, often advocate about gaining speed, carving text like a ninja and banning that awful device named a mouse.
+The follow-up to this is people saying, &amp;ldquo;Vim seems to be awesome but I don&amp;rsquo;t need to be that fast anyway.&amp;rdquo;
+Each time I heard that, I tried to advocate about the fact that as a coder you&amp;rsquo;re staying around seven hours per day typing, so why not try something really efficient ?</description>
+    </item>
+    
+  </channel>
+</rss>

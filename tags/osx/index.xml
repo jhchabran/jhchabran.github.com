@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>OSX on jhchabran</title>
+    <link>http://jhchabran.dev/tags/osx/</link>
+    <description>Recent content in OSX on jhchabran</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 14 Dec 2012 00:00:00 +0000</lastBuildDate><atom:link href="http://jhchabran.dev/tags/osx/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mixed links of the week (2)</title>
+      <link>http://jhchabran.dev/posts/2012-12-14-mixed-links-of-the-week-2/</link>
+      <pubDate>Fri, 14 Dec 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/2012-12-14-mixed-links-of-the-week-2/</guid>
+      <description>It&amp;rsquo;s been eleven days since my last mixed links of the week.
+So far I managed to build up enough motivation to write at least one article per week, thanks to this great book, I still have trouble posting these mixed links on a fixed day :).
+Anyway, this week includes Ruby, Haskell, R, an interview, communications and a surprising initiative!
+French readers, don&amp;rsquo;t miss Dimelo Ruby Christmas Contest, win a Nexus 7 by submitting pull requests to open source projects.</description>
+    </item>
+    
+    <item>
+      <title>Notes on migrating to OSX Lion</title>
+      <link>http://jhchabran.dev/posts/2011-07-30-notes-on-migration-to-osx-lion/</link>
+      <pubDate>Sat, 30 Jul 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/2011-07-30-notes-on-migration-to-osx-lion/</guid>
+      <description>I bought Lion yesterday ! People have already tested it against tools I use for work : Homebrew, RVM, MacVim so installing it on a friday night shouldn&amp;rsquo;t be too painful. Plus I got backups everywhere (local server + dropbox + github + tarsnap).
+{% end_excerpt %}
+What went well  Downloading it, I got a stable and fast ADSL connection ( thanks Free.fr ) Installing it right after the download Installing Xcode and Homebrew.</description>
+    </item>
+    
+  </channel>
+</rss>

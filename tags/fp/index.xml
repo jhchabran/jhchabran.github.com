@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>FP on jhchabran</title>
+    <link>http://jhchabran.dev/tags/fp/</link>
+    <description>Recent content in FP on jhchabran</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 14 Dec 2012 00:00:00 +0000</lastBuildDate><atom:link href="http://jhchabran.dev/tags/fp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mixed links of the week (2)</title>
+      <link>http://jhchabran.dev/posts/2012-12-14-mixed-links-of-the-week-2/</link>
+      <pubDate>Fri, 14 Dec 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/2012-12-14-mixed-links-of-the-week-2/</guid>
+      <description>It&amp;rsquo;s been eleven days since my last mixed links of the week.
+So far I managed to build up enough motivation to write at least one article per week, thanks to this great book, I still have trouble posting these mixed links on a fixed day :).
+Anyway, this week includes Ruby, Haskell, R, an interview, communications and a surprising initiative!
+French readers, don&amp;rsquo;t miss Dimelo Ruby Christmas Contest, win a Nexus 7 by submitting pull requests to open source projects.</description>
+    </item>
+    
+    <item>
+      <title>Fun with to_proc and compositions</title>
+      <link>http://jhchabran.dev/posts/2012-12-9-fun-with-to-proc-and-compositions/</link>
+      <pubDate>Sun, 09 Dec 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/2012-12-9-fun-with-to-proc-and-compositions/</guid>
+      <description>What about being able to shorten users.collect { |user| user.order.city } or its unefficient form users.collect(&amp;amp;:order).collect(&amp;amp;:city) into
+{% highlight ruby %} users.collect(&amp;amp;[:order, :city]) {% endhighlight %}
+It can be achieved by composing functions, in Ruby&amp;rsquo;s case by composing Procs. This is an amusing exercise that demonstrates Ruby&amp;rsquo;s functional abilites.
+{% end_excerpt %}
+Just in case you need to freshen your memory about composing functions, it&amp;rsquo;s a common notion in functional programming and it&amp;rsquo;s also found early in mathematics courses.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,200 @@
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Build a chrome extension with Coffee Script | jhchabran</title><meta name=keywords content="CoffeScript,Chrome,Javascript"><meta name=description content="Ever had an idea for a great Chrome Extension ? Did you know that a chrome extension is just javascript ? And where there&rsquo;s Javascript, we can write some CoffeeScript !
+This post aims to give you an overview of building a chrome extension wrote in CoffeeScript. While being familiar with the latest is mandatory to understand what&rsquo;s going on there, no previous experience with Google Chrome is needed.
+{% end_excerpt %}"><meta name=author content="J.H. Chabran"><link rel=canonical href=http://jhchabran.dev/posts/2011-12-17-build-a-chrome-extension-with-coffeescript/><link rel=stylesheet href=https://use.typekit.net/pmg0uoe.css><link href=/assets/css/stylesheet.min.f12e8a3e88e7a0a98cde28893b674bf5adb5629a42bace74ca84312ee4921642.css integrity="sha256-8S6KPojnoKmM3iiJO2dL9a21YppCus50yoQxLuSSFkI=" rel="preload stylesheet" as=style><link rel=icon href=http://jhchabran.dev/favicon.ico><link rel=icon type=image/png sizes=16x16 href=http://jhchabran.dev/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=http://jhchabran.dev/favicon-32x32.png><link rel=apple-touch-icon href=http://jhchabran.dev/apple-touch-icon.png><link rel=mask-icon href=http://jhchabran.dev/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><meta name=generator content="Hugo 0.83.1"><meta property="og:title" content="Build a chrome extension with Coffee Script"><meta property="og:description" content="Ever had an idea for a great Chrome Extension ? Did you know that a chrome extension is just javascript ? And where there&rsquo;s Javascript, we can write some CoffeeScript !
+This post aims to give you an overview of building a chrome extension wrote in CoffeeScript. While being familiar with the latest is mandatory to understand what&rsquo;s going on there, no previous experience with Google Chrome is needed.
+{% end_excerpt %}"><meta property="og:type" content="article"><meta property="og:url" content="http://jhchabran.dev/posts/2011-12-17-build-a-chrome-extension-with-coffeescript/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2011-12-17T00:00:00+00:00"><meta property="article:modified_time" content="2011-12-17T00:00:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Build a chrome extension with Coffee Script"><meta name=twitter:description content="Ever had an idea for a great Chrome Extension ? Did you know that a chrome extension is just javascript ? And where there&rsquo;s Javascript, we can write some CoffeeScript !
+This post aims to give you an overview of building a chrome extension wrote in CoffeeScript. While being familiar with the latest is mandatory to understand what&rsquo;s going on there, no previous experience with Google Chrome is needed.
+{% end_excerpt %}"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"http://jhchabran.dev/posts/"},{"@type":"ListItem","position":2,"name":"Build a chrome extension with Coffee Script","item":"http://jhchabran.dev/posts/2011-12-17-build-a-chrome-extension-with-coffeescript/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Build a chrome extension with Coffee Script","name":"Build a chrome extension with Coffee Script","description":"Ever had an idea for a great Chrome Extension ? Did you know that a chrome extension is just javascript ? And where there\u0026rsquo;s Javascript, we can write some CoffeeScript !\nThis post aims to give you an overview of building a chrome extension wrote in CoffeeScript. While being familiar with the latest is mandatory to understand what\u0026rsquo;s going on there, no previous experience with Google Chrome is needed.\n{% end_excerpt %}","keywords":["CoffeScript","Chrome","Javascript"],"articleBody":"Ever had an idea for a great Chrome Extension ? Did you know that a chrome extension is just javascript ? And where there’s Javascript, we can write some CoffeeScript !\nThis post aims to give you an overview of building a chrome extension wrote in CoffeeScript. While being familiar with the latest is mandatory to understand what’s going on there, no previous experience with Google Chrome is needed.\n{% end_excerpt %}\nOur chrome extension will be a fully fonctional tab switcher that mimics Command-T feature of Textmate (also known as fuzzy finding).\nWhy doing it in CoffeeScript ? Coffee Script is a thin and elegant syntaxic layer on top of Javascript, allowing you to write cleaner and concise code and still outputting almost readable javascript. Why should we avoid a such nice tool to write a chrome extension ! Plus it’s fun to write, it will remind you Ruby and Python, while still letting you do Javascript wizardry.\nFor french readers, I gave a talk at a recent Paris.rb event, you can read my slides until we get the video online.\nOur goal Command-T is a battle-tested quick-file-access method that proved to be efficient. It should be useful to have it available in Chrome, especially if you often have more than 20 tabs opened, where they all look like pinned ones. Typing a few letter of the URL is clearly faster than hammering like a monkey the next tab hotkey !\nCouldn’t we port that great feature in Chrome ?\nDissecting an extension Chrome being a popular browser, it is as expected from a modern browser, pretty easy to extend. Google’s starter guide is a good resource and gives you a quick intro.\nSkipping implementation details, it’s basically the following :\n A content script is executed in the context of the current page, having access to the DOM An extension script is executed in what you could call chrome context, meaning it can manipulate chrome objects like tabs, windows The background page include the extension script These two contexts are sandboxed, meaning you can’t collide with the scripts running on the page Communication between them are made through message passing  Get confortable The absolute minimum is the following structure :\ntabswitcher # Repository root /background.html # Extension's 'main view' /manifest.json # Extension settings  Coffee Script need to be compiled in the first place, automating it brings two benefits : it’s comfortable to develop with, a contributor can just check out your sources and run your command to build the whole thing. This lower the entry barrier for contributing to our extension =).\nThe simplest way to handle compilation easily is to build a Cakefile (a Rakefile or Makefile in CoffeeScript).\nWe’ll write it to take *.coffee input from /src and output javascript in /build using this command. Our goal is to do the following to build our extension :\n$ cake build  But while in development, it’s easier to have our files monitored to reflect changes as we save them. So To watch the src/ folder and reflect any changes made there, there’s the watch command :\n$ cake build  coffee -h tells us these commands are directly available :\n$ coffee --output build/ --compile src/  Good. It’s time to bake this into a Cakefile. Below are the interesting parts of it :\ntask 'build', 'Build extension code into build/', - if_coffee - ps = spawn(\"coffee\", [\"--output\", JAVASCRIPTS_PATH,\"--  compile\",COFFEESCRIPTS_PATH]) ps.stdout.on(‘data’, log) ps.stderr.on(‘data’, log) ps.on ‘exit’, (code)- if code != 0 console.log ‘failed’\nIf you’ve alreay wrote any Rakefile, it’s quite similar. If not, we basically declare the command build to be invokable through cake build. We handle if the coffee binary is available or not in the $PATH and finally execute our coffee command as expected.\nA small overview Manipulating the DOM through the standard API bores me to death, so let’s grab Zepto to do the big work for us. We could have used JQuery but we don’t need all the browser compatibility stuff, so Zepto with its minimal features set is a perfect match. Let’s store it in /libs.\nOur final structure is the following :\ntabswitcher # Repository root /build # Generated Javascripts end there /libs # Dependencies /src # Our code /background.html # Extension's 'main view' /manifest.json # Extension settings /Cakefile # Starts build task  Ok, we’re now ready to spill some coffee into Chrome :\n$ cake watch  The extension itself Our extension is quite simple in its behavior :\n listen for keyboard events if ctrl-\\ was pressed if pressed, insert some html in the page containing our UI display opened tabs wait for user input on enter in the input, go to that tab  So in these steps, those two are calls to chrome api :\n list all opened tabs, we’ll name it getTabs go to a tag, as switchTab  Our content script that run in the current page, it will send these two messages to the background script, which is the only one that can make these calls.\nWe end with the following process :\nThe red arrows are message passed from the content script to the background page ( message passing ). It’s similar to firing custom events with JQuery and listening for them, but with a particular API.\nImplementation The content script is src/content.coffee and background script lives in src/background.coffee\nFirst things first : a tab. It’s simpler than what you may have expected\n tab = id : 43 windowId : 4 url: \"http://google.com\" title: \"Google\"  We don’t need to handle them directly as the Chrome API will do the job for us, but it’s a starting point.\nLet’s examine the content script, which is where all the work happens.\nAn Application class encapsulates the main logic. It setups the UI, binds the callbacks and pass messages to the background page.\nclass Application constructor: - # Inject our html into the view @injectView() # Install a listener for our input @element().find('input').keyup (event)= @onInput(event) # Spawn a view that handle results display @tabListView = new TabListView @element().find('ul') element: - # Return our base div @element_ ||= $('#tabswitcher-overlay') onInput: (event)- # When something is entered is the input, filter tabs ! candidates = fuzzy(@tabs(), event.target.value) # Update tabs that match @tabListView.update candidates # If enter if event.keyCode == 13 # Go to that tab @switchTab candidates[0].tab iftes? hide: - # ... show: - # ... switchTab: (tab)- # We're switching tab, hide the UI before leaving @hide() # Send message to the background script chrome.extension.sendRequest(message:\"switchTab\", target:tab) hotKeyListener: (event)- # Listen for ctrl-\\ if event.keyCode if event.ctrlKey \u0026\u0026 event.keyCode == 220 # Ctrl + \\ # Send message to background script, ask for list of tabs chrome.extension.sendRequest {message: \"getTabs\"}, (response)= @tabs_ = response.tabs @show() else if event.keyCode == 27 # ESC @hide() injectView: - # Inject our UI in the DOM $('body').append ... app = new Application() # Attach our handler window.addEventListener(\"keyup\", (e)- app.hotKeyListener(e), false)  After defining Application we just instanciate it and bind our listener, to grab keyboard events. For the sake of readability, I’ve skipped the fuzzy filter implementation, which is kind of naive but do the job as expected. Bold stuff as you can see in the screenshot in the beginning of the post is handled in another class named TabView.\nLet’s now see the script running on the background page that respond to calls made from the content script :\n# Install the message listener chrome.extension.onRequest.addListener (request, sender,  sendResponse)- # Select the right response given the message switch request.message # Grab all tabs when “getTabs” chrome.windows.getCurrent (window)- chrome.tabs.getAllInWindow window.id, (tabs)- # We’ve collected all tabs, let’s send them back sendResponse(tabs:tabs) break when “switchTab” chrome.tabs.update(request.target.id, selected:true) sendResponse({}) break else sendResponse({})\nPretty straight-forward, we just take incoming message and handle them. Only the message ‘getTabs’ sends back a response : an array of tabs returned by Chrome.\nWhat now ? Well, beside some crappy HTML to render tabs, there’s nothing left. The complete code of this extension is available on GitHub where you can explore it, fork it as you want !\nRemember that you need to enable developer’s mode in chrome extensions to install it directly from the sources.\nYou can also install the released version.\nCoffee Script is available everywhere you can use javascript, with some tooling to kick in compilation ! Set up two tasks, adjust .gitignore and there it works.\nChrome extensions are way simpler to write than I thought ! Next, understanding how Chrome handles security and isolation through sandboxing and still sharing DOM access is pretty impressive.\nOnce you grasped the big picture, it’s finally just like building any web app interactive UI !\n Install it directly on your Chrome. Source code  ","wordCount":"1447","inLanguage":"en","datePublished":"2011-12-17T00:00:00Z","dateModified":"2011-12-17T00:00:00Z","author":{"@type":"Person","name":"J.H. Chabran"},"mainEntityOfPage":{"@type":"WebPage","@id":"http://jhchabran.dev/posts/2011-12-17-build-a-chrome-extension-with-coffeescript/"},"publisher":{"@type":"Organization","name":"jhchabran","logo":{"@type":"ImageObject","url":"http://jhchabran.dev/favicon.ico"}}}</script></head><body id=top><noscript><style type=text/css>#theme-toggle,.top-link{display:none}</style></noscript><header class=header><nav class=nav><div class=logo><a href=http://jhchabran.dev/ accesskey=h title="jhchabran (Alt + H)">jhchabran</a>
+<span class=logo-switches></span></div><ul id=menu><li><a href=http://jhchabran.dev/about/ title=about><span>about</span></a></li><li><a href=http://jhchabran.dev/posts/ title=posts><span>posts</span></a></li><li><a href=http://jhchabran.dev/categories/ title=categories><span>categories</span></a></li><li><a href=http://jhchabran.dev/tags/ title=tags><span>tags</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class=post-title>Build a chrome extension with Coffee Script</h1><div class=post-meta>December 17, 2011&nbsp;·&nbsp;7 min&nbsp;·&nbsp;J.H. Chabran</div></header><div class=post-content><p>Ever had an idea for a great Chrome Extension ? Did you know that a
+chrome extension is just javascript ? And where there&rsquo;s Javascript, we
+can write some CoffeeScript !</p><p>This post aims to give you an overview of building a chrome extension
+wrote in CoffeeScript. While being familiar with the latest is mandatory
+to understand
+what&rsquo;s going on there, no previous experience with Google Chrome is
+needed.</p><p>{% end_excerpt %}</p><p>Our chrome extension will be a fully fonctional tab switcher that mimics
+Command-T feature of Textmate (also known as fuzzy finding).</p><p><img loading=lazy src=http://media.tumblr.com/tumblr_m4jvww3J2t1qf7p5m.png alt></p><h2 id=why-doing-it-in-coffeescript->Why doing it in CoffeeScript ?<a hidden class=anchor aria-hidden=true href=#why-doing-it-in-coffeescript->#</a></h2><p><a href=http://jashkenas.github.com/coffee-script/>Coffee Script</a> is a thin
+and elegant syntaxic layer on top of Javascript, allowing
+you to write cleaner and concise code and still outputting almost
+readable javascript. Why should we avoid a such nice tool to write a
+chrome extension ! Plus it&rsquo;s fun to write, it will remind you Ruby and
+Python, while still letting you do Javascript wizardry.</p><p>For french readers, I gave a talk at a recent
+<a href=http://www.meetup.com/parisrb/>Paris.rb</a> event, you can
+read my
+<a href=http://www.slideshare.net/jhchabran/introduction-coffeescript-pour-parisrb>slides</a>
+until we get the video online.</p><h2 id=our-goal>Our goal<a hidden class=anchor aria-hidden=true href=#our-goal>#</a></h2><p>Command-T is a battle-tested quick-file-access method that proved to be
+efficient. It should be useful to have it available in Chrome,
+especially if you
+often have more than 20 tabs opened, where they all look like pinned
+ones.
+Typing a few letter of the URL is clearly faster than hammering like a
+monkey the next tab hotkey !</p><p>Couldn&rsquo;t we port that great feature in Chrome ?</p><h2 id=dissecting-an-extension>Dissecting an extension<a hidden class=anchor aria-hidden=true href=#dissecting-an-extension>#</a></h2><p>Chrome being a popular browser, it is as expected from a modern browser,
+pretty easy to extend.
+<a href=http://code.google.com/chrome/extensions/getstarted.html>Google&rsquo;s starter
+guide</a> is a
+good resource and gives you a quick intro.</p><p>Skipping implementation details, it&rsquo;s basically the following :</p><ul><li>A <em>content script</em> is executed in the context of the current page,
+having access to the DOM</li><li>An <em>extension script</em> is executed in what you could call chrome
+context, meaning it can manipulate chrome objects like tabs, windows</li><li>The <em>background page</em> include the <em>extension script</em></li><li>These two contexts are <em>sandboxed</em>, meaning you can&rsquo;t collide with
+the scripts running on the page</li><li>Communication between them are made through <em>message passing</em></li></ul><h2 id=get-confortable>Get confortable<a hidden class=anchor aria-hidden=true href=#get-confortable>#</a></h2><p>The absolute minimum is the following structure :</p><pre><code>tabswitcher               # Repository root 
+      /background.html    # Extension's 'main view'
+      /manifest.json      # Extension settings 
+</code></pre><p>Coffee Script need to be compiled in the first place, automating it
+brings two benefits : it&rsquo;s comfortable to develop with, a contributor
+can just check out your sources and run your command to build the whole
+thing. This lower the entry barrier for contributing to our extension
+=).</p><p>The simplest way to handle compilation easily is to build a <em>Cakefile</em>
+(a <em>Rakefile</em> or <em>Makefile</em> in CoffeeScript).</p><p>We&rsquo;ll write it to take *.coffee input from <em>/src</em> and output javascript
+in <em>/build</em> using this command. Our goal is to do the following to
+build our extension :</p><pre><code>$ cake build
+</code></pre><p>But while in development, it&rsquo;s easier to have our files monitored to
+reflect changes as we save them. So To watch the <em>src/</em> folder and
+reflect any
+changes made there, there&rsquo;s the <em>watch</em> command :</p><pre><code>$ cake build
+</code></pre><p><em>coffee -h</em> tells us these commands are directly available :</p><pre><code>$ coffee --output build/ --compile src/
+</code></pre><p>Good. It&rsquo;s time to bake this into a <em>Cakefile</em>. Below are the
+interesting parts
+of it :</p><pre><code>task 'build', 'Build extension code into build/', -&gt;
+  if_coffee -&gt; 
+    ps = spawn(&quot;coffee&quot;, [&quot;--output&quot;, JAVASCRIPTS_PATH,&quot;--
+</code></pre><p>compile",COFFEESCRIPTS_PATH])
+ps.stdout.on(&lsquo;data&rsquo;, log)
+ps.stderr.on(&lsquo;data&rsquo;, log)
+ps.on &lsquo;exit&rsquo;, (code)->
+if code != 0
+console.log &lsquo;failed&rsquo;</p><p>If you&rsquo;ve alreay wrote any Rakefile, it&rsquo;s quite similar. If not, we
+basically declare the command <em>build</em> to be invokable through <em>cake
+build</em>. We handle if the coffee binary is available or not in the $PATH
+and finally execute our coffee command as expected.</p><h2 id=a-small-overview>A small overview<a hidden class=anchor aria-hidden=true href=#a-small-overview>#</a></h2><p>Manipulating the DOM through the standard API bores me to death, so
+let&rsquo;s grab <a href=http://zeptojs.com/>Zepto</a> to do the big work for us. We
+could have used JQuery
+but we don&rsquo;t need all the browser compatibility stuff, so Zepto with its
+minimal features set is a perfect match. Let&rsquo;s store it in <em>/libs</em>.</p><p>Our final structure is the following :</p><pre><code>tabswitcher               # Repository root 
+      /build              # Generated Javascripts end there
+      /libs               # Dependencies
+      /src                # Our code
+      /background.html    # Extension's 'main view'
+      /manifest.json      # Extension settings 
+      /Cakefile           # Starts build task
+</code></pre><p>Ok, we&rsquo;re now ready to spill some coffee into Chrome :</p><pre><code>$ cake watch
+</code></pre><h2 id=the-extension-itself>The extension itself<a hidden class=anchor aria-hidden=true href=#the-extension-itself>#</a></h2><p>Our extension is quite simple in its behavior :</p><ul><li>listen for keyboard events if <em>ctrl-\</em> was pressed</li><li>if pressed, insert some html in the page containing our UI</li><li>display opened tabs</li><li>wait for user input</li><li>on enter in the input, go to that tab</li></ul><p>So in these steps, those two are calls to <em>chrome api</em> :</p><ul><li>list all opened tabs, we&rsquo;ll name it <em>getTabs</em></li><li>go to a tag, as <em>switchTab</em></li></ul><p>Our <em>content script</em> that run in the current page, it will send these
+two messages to
+the <em>background script</em>, which is the only one that can make these
+calls.</p><p>We end with the following process :</p><p><img loading=lazy src=http://media.tumblr.com/tumblr_m4jvypXYCB1qf7p5m.png alt></p><p>The red arrows are message passed from the content script to the
+background page ( <a href=http://code.google.com/chrome/extensions/messaging.html>message
+passing</a> ).
+It&rsquo;s similar to firing custom events with JQuery and listening for them,
+but with a particular API.</p><h2 id=implementation>Implementation<a hidden class=anchor aria-hidden=true href=#implementation>#</a></h2><p>The <em>content script</em> is <em>src/content.coffee</em> and <em>background script</em>
+lives in <em>src/background.coffee</em></p><p>First things first : a tab. It&rsquo;s simpler than what you may have expected</p><pre><code>  tab = 
+    id : 43
+    windowId : 4
+    url: &quot;http://google.com&quot;
+    title: &quot;Google&quot;
+</code></pre><p>We don&rsquo;t need to handle them directly as the Chrome API will do the job
+for us, but it&rsquo;s a starting point.</p><p>Let&rsquo;s examine the <em>content script</em>, which is where all the work happens.</p><p>An <em>Application</em> class encapsulates the main logic. It setups the UI,
+binds the
+callbacks and pass messages to the <em>background page</em>.</p><pre><code>class Application
+  constructor: -&gt;
+    # Inject our html into the view
+    @injectView()
+
+    # Install a listener for our input 
+    @element().find('input').keyup (event)=&gt;
+      @onInput(event)
+
+    # Spawn a view that handle results display
+    @tabListView = new TabListView @element().find('ul')
+
+  element: -&gt;
+    # Return our base div
+    @element_ ||= $('#tabswitcher-overlay')
+
+  onInput: (event)-&gt;
+    # When something is entered is the input, filter tabs !
+    candidates = fuzzy(@tabs(), event.target.value)
+
+    # Update tabs that match
+    @tabListView.update candidates 
+
+    # If enter
+    if event.keyCode == 13
+      # Go to that tab
+      @switchTab candidates[0].tab iftes?
+
+  hide: -&gt;
+    # ...
+  show: -&gt;
+    # ...
+
+  switchTab: (tab)-&gt;  
+    # We're switching tab, hide the UI before leaving
+    @hide()
+
+    # Send message to the background script
+    chrome.extension.sendRequest(message:&quot;switchTab&quot;, target:tab)
+
+  hotKeyListener: (event)-&gt;
+    # Listen for ctrl-\
+    if event.keyCode
+      if event.ctrlKey &amp;&amp; event.keyCode == 220 # Ctrl + \
+        # Send message to background script, ask for list of tabs
+        chrome.extension.sendRequest {message: &quot;getTabs&quot;}, 
+          (response)=&gt;
+            @tabs_ = response.tabs
+            @show()
+
+      else if event.keyCode == 27 # ESC
+        @hide()
+
+  injectView: -&gt;
+    # Inject our UI in the DOM
+    $('body').append ...
+
+app = new Application()
+
+# Attach our handler
+window.addEventListener(&quot;keyup&quot;, (e)-&gt;
+  app.hotKeyListener(e), false)
+</code></pre><p>After defining Application we just instanciate it and bind our
+listener, to grab keyboard events. For the sake of readability, I&rsquo;ve
+skipped the <a href=https://github.com/jhchabran/tabswitcher/blob/master/src/hook.coffee#L4>fuzzy filter
+implementation</a>,
+which is kind of naive but do
+the job as expected. Bold stuff as you can see in the screenshot in the
+beginning of the post is handled in another class named <em>TabView</em>.</p><p>Let&rsquo;s now see the script running on the <em>background page</em> that respond
+to calls made from the <em>content script</em> :</p><pre><code># Install the message listener
+chrome.extension.onRequest.addListener (request, sender,
+</code></pre><p>sendResponse)->
+# Select the right response given the message
+switch request.message
+# Grab all tabs
+when &ldquo;getTabs&rdquo;
+chrome.windows.getCurrent (window)->
+chrome.tabs.getAllInWindow window.id, (tabs)->
+# We&rsquo;ve collected all tabs, let&rsquo;s send them back
+sendResponse(tabs:tabs)
+break
+when &ldquo;switchTab&rdquo;
+chrome.tabs.update(request.target.id, selected:true)
+sendResponse({})
+break
+else
+sendResponse({})</p><p>Pretty straight-forward, we just take incoming message and handle them.
+Only the message &lsquo;getTabs&rsquo; sends back a response : an array of tabs
+returned by
+Chrome.</p><h2 id=what-now->What now ?<a hidden class=anchor aria-hidden=true href=#what-now->#</a></h2><p>Well, beside some crappy HTML to render tabs, there&rsquo;s nothing left. The
+complete code of this extension is available on
+<a href=http://github.com/jhchabran/tabswitcher>GitHub</a> where you can explore
+it, fork it as you want !</p><p>Remember that you need to enable developer&rsquo;s mode in chrome extensions
+to install it directly from the sources.</p><p>You can also install the <a href=https://chrome.google.com/webstore/detail/gkdkligmcadfbagoeggeohelmgalchcn>released
+version</a>.</p><p>Coffee Script is available everywhere you can use javascript, with some
+tooling to kick in compilation ! Set up two tasks,
+adjust .gitignore and there it works.</p><p>Chrome extensions are way simpler to write than I thought ! Next,
+understanding how Chrome
+handles security and isolation through sandboxing and still sharing DOM
+access is
+pretty impressive.</p><p>Once you grasped the big picture, it&rsquo;s finally just like building any
+web app interactive UI !</p><ul><li><a href=https://chrome.google.com/webstore/detail/gkdkligmcadfbagoeggeohelmgalchcn>Install it directly on your
+Chrome</a>.</li><li><a href=http://github.com/jhchabran/tabswitcher>Source code</a></li></ul></div><footer class=post-footer><ul class=post-tags><li><a href=http://jhchabran.dev/tags/coffescript/>CoffeScript</a></li><li><a href=http://jhchabran.dev/tags/chrome/>Chrome</a></li><li><a href=http://jhchabran.dev/tags/javascript/>Javascript</a></li></ul></footer></article></main><footer class=footer><span>&copy; 2021 <a href=http://jhchabran.dev/>jhchabran</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)"><button class=top-link id=top-link type=button accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></button></a>
+<script>let menu=document.getElementById('menu');menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)},document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script></body></html>

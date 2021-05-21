@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Testing on jhchabran</title>
+    <link>http://jhchabran.dev/tags/testing/</link>
+    <description>Recent content in Testing on jhchabran</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 28 Nov 2012 00:00:00 +0000</lastBuildDate><atom:link href="http://jhchabran.dev/tags/testing/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Testing a Chrome Extension with Mocha and CoffeeScript</title>
+      <link>http://jhchabran.dev/posts/2012-11-28-testing-a-chrome-extension-with-mocha-and-coffeescript/</link>
+      <pubDate>Wed, 28 Nov 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/2012-11-28-testing-a-chrome-extension-with-mocha-and-coffeescript/</guid>
+      <description>So we&amp;rsquo;ve previously seen how to bootstrap a chrome extension with CoffeeScript. The next step is about adding testing support. Even if it&amp;rsquo;s a simple extension, the whole process of reloading the extension in the browser to manually test a feature is incredibly boring and error prone.
+{% end_excerpt %}
+To illustrate, TabSwitcher will be used as an example, more specifically the match(url, abbreviation) function which returns a float, indicating how close is abbreviation is to url.</description>
+    </item>
+    
+    <item>
+      <title>Writing readable specs</title>
+      <link>http://jhchabran.dev/posts/2011-09-11-writing-readable-specs/</link>
+      <pubDate>Sun, 11 Sep 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/2011-09-11-writing-readable-specs/</guid>
+      <description>Writing Rails specs with RSpec and FactoryGirl is easy to do when you got a basic understanding of testing principles but you may have noticed how these specs tends to get cluttered over time. Even to the point you don&amp;rsquo;t get what&amp;rsquo;s going on at all and call your co-worker who wrote them and ask him to handle your task!
+The following points are basic principles to keep in mind while writing specs to avoid being stuck with an unreadable spec.</description>
+    </item>
+    
+  </channel>
+</rss>
