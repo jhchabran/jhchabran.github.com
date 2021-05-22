@@ -6,139 +6,31 @@
     <description>Recent content in Tags on jhchabran</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 10 Jan 2013 00:00:00 +0000</lastBuildDate><atom:link href="http://jhchabran.dev/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 15 Nov 2018 00:00:00 +0000</lastBuildDate><atom:link href="http://jhchabran.dev/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Ruby</title>
-      <link>http://jhchabran.dev/tags/ruby/</link>
-      <pubDate>Thu, 10 Jan 2013 00:00:00 +0000</pubDate>
+      <title>dev-experience</title>
+      <link>http://jhchabran.dev/tags/dev-experience/</link>
+      <pubDate>Thu, 15 Nov 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://jhchabran.dev/tags/ruby/</guid>
+      <guid>http://jhchabran.dev/tags/dev-experience/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>FP</title>
-      <link>http://jhchabran.dev/tags/fp/</link>
-      <pubDate>Fri, 14 Dec 2012 00:00:00 +0000</pubDate>
+      <title>code</title>
+      <link>http://jhchabran.dev/tags/code/</link>
+      <pubDate>Thu, 29 Mar 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://jhchabran.dev/tags/fp/</guid>
+      <guid>http://jhchabran.dev/tags/code/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Links</title>
-      <link>http://jhchabran.dev/tags/links/</link>
-      <pubDate>Fri, 14 Dec 2012 00:00:00 +0000</pubDate>
-      
-      <guid>http://jhchabran.dev/tags/links/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>OSX</title>
-      <link>http://jhchabran.dev/tags/osx/</link>
-      <pubDate>Fri, 14 Dec 2012 00:00:00 +0000</pubDate>
-      
-      <guid>http://jhchabran.dev/tags/osx/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Rails</title>
-      <link>http://jhchabran.dev/tags/rails/</link>
-      <pubDate>Fri, 14 Dec 2012 00:00:00 +0000</pubDate>
-      
-      <guid>http://jhchabran.dev/tags/rails/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Chrome</title>
-      <link>http://jhchabran.dev/tags/chrome/</link>
-      <pubDate>Wed, 28 Nov 2012 00:00:00 +0000</pubDate>
-      
-      <guid>http://jhchabran.dev/tags/chrome/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>CoffeeScript</title>
-      <link>http://jhchabran.dev/tags/coffeescript/</link>
-      <pubDate>Wed, 28 Nov 2012 00:00:00 +0000</pubDate>
-      
-      <guid>http://jhchabran.dev/tags/coffeescript/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Testing</title>
-      <link>http://jhchabran.dev/tags/testing/</link>
-      <pubDate>Wed, 28 Nov 2012 00:00:00 +0000</pubDate>
-      
-      <guid>http://jhchabran.dev/tags/testing/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>CoffeScript</title>
-      <link>http://jhchabran.dev/tags/coffescript/</link>
-      <pubDate>Sun, 25 Nov 2012 00:00:00 +0000</pubDate>
-      
-      <guid>http://jhchabran.dev/tags/coffescript/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Javascript</title>
-      <link>http://jhchabran.dev/tags/javascript/</link>
-      <pubDate>Sun, 25 Nov 2012 00:00:00 +0000</pubDate>
-      
-      <guid>http://jhchabran.dev/tags/javascript/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Project</title>
-      <link>http://jhchabran.dev/tags/project/</link>
-      <pubDate>Sun, 25 Nov 2012 00:00:00 +0000</pubDate>
-      
-      <guid>http://jhchabran.dev/tags/project/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Productivity</title>
-      <link>http://jhchabran.dev/tags/productivity/</link>
+      <title>ergonomy</title>
+      <link>http://jhchabran.dev/tags/ergonomy/</link>
       <pubDate>Thu, 27 Sep 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://jhchabran.dev/tags/productivity/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Vim</title>
-      <link>http://jhchabran.dev/tags/vim/</link>
-      <pubDate>Thu, 27 Sep 2012 00:00:00 +0000</pubDate>
-      
-      <guid>http://jhchabran.dev/tags/vim/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>RSpec</title>
-      <link>http://jhchabran.dev/tags/rspec/</link>
-      <pubDate>Sun, 11 Sep 2011 00:00:00 +0000</pubDate>
-      
-      <guid>http://jhchabran.dev/tags/rspec/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Rants</title>
-      <link>http://jhchabran.dev/tags/rants/</link>
-      <pubDate>Thu, 11 Mar 2010 00:00:00 +0000</pubDate>
-      
-      <guid>http://jhchabran.dev/tags/rants/</guid>
+      <guid>http://jhchabran.dev/tags/ergonomy/</guid>
       <description></description>
     </item>
     

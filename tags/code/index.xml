@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>code on jhchabran</title>
+    <link>http://jhchabran.dev/tags/code/</link>
+    <description>Recent content in code on jhchabran</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 29 Mar 2018 00:00:00 +0000</lastBuildDate><atom:link href="http://jhchabran.dev/tags/code/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>An Elixir Plug that targets a specific path</title>
+      <link>http://jhchabran.dev/posts/elixir-plug-that-targets-a-specific-path/</link>
+      <pubDate>Thu, 29 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/elixir-plug-that-targets-a-specific-path/</guid>
+      <description>I originally published this post on Heetch Engineering and has been ported here for archiving purposes.
+  Plug is a cornerstone of Elixir and handling HTTP requests. It’s striking how simple it is to write one:
+defmodule Example.HelloWorldPlug do import Plug.Conn def init(options), do: options def call(conn, _opts) do conn |&amp;gt; put_resp_content_type(&amp;#34;text/plain&amp;#34;) |&amp;gt; send_resp(200, &amp;#34;Hello World!\n&amp;#34;) end end Yet simple does not necessarily mean that it is easy to use, especially when you’re getting started.</description>
+    </item>
+    
+    <item>
+      <title>Fun with to_proc and compositions</title>
+      <link>http://jhchabran.dev/posts/2012-12-9-fun-with-to-proc-and-compositions/</link>
+      <pubDate>Sun, 09 Dec 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/2012-12-9-fun-with-to-proc-and-compositions/</guid>
+      <description>What about being able to shorten users.collect { |user| user.order.city } or its unefficient form users.collect(&amp;amp;:order).collect(&amp;amp;:city) into
+{% highlight ruby %} users.collect(&amp;amp;[:order, :city]) {% endhighlight %}
+It can be achieved by composing functions, in Ruby&amp;rsquo;s case by composing Procs. This is an amusing exercise that demonstrates Ruby&amp;rsquo;s functional abilites.
+{% end_excerpt %}
+Just in case you need to freshen your memory about composing functions, it&amp;rsquo;s a common notion in functional programming and it&amp;rsquo;s also found early in mathematics courses.</description>
+    </item>
+    
+    <item>
+      <title>Testing a Chrome Extension with Mocha and CoffeeScript</title>
+      <link>http://jhchabran.dev/posts/2012-11-28-testing-a-chrome-extension-with-mocha-and-coffeescript/</link>
+      <pubDate>Wed, 28 Nov 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/2012-11-28-testing-a-chrome-extension-with-mocha-and-coffeescript/</guid>
+      <description>So we&amp;rsquo;ve previously seen how to bootstrap a chrome extension with CoffeeScript. The next step is about adding testing support. Even if it&amp;rsquo;s a simple extension, the whole process of reloading the extension in the browser to manually test a feature is incredibly boring and error prone.
+{% end_excerpt %}
+To illustrate, TabSwitcher will be used as an example, more specifically the match(url, abbreviation) function which returns a float, indicating how close is abbreviation is to url.</description>
+    </item>
+    
+    <item>
+      <title>Build a chrome extension with Coffee Script</title>
+      <link>http://jhchabran.dev/posts/2011-12-17-build-a-chrome-extension-with-coffeescript/</link>
+      <pubDate>Sat, 17 Dec 2011 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/2011-12-17-build-a-chrome-extension-with-coffeescript/</guid>
+      <description>Ever had an idea for a great Chrome Extension ? Did you know that a chrome extension is just javascript ? And where there&amp;rsquo;s Javascript, we can write some CoffeeScript !
+This post aims to give you an overview of building a chrome extension wrote in CoffeeScript. While being familiar with the latest is mandatory to understand what&amp;rsquo;s going on there, no previous experience with Google Chrome is needed.
+{% end_excerpt %}</description>
+    </item>
+    
+  </channel>
+</rss>

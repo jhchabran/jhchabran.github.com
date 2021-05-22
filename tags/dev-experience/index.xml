@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>dev-experience on jhchabran</title>
+    <link>http://jhchabran.dev/tags/dev-experience/</link>
+    <description>Recent content in dev-experience on jhchabran</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 15 Nov 2018 00:00:00 +0000</lastBuildDate><atom:link href="http://jhchabran.dev/tags/dev-experience/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Developer Care</title>
+      <link>http://jhchabran.dev/posts/dev-care/</link>
+      <pubDate>Thu, 15 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/dev-care/</guid>
+      <description>💡 EDIT 2021/03/04, This post was a collaborative effort between Geoffrey Teale and myself, originally published post on Inside Heetch.
+ Introduction In this article, we’ll talk about our experiences scaling up our development team at Heetch. In particular, we’ll focus on the organisational issues that emerged from growth, and from technical changes. Finally, we’ll introduce the concept of “Developer Care”, and how we’ve used it to overcome these challenges.</description>
+    </item>
+    
+  </channel>
+</rss>
