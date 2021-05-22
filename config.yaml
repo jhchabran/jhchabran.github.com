@@ -21,7 +21,8 @@ params:
   disableThemeToggle: true
   profileMode:
     enabled: true
-    title: "Jean-Hadrien Chabran"
+    title: "Hi! I'm Jean-Hadrien Chabran"
+    subtitle: "Backend software engineer, working remotely. I like to build stuff 😊!"
     imageUrl: "./avatar.jpg"
 
   socialIcons: # optional
