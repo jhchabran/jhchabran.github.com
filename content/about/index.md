@@ -13,7 +13,7 @@ I live in Lyon, France. I work remotely and have been doing so for more than ten
 
 Gaming is what I do to take my mind off things and have been doing so since I was a kid. That is what led to computers in the first place eh! I especially enjoy games when the computer throws random constraints and challenges at you, where skill translates into being able to adapt and overcome those random constraints.
 
-My goals for 2021 are to focus on [coding](https://github.com/jhchabran), reading and [writing](/posts/).
+My goals for 2021 is to focus on [coding](https://github.com/jhchabran).
 
 {{< figure src="./romeo.jpg" alt="A pic of my dog Romeo in my arms after he tried to eat my dad's toy drone" class="about-illustration" >}}
 
