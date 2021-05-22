@@ -3,19 +3,15 @@ layout: post
 author: J.H. Chabran
 date: 2011-09-11
 title: Writing readable specs
-category: Ruby
-tags:
-  - Ruby
-  - Testing
-  - RSpec
 ---
-Writing Rails specs with [RSpec](https://www.relishapp.com/rspec) and 
+
+Writing Rails specs with [RSpec](https://www.relishapp.com/rspec) and
 [FactoryGirl](https://github.com/thoughtbot/factory_girl) is easy to do
 when you
 got a basic understanding of testing principles but you may have noticed
 how these specs tends to get cluttered over time. Even to the point you
 don't get what's going on at all and call your co-worker who wrote them
-and ask him to handle your task! 
+and ask him to handle your task!
 
 The following points are basic principles to keep in mind while writing
 specs to avoid being stuck with an unreadable spec.
@@ -27,7 +23,7 @@ Their relationships are obviously as simplified as possible to keep
 ourselves focused on their tests.
 
     class User
-      has_one :cart 
+      has_one :cart
       has_many :orders
     end
 
@@ -41,18 +37,16 @@ ourselves focused on their tests.
       belongs_to :user
     end
 
-    class Item 
+    class Item
       belongs_to :cart
       belongs_to :order
       belongs_to :product
     end
 
-
 ## Don't Repeat Yourself
 
 As usual, the DRY principle. Consider the following code (user_spec.rb)
-: 
-
+:
 
     describe User do
       before :each do
@@ -76,13 +70,12 @@ As usual, the DRY principle. Consider the following code (user_spec.rb)
       end
     end
 
-
 Quite clean by itself, we create a user for each test, as expected for a
 spec about the user model. Yet you can easily notice we're building
 other models
-in our two tests. 
+in our two tests.
 
-We can factorize these factories instanciation to stay DRY : 
+We can factorize these factories instanciation to stay DRY :
 
     describe User do
       before :each do
@@ -102,20 +95,18 @@ We can factorize these factories instanciation to stay DRY :
       end
     end
 
-
-Now we got two tests and this example rise the following principle : 
+Now we got two tests and this example rise the following principle :
 
 **Test code should be almost a direct translation of its name**
 
 Any context initialization, should be done in a before block to avoid
 polluting the test code itself.
 
-## Enhance readability 
+## Enhance readability
 
 As we avoid to pollute code to enhance readability, we can also
 emphasize on what's important. It allows the reader to grasp with ease
-what's going on. 
-
+what's going on.
 
     describe User do
       before :each do
@@ -125,22 +116,21 @@ what's going on.
 
         @cart.items << @item # focus on adding an item
       end
-  
+
       # ...
     end
 
-
 The main point of this before block is to craft a cart with an item
 within. As factories are cool, it doesn't mean we have to use their
-features all the time. 
+features all the time.
 
-Using the &lt;&lt; operator on line 7, on the items association 
-emphasize on adding our item to the cart instead of diluting it 
+Using the &lt;&lt; operator on line 7, on the items association
+emphasize on adding our item to the cart instead of diluting it
 through the factories. This line of is the most important
 considering we're testing how a user interacts with items.
 
 So while writing your test code, be sure to **avoid embedding your
-intentions in the basic plumbing**. 
+intentions in the basic plumbing**.
 
 ## One expectation per test please
 
@@ -148,8 +138,7 @@ To pursue in our readability quest, you may have noticed that the
 example used in the previous points was really simple. But what makes
 theses so simple ? Those two tests got only one expectation at a time.
 
-Consider the following code : 
-
+Consider the following code :
 
     describe User do
       before :each do
@@ -167,10 +156,9 @@ Consider the following code :
       end
     end
 
-
-We've got two *should* call there. Even if it's just slightly more
-complicated than before, you can separate concerns. We wrote *describe
-User* meaning we talk about user here. We do not want to mix
+We've got two _should_ call there. Even if it's just slightly more
+complicated than before, you can separate concerns. We wrote _describe
+User_ meaning we talk about user here. We do not want to mix
 expectations about orders and users.
 
 Accordingly expectation on line 12 , even if being really similar to
@@ -178,14 +166,13 @@ line 11 has
 nothing to do here. So we can rewrite this test in two separated tests
 (order_spec.rb) :
 
-
     describe Order do
       before :each do
         @cart  = Factory.create :cart
         @user  = @cart.user
         @cart.items << Factory.create_list :item, 3
 
-        @order = @user.order! @cart 
+        @order = @user.order! @cart
       end
 
       it "should finalize the order" do
@@ -211,24 +198,23 @@ nothing to do here. So we can rewrite this test in two separated tests
       end
     end
 
-
 Plain simple, just **formulate expectations about your current subject
 while writing test
 and ignore the rest**. Why ? Because if you don't you're leaving the
 coast
 of unit tests to head around integration testing land.
 
-## Slice your specs with different contexts 
+## Slice your specs with different contexts
 
 When it comes to models, there's a lot to handle. Business logic,
-mass-assignements, validation sanity.( Remember [*fat models for skinny
-controllers*](http://weblog.jamisbuck.org/2006/10/18/skinny-controller-fat-model)
-eh ? It's for a reason ! )  
+mass-assignements, validation sanity.( Remember [_fat models for skinny
+controllers_](http://weblog.jamisbuck.org/2006/10/18/skinny-controller-fat-model)
+eh ? It's for a reason ! )
 
 While you can argue if you should test validations and assignments or
 not, which is out
 of the topic here, we still have to test for a wide range of business
-logic cases. 
+logic cases.
 
 All of these case can easily be sliced by concerns, for example a user
 can be edited and can order items through a cart. An easy way to
@@ -248,13 +234,11 @@ name contexts is to use the ing form of the verb describing the action :
       end
     end
 
-
 Writing "while editing ..." or "when editing ..." is a matter of taste,
-while I personally tend to prefer a concise description. 
+while I personally tend to prefer a concise description.
 
 And if we add validations and assignments ? (helpers are provided by
-[should-matchers](https://github.com/thoughtbot/shoulda-matchers)) 
-
+[should-matchers](https://github.com/thoughtbot/shoulda-matchers))
 
     describe User do
       describe "validations" do
@@ -282,8 +266,7 @@ And if we add validations and assignments ? (helpers are provided by
       end
     end
 
-
-That makes a readable skeleton for our tests. 
+That makes a readable skeleton for our tests.
 
 The point of writing specs is to keep them enjoyable and litteraly act
 as documentation for everyone. Those four advices are just basics but at

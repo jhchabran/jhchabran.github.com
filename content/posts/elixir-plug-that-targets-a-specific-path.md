@@ -3,6 +3,8 @@ author: J.H. Chabran
 title: "An Elixir Plug that targets a specific path"
 date: 2018-03-29
 draft: false
+tags:
+  - code
 ---
 
 _I originally published this post on [Heetch Engineering](https://medium.com/inside-heetch/an-elixir-plug-that-targets-a-specific-path-f0c17bd232a7) and has been ported here for archiving purposes._

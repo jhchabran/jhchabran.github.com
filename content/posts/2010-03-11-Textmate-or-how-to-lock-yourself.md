@@ -2,11 +2,8 @@
 title: Textmate or How to Lock Yourself
 author: J.H. Chabran
 date: 2010-03-11
-category: Rant
-tags:
-  - Rants
-
 ---
+
 I tried every code editor out there, every IDE I could find. Six or
 seven years ago, I came to the conclusion that I do prefer simple
 editors to them, mostly because I prefer a sharp tool than a clumsy
@@ -76,7 +73,7 @@ Communication around Textmate 2 is a nice example of worst practices.
 Its author is trapped in that Babylon tower thingy, if he don't release
 it, he'll be smashed by everyone (which is already the case) Its author
 have to release something great or everyone will flame him, write awful
-frustrated blog posts, Scotty will beam him up to pluto ... 
+frustrated blog posts, Scotty will beam him up to pluto ...
 
 Learning an editor is an investment, we all know that, and feeling stuck because you
 can't help its author to make it great, you can't do anything at all
@@ -95,7 +92,7 @@ blog post.
 
 **Addendum**
 
-*I finally threw away my never ending thirst of perfection. I'm happily
+_I finally threw away my never ending thirst of perfection. I'm happily
 sticking to Vim
 as it is and it does the job really well. Feel free to browse and fork
-my [vimrc](https://github.com/jhchabran/vimfiles)*
+my [vimrc](https://github.com/jhchabran/vimfiles)_

@@ -3,19 +3,13 @@ date: 2012-11-25
 author: J.H. Chabran
 layout: post
 title: TabSwitcher got updated
-category: Chrome
-tags:
-  - CoffeScript
-  - Chrome
-  - Javascript
-  - Project
 ---
 
 TabSwitcher had been started one year ago, to showcase [(see previous
 post)](http://jhchabran.com/blog/2011/12/17/build-a-chrome-extension-with-coffeescript)
 how a Chrome Extension using CoffeeScript can be built. I recently spend some
 time polishing it to bring it to the level of a decently featured
-extension. 
+extension.
 
 Before describing the changes, what problem does it aims to solve ?
 
@@ -24,14 +18,14 @@ Before describing the changes, what problem does it aims to solve ?
 ## Switching between tabs like ninja
 
 I mostly work with more than thirty tabs opened in my browser. Between
- Gmail, Basecamp, Github, various documentations,
+Gmail, Basecamp, Github, various documentations,
 news and dumb cat pictures, it ends being pretty scary.
 
 With so many tabs, you can't even read the tabs titles, it's at best a row of
 favicons. So when I was toying around Chrome
 extensions with CoffeeScript, I attempted to solved that by porting a popular method used to
-switch between opened files in code editors: fuzzy finding (match "*google*"
-with "*ggle*")
+switch between opened files in code editors: fuzzy finding (match "_google_"
+with "_ggle_")
 
 CtrlP.vim, Command-T in Textmate are well known examples of fuzzy
 finding.
@@ -49,10 +43,10 @@ match against "http://**r**o**ub**a**y**.com/" over
 in the first url, which is absolutely not the correct result.
 
 This yielded some very weird results and forbid any real usage of the
-extension. 
+extension.
 
 After reading interesting things in the fuzzy finding
-field, I wrote a decent yet simple algorithm that can handle real usage. 
+field, I wrote a decent yet simple algorithm that can handle real usage.
 
 First, I added tests, which you may want [to have a look
 at](https://github.com/jhchabran/tabswitcher/blob/master/spec/fuzzy_spec.coffee), they
@@ -81,7 +75,7 @@ Urls are now truncated and won't mess the layout.
 
 ## Dramatic Chrome Store
 
-So far I don't really have a clue on how people behave on the chrome store, I got like 4000 views on the past two days and got eight installs. 
+So far I don't really have a clue on how people behave on the chrome store, I got like 4000 views on the past two days and got eight installs.
 
 ![](/img/dramatic_chrome_store.png)
 

@@ -3,11 +3,10 @@ date: 2012-09-27
 author: J.H. Chabran
 layout: post
 title: Vim isn't about speed
-category: Vim
 tags:
-  - Vim
-  - Productivity
+  - ergonomy
 ---
+
 Vim users, myself included, often advocate about gaining speed, carving
 text like a
 ninja and banning that awful device named a mouse.
@@ -19,7 +18,7 @@ be that fast anyway."
 Each time I heard that, I tried to advocate about the fact that as a
 coder
 you're staying around seven hours per day typing, so why not try
-something really efficient ? 
+something really efficient ?
 
 It hardly convinced anyone.
 
@@ -35,7 +34,6 @@ You don't get to code that fast with vim. You spend time thinking then
 you enter your idea. Or you think while typing, going back and forth
 through potentials solutions. Getting faster don't mean producing
 significantly more code, the bottleneck is your brain anyway.
-
 
 ## It's about comfort.
 
@@ -55,12 +53,11 @@ catch that modifier all the time...
 Well that's basically the most common way to send commands to your text
 editor besides clicking in a menu.
 
-
 ## Modality saves the day
 
 Vim solves that by providing two modes : insert mode and normal mode.
 You already know insert mode, it's the behavior you always knew to enter
-text. Press hello, it writes "hello". 
+text. Press hello, it writes "hello".
 
 Press ESC or Ctrl-C to get back to normal mode, which is the standard
 mode and the reason behind the i you have to type before entering text.
@@ -85,29 +82,27 @@ delimiter.
 Sounds complicated ? Yes at first. But like Starcraft, you'll get used
 to these kinds of moves.
 
-
 Obviously, there are some vim actions bound to control something, like
 redo
-which is ctrl-r or ctrl-d to scroll down. 
+which is ctrl-r or ctrl-d to scroll down.
 But that still makes significantly less modifiers usage than any other
-editor. 
-
+editor.
 
 ## How could I live without it ?
 
 After a while, it becomes natural, you don't even think about it.
 Your brain just know that going to next
 tab is gt, change text inside a pair of parenthesis is ci) and so on. It
-feels natural, exactly like typing. 
+feels natural, exactly like typing.
 
 You type to enter text, you type to shape your code, you type to move
-around (forget the arrows keys, do yourself a favor, disable them and 
+around (forget the arrows keys, do yourself a favor, disable them and
 use hjkl instead and learn other moving keys!).
 
 And most of the time, your hands are on or close of the home row, which
 is
 the key to have comfortable text entering position (This is especially
-important if you have small hands like I do !). 
+important if you have small hands like I do !).
 
 Welcome to Vim, an efficient tool to edit text. It's different from
 other
@@ -135,22 +130,21 @@ for every function in your two days vim life span.
 
 If you try switching, stick to it. Try it for a week, not five minutes
 until you switch back because you that it wrecks your productivity.
-You can't cheat on this step. 
+You can't cheat on this step.
 
-
-## Conclusion 
+## Conclusion
 
 I just love vim for the ease it gives me with text editing, but to get
 started you have to keep in mind that getting out of your comfort zone
-is required to gain more of it. 
+is required to gain more of it.
 
 In the end, I find that being fast while editing code in Vim is simply a
-consequence of this comfort. 
+consequence of this comfort.
 
 Dig into [Learnivore](http://www.learnivore.com/search/vim) to find many
 resources to get started !
 
- * __Edit :__ correct a few typos
- * __Edit2:__ Thanks to
-   [Qoc_au_vin](http://www.reddit.com/user/Qoc_au_vin) for pointing me
-that w to advance to the next word isn't required before ci" !
+- **Edit :** correct a few typos
+- **Edit2:** Thanks to
+  [Qoc_au_vin](http://www.reddit.com/user/Qoc_au_vin) for pointing me
+  that w to advance to the next word isn't required before ci" !

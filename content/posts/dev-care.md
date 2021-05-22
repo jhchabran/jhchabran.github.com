@@ -3,6 +3,8 @@ title: "Developer Care"
 date: 2018-11-15
 author: Geoffrey Teale and J.H. Chabran
 draft: false
+tags:
+  - dev-experience
 ---
 
 :bulb: _EDIT 2021/03/04, This post was a collaborative effort between [Geoffrey Teale](https://twitter.com/tealeg) and myself, originally published post on [Inside Heetch](https://medium.com/inside-heetch/developer-care-3e22a4d7ff54)._
