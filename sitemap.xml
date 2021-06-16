@@ -2,19 +2,28 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://jhchabran.dev/</loc>
+    <lastmod>2021-06-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://jhchabran.dev/tags/people/</loc>
+    <lastmod>2021-06-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://jhchabran.dev/posts/</loc>
+    <lastmod>2021-06-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://jhchabran.dev/tags/projects/</loc>
+    <lastmod>2021-06-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://jhchabran.dev/tags/</loc>
+    <lastmod>2021-06-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://jhchabran.dev/posts/2021-06-16-stories-of-open-source-developers-and-their-projects/</loc>
+    <lastmod>2021-06-16T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://jhchabran.dev/tags/dev-experience/</loc>
     <lastmod>2018-11-15T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://jhchabran.dev/posts/dev-care/</loc>
-    <lastmod>2018-11-15T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://jhchabran.dev/</loc>
-    <lastmod>2018-11-15T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://jhchabran.dev/posts/</loc>
-    <lastmod>2018-11-15T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://jhchabran.dev/tags/</loc>
     <lastmod>2018-11-15T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://jhchabran.dev/posts/elixir-plug-that-targets-a-specific-path/</loc>

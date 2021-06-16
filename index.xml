@@ -6,7 +6,17 @@
     <description>Recent content on jhchabran</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 15 Nov 2018 00:00:00 +0000</lastBuildDate><atom:link href="http://jhchabran.dev/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 16 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://jhchabran.dev/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The stories of open source developers and their projects</title>
+      <link>http://jhchabran.dev/posts/2021-06-16-stories-of-open-source-developers-and-their-projects/</link>
+      <pubDate>Wed, 16 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/posts/2021-06-16-stories-of-open-source-developers-and-their-projects/</guid>
+      <description>I love hearing other developers recounting the story of how a project has started and evolved. There is so much to learn from others and what they experienced. I find it especially fascinating when the story is being told in an informal setting, allowing for anecdotes and personal insights to surface.
+So I recently decided to build a blog where I collect interviews from open source contributors, How did it start?</description>
+    </item>
+    
     <item>
       <title>Developer Care</title>
       <link>http://jhchabran.dev/posts/dev-care/</link>

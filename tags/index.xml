@@ -6,7 +6,25 @@
     <description>Recent content in Tags on jhchabran</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 15 Nov 2018 00:00:00 +0000</lastBuildDate><atom:link href="http://jhchabran.dev/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 16 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://jhchabran.dev/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>people</title>
+      <link>http://jhchabran.dev/tags/people/</link>
+      <pubDate>Wed, 16 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/tags/people/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>projects</title>
+      <link>http://jhchabran.dev/tags/projects/</link>
+      <pubDate>Wed, 16 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://jhchabran.dev/tags/projects/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>dev-experience</title>
       <link>http://jhchabran.dev/tags/dev-experience/</link>
